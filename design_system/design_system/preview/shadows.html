@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Shadows</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-2); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 36px 24px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; align-items: end; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .card { width: 96px; height: 64px; background: var(--bg-1); border-radius: var(--radius-md); }
+  .name { font-size: 11px; font-family: var(--font-mono); color: var(--fg-2); }
+  .desc { font-size: 10px; color: var(--fg-3); }
+</style>
+</head>
+<body>
+  <div class="item"><div class="card" style="box-shadow: var(--shadow-xs)"></div><div class="name">xs</div><div class="desc">Subtle lift</div></div>
+  <div class="item"><div class="card" style="box-shadow: var(--shadow-sm)"></div><div class="name">sm</div><div class="desc">Default card</div></div>
+  <div class="item"><div class="card" style="box-shadow: var(--shadow-md)"></div><div class="name">md</div><div class="desc">Hover</div></div>
+  <div class="item"><div class="card" style="box-shadow: var(--shadow-lg)"></div><div class="name">lg</div><div class="desc">Modal</div></div>
+  <div class="item"><div class="card" style="box-shadow: var(--shadow-pink); background: var(--quantica-pink)"></div><div class="name">pink</div><div class="desc">Brand glow</div></div>
+</body>
+</html>

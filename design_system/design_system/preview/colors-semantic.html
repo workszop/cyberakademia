@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Semantic colors</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .group { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 6px; }
+  .sect { display: flex; flex-direction: column; gap: 6px; }
+  .item { display: flex; align-items: center; gap: 10px; }
+  .dot { width: 22px; height: 22px; border-radius: var(--radius-sm); box-shadow: var(--inner-hairline); flex-shrink: 0; }
+  .lbl { font-size: 12px; font-family: var(--font-mono); color: var(--fg-2); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="sect">
+      <div class="group">Foreground</div>
+      <div class="item"><div class="dot" style="background: var(--fg-1)"></div><div class="lbl">--fg-1</div></div>
+      <div class="item"><div class="dot" style="background: var(--fg-2)"></div><div class="lbl">--fg-2</div></div>
+      <div class="item"><div class="dot" style="background: var(--fg-3)"></div><div class="lbl">--fg-3</div></div>
+      <div class="item"><div class="dot" style="background: var(--fg-4)"></div><div class="lbl">--fg-4</div></div>
+      <div class="item"><div class="dot" style="background: var(--fg-brand)"></div><div class="lbl">--fg-brand</div></div>
+    </div>
+    <div class="sect">
+      <div class="group">Background</div>
+      <div class="item"><div class="dot" style="background: var(--bg-1)"></div><div class="lbl">--bg-1</div></div>
+      <div class="item"><div class="dot" style="background: var(--bg-2)"></div><div class="lbl">--bg-2</div></div>
+      <div class="item"><div class="dot" style="background: var(--bg-3)"></div><div class="lbl">--bg-3</div></div>
+      <div class="item"><div class="dot" style="background: var(--bg-inverse)"></div><div class="lbl">--bg-inverse</div></div>
+      <div class="item"><div class="dot" style="background: var(--bg-inverse-2)"></div><div class="lbl">--bg-inverse-2</div></div>
+    </div>
+    <div class="sect">
+      <div class="group">Border</div>
+      <div class="item"><div class="dot" style="background: var(--border-1)"></div><div class="lbl">--border-1</div></div>
+      <div class="item"><div class="dot" style="background: var(--border-2)"></div><div class="lbl">--border-2</div></div>
+      <div class="item"><div class="dot" style="background: var(--border-brand)"></div><div class="lbl">--border-brand</div></div>
+      <div class="item"><div class="dot" style="background: var(--border-focus)"></div><div class="lbl">--border-focus</div></div>
+    </div>
+    <div class="sect">
+      <div class="group">Status</div>
+      <div class="item"><div class="dot" style="background: var(--status-success)"></div><div class="lbl">success</div></div>
+      <div class="item"><div class="dot" style="background: var(--status-warning)"></div><div class="lbl">warning</div></div>
+      <div class="item"><div class="dot" style="background: var(--status-error)"></div><div class="lbl">error</div></div>
+      <div class="item"><div class="dot" style="background: var(--status-info)"></div><div class="lbl">info</div></div>
+    </div>
+  </div>
+</body>
+</html>

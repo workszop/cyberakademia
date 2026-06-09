@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Quantica Lab — App</title>
+<link rel="stylesheet" href="../../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #F1F2F6; min-height: 100vh; }
+  body { font-family: var(--font-sans); color: var(--fg-1); display: flex; align-items: center; justify-content: center; padding: 32px 0; }
+  * { box-sizing: border-box; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="Header.jsx"></script>
+<script type="text/babel" src="ProjectRow.jsx"></script>
+<script type="text/babel" src="TabBar.jsx"></script>
+<script type="text/babel">
+  function App() {
+    const [tab, setTab] = React.useState('Home');
+    React.useEffect(() => { window.lucide && window.lucide.createIcons({ nameAttr: 'data-lucide-name' }); });
+    return (
+      <IOSDevice dark={false}>
+        <div data-screen-label="App home" style={{
+          height: '100%', background: '#F5F6F8', position: 'relative', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column',
+        }}>
+          <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 100 }}>
+            <AppHeader />
+            <MetricCard />
+            <ProjectList />
+            <div style={{ padding: '0 16px', marginTop: 8 }}>
+              <div style={{
+                background: '#111', color: 'white', borderRadius: 16, padding: 18,
+                position: 'relative', overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'radial-gradient(300px 160px at 100% 50%, rgba(255,32,161,0.32), transparent 60%)',
+                }} />
+                <div style={{ position: 'relative' }}>
+                  <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#FF4D9A', fontWeight: 500 }}>This week</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.01em', marginTop: 6 }}>320 hrs saved.</div>
+                  <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 4 }}>Operations automation across 3 teams.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <TabBar active={tab} onChange={setTab} />
+        </div>
+      </IOSDevice>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

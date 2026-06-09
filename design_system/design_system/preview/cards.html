@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Cards</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-2); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+  .card {
+    background: var(--bg-1);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card .eyebrow { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--quantica-pink); font-weight: 500; }
+  .card h4 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .card p { margin: 0; font-size: 13px; color: var(--fg-2); line-height: 1.55; }
+  .card .metric { font-size: 32px; font-weight: 700; color: var(--quantica-pink); letter-spacing: -0.02em; }
+  .card .delta { font-family: var(--font-mono); font-size: 12px; color: var(--status-success); }
+  .link { font-size: 12px; color: var(--quantica-pink); font-weight: 500; }
+
+  /* metric card with hex icon */
+  .icon {
+    width: 36px; height: 36px;
+    background: var(--magenta-tint);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--quantica-pink);
+    font-weight: 700;
+  }
+
+  /* dark variant */
+  .card.dark { background: var(--near-black); color: white; box-shadow: var(--shadow-pink-soft); }
+  .card.dark p { color: rgba(255,255,255,0.7); }
+  .card.dark .metric { color: var(--rose-pink); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">Q</div>
+    <h4>Model insights</h4>
+    <p>Real-time analysis and predictive insights across your data.</p>
+    <span class="link">Learn more →</span>
+  </div>
+  <div class="card">
+    <div class="eyebrow">Revenue impact</div>
+    <div class="metric">+26.8%</div>
+    <span class="delta">▲ vs last quarter</span>
+    <p>AI solutions deliver measurable impact across forecasting and pricing.</p>
+  </div>
+  <div class="card dark">
+    <div class="eyebrow" style="color: var(--rose-pink)">Performance</div>
+    <h4 style="color: white">320 hrs saved</h4>
+    <p>Automation across operations team this quarter.</p>
+  </div>
+</body>
+</html>

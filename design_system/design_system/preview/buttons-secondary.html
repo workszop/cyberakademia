@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Buttons — secondary & tertiary</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 28px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .row { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; }
+  .label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 10px; }
+
+  .btn {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+    padding: 11px 20px; border-radius: var(--radius-pill); cursor: pointer;
+    transition: all var(--dur-2) var(--ease-standard);
+  }
+  /* Secondary: outlined */
+  .sec  { background: transparent; color: var(--quantica-pink); border: 1.5px solid var(--quantica-pink); }
+  .sec.hover { background: var(--magenta-tint); }
+  .sec.pressed { background: #FFD1E5; }
+  .sec.disabled { color: #E8B5CC; border-color: #F1D0DE; cursor: not-allowed; }
+
+  /* Tertiary: ghost / text */
+  .ter { background: transparent; color: var(--quantica-pink); border: none; padding: 11px 14px; }
+  .ter.hover { background: var(--magenta-tint); }
+  .ter.pressed { background: #FFD1E5; }
+  .ter.disabled { color: var(--fg-4); cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div>
+      <div class="label">Secondary · outlined</div>
+      <div class="row">
+        <button class="btn sec">Default</button>
+        <button class="btn sec hover">Hover</button>
+        <button class="btn sec pressed">Pressed</button>
+        <button class="btn sec disabled">Disabled</button>
+      </div>
+    </div>
+    <div>
+      <div class="label">Tertiary · ghost</div>
+      <div class="row">
+        <button class="btn ter">Default</button>
+        <button class="btn ter hover">Hover</button>
+        <button class="btn ter pressed">Pressed</button>
+        <button class="btn ter disabled">Disabled</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Color pairings</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .pair {
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    height: 130px;
+    box-sizing: border-box;
+    display: flex; flex-direction: column; justify-content: space-between;
+    box-shadow: var(--inner-hairline);
+  }
+  .Aa { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -0.025em; }
+  .lbl { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="pair" style="background: var(--near-black); color: white;">
+    <div class="Aa">Aa</div>
+    <div class="lbl" style="color: rgba(255,255,255,0.5)">Black · White</div>
+  </div>
+  <div class="pair" style="background: var(--quantica-pink); color: white;">
+    <div class="Aa">Aa</div>
+    <div class="lbl" style="color: rgba(255,255,255,0.7)">Pink · White</div>
+  </div>
+  <div class="pair" style="background: var(--bg-1); color: var(--fg-1);">
+    <div class="Aa">Aa</div>
+    <div class="lbl" style="color: var(--fg-3)">White · Black</div>
+  </div>
+  <div class="pair" style="background: #FFFFFF; color: var(--quantica-pink); box-shadow: inset 0 0 0 1px var(--border-1);">
+    <div class="Aa">Aa</div>
+    <div class="lbl" style="color: var(--quantica-pink)">White · Magenta</div>
+  </div>
+</body>
+</html>

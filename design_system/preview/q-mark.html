@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Q-mark</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body {
+    font-family: var(--font-sans);
+    color: var(--fg-1);
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 32px;
+  }
+  .mark { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .mark .label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); }
+  .mark img { display: block; max-height: 160px; width: auto; }
+  .chip {
+    background: var(--near-black);
+    border-radius: var(--radius-md);
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chip-pink {
+    background: var(--quantica-pink);
+    border-radius: var(--radius-md);
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+  <div class="mark">
+    <img src="../assets/quantica-q-mark-pink.png" alt="Quantica Q-mark" />
+    <div class="label">Q-Mark · Pink</div>
+  </div>
+  <div class="mark">
+    <div class="chip">
+      <img src="../assets/quantica-q-mark-white.png" alt="Quantica Q-mark" style="max-height: 130px" />
+    </div>
+    <div class="label">Reverse · On dark</div>
+  </div>
+  <div class="mark">
+    <div class="chip-pink">
+      <img src="../assets/quantica-q-mark-white.png" alt="Quantica Q-mark" style="max-height: 130px" />
+    </div>
+    <div class="label">On brand</div>
+  </div>
+</body>
+</html>

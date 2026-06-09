@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberAkademia — Cyberbezpieczeństwo Organizacyjne</title>
+  <meta name="description" content="Interaktywna platforma nauki cyberbezpieczeństwa organizacyjnego po polsku." />
+  <link rel="stylesheet" href="../design_system/colors_and_type.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/modules.css" />
+</head>
+<body>
+
+  <nav id="main-nav" role="navigation" aria-label="Główna nawigacja">
+    <div class="nav-inner">
+      <a href="#/" class="nav-logo" aria-label="CyberAkademia — strona główna">
+        <img src="../design_system/assets/quantica-q-mark-pink.png" alt="Q" class="nav-qmark" />
+        <span class="nav-logo-text">CyberAkademia</span>
+      </a>
+      <button id="nav-toggle" aria-label="Otwórz menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="#/" class="nav-link">🏠 Start</a></li>
+        <li><a href="#/fundamenty" class="nav-link">🔐 Fundamenty</a></li>
+        <li><a href="#/regulacje" class="nav-link">📋 Regulacje</a></li>
+        <li><a href="#/organizacja" class="nav-link">🏢 Organizacja</a></li>
+        <li><a href="#/technologia" class="nav-link">⚙️ Technologia</a></li>
+        <li><a href="#/spiecie" class="nav-link">⚡ Spięcie</a></li>
+        <li><a href="#/slownik" class="nav-link">📖 Słownik</a></li>
+        <li><a href="#/sciezka" class="nav-link">🗺️ Ścieżka</a></li>
+        <li><a href="#/finalboss" class="nav-link">🎯 Final Boss</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="app" role="main" aria-live="polite">
+    <!-- Module content is mounted here by the router -->
+  </main>
+
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <div id="tooltip" class="tooltip-box" role="tooltip" aria-hidden="true"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

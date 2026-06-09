@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Buttons — primary states</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 28px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: end; }
+  .col { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); }
+  .btn {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    color: white;
+    background: var(--quantica-pink);
+    transition: background var(--dur-2) var(--ease-standard), box-shadow var(--dur-2) var(--ease-standard);
+  }
+  .btn.hover    { background: #B0005C; }
+  .btn.pressed  { background: var(--deep-berry); box-shadow: inset 0 2px 0 rgba(0,0,0,0.15); }
+  .btn.disabled { background: #F1B8D0; color: #fff; cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="col"><div class="label">Default</div><button class="btn">Explore Solutions</button></div>
+    <div class="col"><div class="label">Hover</div><button class="btn hover">Explore Solutions</button></div>
+    <div class="col"><div class="label">Pressed</div><button class="btn pressed">Explore Solutions</button></div>
+    <div class="col"><div class="label">Disabled</div><button class="btn disabled">Explore Solutions</button></div>
+  </div>
+</body>
+</html>

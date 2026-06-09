@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 24px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .swatch { width: 84px; height: 84px; background: var(--quantica-pink); }
+  .name { font-size: 11px; font-family: var(--font-mono); color: var(--fg-2); }
+  .px { font-size: 10px; color: var(--fg-3); }
+</style>
+</head>
+<body>
+  <div class="item"><div class="swatch" style="border-radius: var(--radius-xs)"></div><div class="name">--radius-xs</div><div class="px">4px</div></div>
+  <div class="item"><div class="swatch" style="border-radius: var(--radius-sm)"></div><div class="name">--radius-sm</div><div class="px">6px</div></div>
+  <div class="item"><div class="swatch" style="border-radius: var(--radius-md)"></div><div class="name">--radius-md</div><div class="px">10px</div></div>
+  <div class="item"><div class="swatch" style="border-radius: var(--radius-lg)"></div><div class="name">--radius-lg</div><div class="px">16px</div></div>
+  <div class="item"><div class="swatch" style="border-radius: var(--radius-xl)"></div><div class="name">--radius-xl</div><div class="px">24px</div></div>
+  <div class="item"><div class="swatch" style="border-radius: var(--radius-pill); width: 120px; height: 56px"></div><div class="name">--radius-pill</div><div class="px">999px</div></div>
+</body>
+</html>

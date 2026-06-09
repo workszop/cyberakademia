@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Badges & Chips</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-1); }
+  body { font-family: var(--font-sans); color: var(--fg-1); padding: 28px; }
+  .group { display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); width: 110px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500; padding: 4px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  .b-brand   { background: var(--magenta-tint); color: var(--quantica-pink); }
+  .b-success { background: rgba(112, 48, 160,0.12); color: #4F1F75; }
+  .b-warning { background: rgba(255,193,7,0.16); color: #946A00; }
+  .b-error   { background: rgba(229,0,76,0.10); color: var(--status-error); }
+  .b-info    { background: rgba(79,70,229,0.10); color: var(--status-info); }
+  .b-neutral { background: var(--bg-2); color: var(--fg-2); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; padding: 7px 12px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border-1); background: var(--bg-1); color: var(--fg-2);
+  }
+  .chip.active { background: var(--quantica-pink); color: white; border-color: var(--quantica-pink); }
+</style>
+</head>
+<body>
+  <div class="group">
+    <div class="row">
+      <div class="label">Status badges</div>
+      <span class="badge b-brand"><span class="dot" style="background: var(--quantica-pink)"></span>In progress</span>
+      <span class="badge b-success"><span class="dot" style="background: var(--status-success)"></span>Active</span>
+      <span class="badge b-warning"><span class="dot" style="background: var(--status-warning)"></span>Review</span>
+      <span class="badge b-error"><span class="dot" style="background: var(--status-error)"></span>Error</span>
+      <span class="badge b-info"><span class="dot" style="background: var(--status-info)"></span>Queued</span>
+      <span class="badge b-neutral">Draft</span>
+    </div>
+    <div class="row">
+      <div class="label">Filter chips</div>
+      <span class="chip active">All</span>
+      <span class="chip">Forecasting</span>
+      <span class="chip">Optimization</span>
+      <span class="chip">Risk</span>
+      <span class="chip">Advisory</span>
+    </div>
+  </div>
+</body>
+</html>
