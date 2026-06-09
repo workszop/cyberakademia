@@ -20,9 +20,9 @@ export function icon(name, size = 18, color = 'currentColor') {
   // Try Lucide CDN object first
   if (typeof window !== 'undefined' && window.lucide && window.lucide[toPascalCase(name)]) {
     const iconDef = window.lucide[toPascalCase(name)];
-    // Lucide icons are [tag, attrs, children] tuples
+    // Lucide format: iconDef IS the children array → [["path",{d:"..."}], ...]
     if (Array.isArray(iconDef)) {
-      renderLucide(svg, iconDef[2] || []);
+      renderLucide(svg, iconDef);
     }
   } else {
     // Fallback: use inline path data for the most-used icons
