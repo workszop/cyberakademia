@@ -104,12 +104,12 @@ export function initFlashcards(container, data) {
 
   const knewBtn = document.createElement('button');
   knewBtn.className = 'flashcards-knew-btn';
-  knewBtn.innerHTML = '✅ Znałem';
+  knewBtn.innerHTML = 'Znałem';
   answerBtns.appendChild(knewBtn);
 
   const didntKnowBtn = document.createElement('button');
   didntKnowBtn.className = 'flashcards-didnt-btn';
-  didntKnowBtn.innerHTML = '❌ Nie znałem';
+  didntKnowBtn.innerHTML = 'Nie znałem';
   answerBtns.appendChild(didntKnowBtn);
 
   // ── Navigation ────────────────────────────────────────────

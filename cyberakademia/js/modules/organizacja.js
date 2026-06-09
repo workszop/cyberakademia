@@ -7,33 +7,34 @@ import { el } from '../dom.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { icon } from '../icons.js';
 
 // ── SOC Builder ──────────────────────────────────────────
 
 const SOC_PIECES = [
-  { id: 'analityk-l1', label: 'Analityk SOC L1', category: 'Ludzie', icon: '👤' },
-  { id: 'analityk-l2', label: 'Analityk SOC L2', category: 'Ludzie', icon: '👤' },
-  { id: 'threat-hunter', label: 'Threat Hunter', category: 'Ludzie', icon: '🕵️' },
-  { id: 'ir-spec', label: 'Specjalista IR', category: 'Ludzie', icon: '🚒' },
-  { id: 'siem', label: 'SIEM', category: 'Technologia', icon: '🖥️' },
-  { id: 'edr', label: 'EDR', category: 'Technologia', icon: '🛡️' },
-  { id: 'soar', label: 'SOAR', category: 'Technologia', icon: '⚙️' },
-  { id: 'ticketing', label: 'System ticketów', category: 'Technologia', icon: '🎫' },
-  { id: 'playbook', label: 'Playbooki IR', category: 'Procesy', icon: '📋' },
-  { id: 'sla', label: 'SLA / metryki', category: 'Procesy', icon: '📊' },
-  { id: 'escalation', label: 'Eskalacja alertów', category: 'Procesy', icon: '📢' },
-  { id: 'postmortem', label: 'Post-mortem', category: 'Procesy', icon: '🔍' },
+  { id: 'analityk-l1', label: 'Analityk SOC L1', category: 'Ludzie' },
+  { id: 'analityk-l2', label: 'Analityk SOC L2', category: 'Ludzie' },
+  { id: 'threat-hunter', label: 'Threat Hunter', category: 'Ludzie' },
+  { id: 'ir-spec', label: 'Specjalista IR', category: 'Ludzie' },
+  { id: 'siem', label: 'SIEM', category: 'Technologia' },
+  { id: 'edr', label: 'EDR', category: 'Technologia' },
+  { id: 'soar', label: 'SOAR', category: 'Technologia' },
+  { id: 'ticketing', label: 'System ticketów', category: 'Technologia' },
+  { id: 'playbook', label: 'Playbooki IR', category: 'Procesy' },
+  { id: 'sla', label: 'SLA / metryki', category: 'Procesy' },
+  { id: 'escalation', label: 'Eskalacja alertów', category: 'Procesy' },
+  { id: 'postmortem', label: 'Post-mortem', category: 'Procesy' },
 ];
 
 const SOC_ZONES = [
-  { id: 'Ludzie', label: '👥 Ludzie', desc: 'Upuść tu role SOC' },
-  { id: 'Procesy', label: '📋 Procesy', desc: 'Upuść tu procesy' },
-  { id: 'Technologia', label: '⚙️ Technologia', desc: 'Upuść tu narzędzia' },
+  { id: 'Ludzie', label: 'Ludzie', desc: 'Upuść tu role SOC' },
+  { id: 'Procesy', label: 'Procesy', desc: 'Upuść tu procesy' },
+  { id: 'Technologia', label: 'Technologia', desc: 'Upuść tu narzędzia' },
 ];
 
 function renderSOCBuilder() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🏗️ Zbuduj swój SOC')
+    el('div', { class: 'section-title' }, 'Zbuduj swój SOC')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '0.75rem' } },
@@ -77,7 +78,7 @@ function renderSOCBuilder() {
       placed[pieceId] = zone.id;
       pieceEls[pieceId]?.classList.add('soc-piece-placed');
       const placedEl = el('div', { style: { fontSize: '0.8rem', padding: '0.35rem 0.6rem', background: 'rgba(16,185,129,0.1)', border: '1px solid var(--success)', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.3rem' } },
-        piece.icon, piece.label
+        piece.label
       );
       // Remove desc placeholder on first item
       if (zoneEl.contains(desc)) zoneEl.removeChild(desc);
@@ -88,7 +89,7 @@ function renderSOCBuilder() {
       statusEl.textContent = `Umieszczono: ${done} / ${total}`;
       if (done === total) {
         statusEl.className = 'badge badge-success';
-        statusEl.textContent = '🎉 SOC zbudowany!';
+        statusEl.textContent = 'SOC zbudowany!';
       }
     });
   });
@@ -100,7 +101,7 @@ function renderSOCBuilder() {
       class: 'soc-piece',
       draggable: true,
       'data-id': piece.id,
-    }, piece.icon, ' ', piece.label);
+    }, piece.label);
     p.addEventListener('dragstart', e => {
       e.dataTransfer.setData('text/plain', piece.id);
       p.classList.add('dragging');
@@ -122,27 +123,27 @@ function renderSOCBuilder() {
 
 function renderSOCModels() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🏢 Modele SOC')
+    el('div', { class: 'section-title' }, 'Modele SOC')
   );
 
   const models = [
     {
       id: 'inhouse',
-      label: '🏠 In-house',
+      label: 'In-house',
       pros: ['Pełna kontrola nad danymi', 'Głęboka znajomość infrastruktury', 'Krótszy czas reakcji', 'Brak ryzyka udostępnienia danych dostawcy'],
       cons: ['Bardzo wysokie koszty (zespół 24/7)', 'Trudno znaleźć ekspertów', 'Ryzyko "wypalenia" zespołu', 'Wolne skalowanie'],
       best: 'Duże organizacje z wysokimi wymaganiami regulacyjnymi',
     },
     {
       id: 'mssp',
-      label: '🤝 MSSP (Outsourcing)',
+      label: 'MSSP (Outsourcing)',
       pros: ['Niższy koszt wejścia', 'Dostęp do ekspertów i zaawansowanych narzędzi', 'Szybkie wdrożenie', 'Skalowanie na żądanie'],
       cons: ['Mniejsza kontrola', 'Dane przetwarzane poza organizacją', 'Zależność od dostawcy', 'Mniejsza znajomość Twojej infrastruktury'],
       best: 'MŚP bez zasobów na własny SOC',
     },
     {
       id: 'hybrid',
-      label: '⚡ Hybrydowy',
+      label: 'Hybrydowy',
       pros: ['Kontrola wrażliwych danych in-house', 'Wsparcie MSSP 24/7 gdy brak zasobów', 'Elastyczność', 'Optymalny koszt'],
       cons: ['Złożoność zarządzania', 'Konieczność jasnych umów SLA', 'Ryzyko "szarej strefy" odpowiedzialności'],
       best: 'Organizacje średniej wielkości lub wysoko regulowane',
@@ -154,19 +155,19 @@ function renderSOCModels() {
     const card = el('div', { class: 'card' },
       el('h3', { style: { marginBottom: '1rem' } }, m.label),
       el('div', { style: { marginBottom: '0.75rem' } },
-        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--success)', textTransform: 'uppercase', marginBottom: '0.35rem' } }, '✅ Zalety'),
+        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--success)', textTransform: 'uppercase', marginBottom: '0.35rem' } }, 'Zalety'),
         el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.8' } },
           ...m.pros.map(p => el('li', {}, p))
         )
       ),
       el('div', { style: { marginBottom: '0.75rem' } },
-        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--danger)', textTransform: 'uppercase', marginBottom: '0.35rem' } }, '❌ Wady'),
+        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--danger)', textTransform: 'uppercase', marginBottom: '0.35rem' } }, 'Wady'),
         el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.8' } },
           ...m.cons.map(c => el('li', {}, c))
         )
       ),
       el('div', { class: 'alert alert-info', style: { margin: '0', fontSize: '0.8rem' } },
-        el('strong', {}, '🎯 Najlepszy dla: '), m.best
+        el('strong', {}, 'Najlepszy dla: '), m.best
       )
     );
     grid.appendChild(card);
@@ -180,22 +181,24 @@ function renderSOCModels() {
 
 function renderRoles() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '👥 Kluczowe role w cyberbezpieczeństwie')
+    el('div', { class: 'section-title' }, 'Kluczowe role w cyberbezpieczeństwie')
   );
 
   const roles = [
-    { icon: '👔', role: 'CISO', full: 'Chief Information Security Officer', desc: 'Odpowiada za całą strategię cyberbezpieczeństwa. Raportuje do zarządu. Tłumaczy ryzyko na język biznesu.' },
-    { icon: '🔍', role: 'Analityk SOC L1', full: 'Security Operations Center Analyst', desc: 'Pierwsza linia obrony. Monitoruje alerty SIEM, filtruje fałszywe pozytywy, eskaluje do L2.' },
-    { icon: '🕵️', role: 'Threat Hunter', full: 'Threat Intelligence Analyst', desc: 'Proaktywnie poszukuje zagrożeń ukrytych w sieci. Analizuje TTPs i IOC. Nie czeka na alerty.' },
-    { icon: '🚒', role: 'Specjalista IR', full: 'Incident Response Specialist', desc: 'Reaguje na potwierdzone incydenty. Prowadzi analizę powłamaniową (forensics). Izoluje systemy.' },
-    { icon: '📋', role: 'DPO / IOD', full: 'Data Protection Officer', desc: 'Doradza w kwestii RODO. Punkt kontaktowy z UODO. Niezależny od CISO.' },
-    { icon: '⚔️', role: 'Pentester', full: 'Penetration Tester / Red Team', desc: 'Legalnie atakuje systemy organizacji szukając podatności. Myśli jak napastnik.' },
+    { iconName: 'user-check', role: 'CISO', full: 'Chief Information Security Officer', desc: 'Odpowiada za całą strategię cyberbezpieczeństwa. Raportuje do zarządu. Tłumaczy ryzyko na język biznesu.' },
+    { iconName: 'eye', role: 'Analityk SOC L1', full: 'Security Operations Center Analyst', desc: 'Pierwsza linia obrony. Monitoruje alerty SIEM, filtruje fałszywe pozytywy, eskaluje do L2.' },
+    { iconName: 'activity', role: 'Threat Hunter', full: 'Threat Intelligence Analyst', desc: 'Proaktywnie poszukuje zagrożeń ukrytych w sieci. Analizuje TTPs i IOC. Nie czeka na alerty.' },
+    { iconName: 'alert-triangle', role: 'Specjalista IR', full: 'Incident Response Specialist', desc: 'Reaguje na potwierdzone incydenty. Prowadzi analizę powłamaniową (forensics). Izoluje systemy.' },
+    { iconName: 'file-text', role: 'DPO / IOD', full: 'Data Protection Officer', desc: 'Doradza w kwestii RODO. Punkt kontaktowy z UODO. Niezależny od CISO.' },
+    { iconName: 'target', role: 'Pentester', full: 'Penetration Tester / Red Team', desc: 'Legalnie atakuje systemy organizacji szukając podatności. Myśli jak napastnik.' },
   ];
 
   const grid = el('div', { class: 'card-grid' });
   roles.forEach(r => {
+    const roleIconEl = el('div', { style: { marginBottom: '0.5rem' } });
+    roleIconEl.appendChild(icon(r.iconName, 24));
     grid.appendChild(el('div', { class: 'card' },
-      el('div', { style: { fontSize: '1.8rem', marginBottom: '0.5rem' } }, r.icon),
+      roleIconEl,
       el('h3', {}, r.role),
       el('p', { style: { fontSize: '0.78rem', color: 'var(--accent)', marginBottom: '0.5rem' } }, r.full),
       el('p', {}, r.desc)
@@ -243,11 +246,11 @@ export function renderOrganizacja() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '🏢 Organizacja Cyberbezpieczeństwa'),
+    el('h1', {}, 'Organizacja Cyberbezpieczeństwa'),
     el('p', { class: 'subtitle' }, 'Organizacja to kto i jak to robi — role, zespoły (np. SOC), procesy reagowania na incydenty.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, '⏱ ~20 min'),
-      el('span', { class: 'badge badge-accent' }, '🎯 Moduł 3')
+      el('span', { class: 'badge' }, '~20 min'),
+      el('span', { class: 'badge badge-accent' }, 'Moduł 3')
     )
   ));
 
@@ -256,7 +259,7 @@ export function renderOrganizacja() {
   wrap.appendChild(renderSOCModels());
 
   const quizSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📝 Quiz końcowy')
+    el('div', { class: 'section-title' }, 'Quiz końcowy')
   );
   const qc = el('div', {});
   quizSection.appendChild(qc);
@@ -266,7 +269,7 @@ export function renderOrganizacja() {
       earnBadge('organizacja');
       fullBurst();
       wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, '🎉 Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Organizacja" odblokowana!`
+        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Organizacja" odblokowana!`
       ));
     }
   });

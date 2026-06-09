@@ -20,7 +20,7 @@ export function initFlipCards(container, cards) {
   // Hint bar
   const hint = document.createElement('p');
   hint.className = 'flip-cards-hint';
-  hint.innerHTML = '<span>🖱️</span> Kliknij kartę, aby ją odwrócić';
+  hint.innerHTML = 'Kliknij kartę, aby ją odwrócić';
   container.appendChild(hint);
 
   // Grid wrapper

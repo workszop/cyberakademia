@@ -7,12 +7,13 @@ import { el } from '../dom.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { icon } from '../icons.js';
 
 const REGULATIONS = [
   {
     id: 'rodo',
     name: 'RODO / GDPR',
-    icon: '🇪🇺',
+    iconName: 'file-text',
     color: '#4F46E5',
     full: 'Rozporządzenie o Ochronie Danych Osobowych',
     since: '25 maja 2018',
@@ -31,7 +32,7 @@ const REGULATIONS = [
   {
     id: 'nis2',
     name: 'NIS2',
-    icon: '🌐',
+    iconName: 'layers',
     color: '#0891B2',
     full: 'Dyrektywa o Bezpieczeństwie Sieci i Systemów Informacyjnych 2',
     since: 'Implementacja do 17.10.2024 (PL: KSC 2.0 — 3.04.2026)',
@@ -50,7 +51,7 @@ const REGULATIONS = [
   {
     id: 'ksc',
     name: 'KSC (Ustawa o KSC)',
-    icon: '🇵🇱',
+    iconName: 'shield',
     color: '#DC2626',
     full: 'Krajowy System Cyberbezpieczeństwa',
     since: 'Nowelizacja KSC 2.0: 3 kwietnia 2026',
@@ -69,7 +70,7 @@ const REGULATIONS = [
   {
     id: 'dora',
     name: 'DORA',
-    icon: '💳',
+    iconName: 'activity',
     color: '#059669',
     full: 'Digital Operational Resilience Act',
     since: '17 stycznia 2025',
@@ -89,7 +90,7 @@ const REGULATIONS = [
 
 function renderRegTable() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📋 Przegląd regulacji')
+    el('div', { class: 'section-title' }, 'Przegląd regulacji')
   );
 
   const intro = el('p', { style: { marginBottom: '0.75rem' } },
@@ -111,19 +112,21 @@ function renderRegTable() {
   const grid = el('div', { class: 'card-grid' });
 
   REGULATIONS.forEach(reg => {
+    const regIconEl = el('div', {});
+    regIconEl.appendChild(icon(reg.iconName, 28));
     const card = el('div', { class: 'card' },
       el('div', { style: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' } },
-        el('div', { style: { fontSize: '1.8rem' } }, reg.icon),
+        regIconEl,
         el('div', {},
           el('h3', { style: { marginBottom: '0.1rem' } }, reg.name),
           el('div', { style: { fontSize: '0.78rem', color: 'var(--text-muted)' } }, reg.full)
         )
       ),
       el('div', { style: { fontSize: '0.82rem', color: 'var(--accent)', marginBottom: '0.35rem' } },
-        `📅 Od: ${reg.since}`
+        `Od: ${reg.since}`
       ),
       el('div', { style: { fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.75rem' } },
-        `🎯 Zakres: ${reg.scope}`
+        `Zakres: ${reg.scope}`
       ),
       el('div', { style: { marginBottom: '0.75rem' } },
         el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' } }, 'Kluczowe wymagania'),
@@ -132,10 +135,10 @@ function renderRegTable() {
         )
       ),
       el('div', { class: 'alert alert-danger', style: { margin: '0', fontSize: '0.8rem' } },
-        el('strong', {}, '⚠️ Kary: '), reg.penalties
+        el('strong', {}, 'Kary: '), reg.penalties
       ),
       el('div', { class: 'alert alert-info', style: { marginTop: '0.5rem', fontSize: '0.78rem' } },
-        el('strong', {}, '💡 Warto wiedzieć: '), reg.tip
+        el('strong', {}, 'Uwaga: '), reg.tip
       )
     );
     grid.appendChild(card);
@@ -149,7 +152,7 @@ function renderRegTable() {
 
 function renderMatchGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🃏 Gra: Połącz regulację z obowiązkiem')
+    el('div', { class: 'section-title' }, 'Gra — Połącz regulację z obowiązkiem')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -226,7 +229,7 @@ function renderMatchGame() {
           statusEl.textContent = `Dopasowane: ${score} / ${pairs.length}`;
           if (score === pairs.length) {
             statusEl.className = 'badge badge-success';
-            statusEl.textContent = '🎉 Wszystkie dopasowane!';
+            statusEl.textContent = 'Wszystkie dopasowane!';
           }
         } else {
           btn.classList.add('wrong-match');
@@ -251,12 +254,12 @@ function renderMatchGame() {
 
 function renderDPOvsCISO() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '👥 DPO vs CISO — różne role')
+    el('div', { class: 'section-title' }, 'DPO vs CISO — różne role')
   );
 
   const grid = el('div', { class: 'card-grid' },
     el('div', { class: 'card', style: { borderColor: 'rgba(124,58,237,0.4)' } },
-      el('h3', {}, '🔐 CISO'),
+      el('h3', {}, 'CISO'),
       el('p', { style: { color: 'var(--accent)', fontWeight: '600', fontSize: '0.85rem', marginBottom: '0.75rem' } }, 'Chief Information Security Officer'),
       el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: '1.9' } },
         el('li', {}, 'Odpowiada za całą strategię cyberbezpieczeństwa IT'),
@@ -267,7 +270,7 @@ function renderDPOvsCISO() {
       )
     ),
     el('div', { class: 'card', style: { borderColor: 'rgba(16,185,129,0.4)' } },
-      el('h3', {}, '📋 DPO'),
+      el('h3', {}, 'DPO'),
       el('p', { style: { color: 'var(--success)', fontWeight: '600', fontSize: '0.85rem', marginBottom: '0.75rem' } }, 'Data Protection Officer / Inspektor Ochrony Danych'),
       el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: '1.9' } },
         el('li', {}, 'Doradza w kwestii zgodności z RODO'),
@@ -280,7 +283,7 @@ function renderDPOvsCISO() {
   );
 
   section.appendChild(el('div', { class: 'alert alert-warning', style: { marginBottom: '1rem' } },
-    el('strong', {}, '⚠️ Uwaga: '), 'DPO i CISO to różne role. Połączenie ich w jednej osobie jest możliwe, ale rodzi ryzyko konfliktu interesów.'
+    el('strong', {}, 'Uwaga: '), 'DPO i CISO to różne role. Połączenie ich w jednej osobie jest możliwe, ale rodzi ryzyko konfliktu interesów.'
   ));
   section.appendChild(grid);
   return section;
@@ -325,11 +328,11 @@ export function renderRegulacje() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '📋 Regulacje Cyberbezpieczeństwa'),
+    el('h1', {}, 'Regulacje Cyberbezpieczeństwa'),
     el('p', { class: 'subtitle' }, 'Regulacje mówią, co trzeba zrobić i kto za to odpowiada — NIS2/KSC, DORA, RODO, normy ISO.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, '⏱ ~20 min'),
-      el('span', { class: 'badge badge-accent' }, '🎯 Moduł 2')
+      el('span', { class: 'badge' }, '~20 min'),
+      el('span', { class: 'badge badge-accent' }, 'Moduł 2')
     )
   ));
 
@@ -338,7 +341,7 @@ export function renderRegulacje() {
   wrap.appendChild(renderDPOvsCISO());
 
   const quizSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📝 Quiz końcowy')
+    el('div', { class: 'section-title' }, 'Quiz końcowy')
   );
   const quizContainer = el('div', {});
   quizSection.appendChild(quizContainer);
@@ -349,7 +352,7 @@ export function renderRegulacje() {
       earnBadge('regulacje');
       fullBurst();
       wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, '🎉 Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Regulacje" odblokowana!`
+        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Regulacje" odblokowana!`
       ));
     }
   });

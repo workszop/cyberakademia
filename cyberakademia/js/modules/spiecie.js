@@ -15,7 +15,7 @@ const NIST_SEGMENTS = [
     id: 'govern',
     label: 'GOVERN',
     name: 'Zarządzaj',
-    icon: '🏛️',
+    icon: null,
     desc: 'Nowa funkcja w CSF 2.0. Ustanowienie kontekstu, priorytetów i zarządzanie ryzykiem cyberbezpieczeństwa na poziomie organizacyjnym. Zaangażowanie zarządu.',
     color: '#7c3aed',
     examples: ['Polityka bezpieczeństwa', 'Strategia zarządzania ryzykiem', 'Role i odpowiedzialności', 'Nadzór zarządu'],
@@ -24,7 +24,7 @@ const NIST_SEGMENTS = [
     id: 'identify',
     label: 'IDENTIFY',
     name: 'Identyfikuj',
-    icon: '🔍',
+    icon: null,
     desc: 'Zrozum kontekst biznesowy, zasoby i ryzyka. Inwentaryzacja aktywów, ocena ryzyka, identyfikacja luk w ochronie.',
     color: '#4F46E5',
     examples: ['Inwentaryzacja aktywów', 'Ocena ryzyka', 'Mapowanie zależności', 'Identyfikacja luk'],
@@ -33,7 +33,7 @@ const NIST_SEGMENTS = [
     id: 'protect',
     label: 'PROTECT',
     name: 'Chroń',
-    icon: '🛡️',
+    icon: null,
     desc: 'Wdrożenie zabezpieczeń technicznych i organizacyjnych. Kontrola dostępu, szkolenia, szyfrowanie, backup.',
     color: '#0891B2',
     examples: ['Kontrola dostępu (IAM/MFA)', 'Szkolenia pracowników', 'Szyfrowanie danych', 'Backup 3-2-1'],
@@ -42,7 +42,7 @@ const NIST_SEGMENTS = [
     id: 'detect',
     label: 'DETECT',
     name: 'Wykrywaj',
-    icon: '📡',
+    icon: null,
     desc: 'Ciągłe monitorowanie i wykrywanie anomalii. SIEM, EDR, IDS/IPS, logi, monitoring sieci.',
     color: '#059669',
     examples: ['SIEM z alertami', 'EDR na endpointach', 'IDS/IPS sieciowe', 'Monitoring behawioralny'],
@@ -51,7 +51,7 @@ const NIST_SEGMENTS = [
     id: 'respond',
     label: 'RESPOND',
     name: 'Reaguj',
-    icon: '🚒',
+    icon: null,
     desc: 'Działania po wykryciu incydentu. Playbooki, izolacja, komunikacja, eradykacja zagrożenia.',
     color: '#D97706',
     examples: ['Playbooki IR', 'Izolacja systemów', 'Komunikacja kryzysowa', 'Eradykacja zagrożenia'],
@@ -60,7 +60,7 @@ const NIST_SEGMENTS = [
     id: 'recover',
     label: 'RECOVER',
     name: 'Odtwarzaj',
-    icon: '🔄',
+    icon: null,
     desc: 'Przywrócenie normalnego działania po incydencie. Odtworzenie z backupu, analiza post-mortem, ulepszenia.',
     color: '#DC2626',
     examples: ['Odtworzenie z backupu', 'Test odtworzenia', 'Post-mortem', 'Wdrożenie ulepszeń'],
@@ -69,7 +69,7 @@ const NIST_SEGMENTS = [
 
 function renderNISTWheel() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🔄 NIST Cybersecurity Framework 2.0')
+    el('div', { class: 'section-title' }, 'NIST Cybersecurity Framework 2.0')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
@@ -88,11 +88,8 @@ function renderNISTWheel() {
         detailEl.innerHTML = '';
         detailEl.appendChild(
           el('div', { class: 'card', style: { borderColor: seg.color, animation: 'fadeIn 0.25s ease' } },
-            el('div', { style: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' } },
-              el('div', { style: { fontSize: '1.8rem' } }, seg.icon),
-              el('div', {},
-                el('h3', { style: { color: seg.color } }, `${seg.label} — ${seg.name}`),
-              )
+            el('div', { style: { marginBottom: '0.75rem' } },
+              el('h3', { style: { color: seg.color } }, `${seg.label} — ${seg.name}`),
             ),
             el('p', { style: { marginBottom: '0.75rem' } }, seg.desc),
             el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '0.4rem' } },
@@ -102,7 +99,6 @@ function renderNISTWheel() {
         );
       }
     },
-      el('div', { class: 'seg-icon' }, seg.icon),
       el('div', { class: 'seg-label', style: { color: seg.color } }, seg.label),
       el('div', { class: 'seg-name' }, seg.name)
     );
@@ -117,17 +113,17 @@ function renderNISTWheel() {
 // ── IR Cycle ─────────────────────────────────────────────
 
 const IR_PHASES = [
-  { icon: '📋', label: 'Przygotowanie', desc: 'Playbooki, szkolenia, narzędzia, plan komunikacji — zanim incydent nastąpi.' },
-  { icon: '🔍', label: 'Identyfikacja', desc: 'Wykrycie i potwierdzenie incydentu. Czy to prawdziwy alarm, czy fałszywy pozytyw?' },
-  { icon: '🏝️', label: 'Izolacja', desc: 'Zawieranie incydentu. Izolacja zainfekowanych systemów, ograniczenie "promienia wybuchu".' },
-  { icon: '🔬', label: 'Eradykacja', desc: 'Usunięcie przyczyny ataku — złośliwego oprogramowania, tylnych furtek, skompromitowanych kont.' },
-  { icon: '🔄', label: 'Odtworzenie', desc: 'Przywrócenie systemów z backupu lub czystych obrazów. Weryfikacja integralności.' },
-  { icon: '📖', label: 'Nauki', desc: 'Post-mortem: co się stało, jak szybko wykryto, co można poprawić. Timeline incydentu.' },
+  { label: 'Przygotowanie', desc: 'Playbooki, szkolenia, narzędzia, plan komunikacji — zanim incydent nastąpi.' },
+  { label: 'Identyfikacja', desc: 'Wykrycie i potwierdzenie incydentu. Czy to prawdziwy alarm, czy fałszywy pozytyw?' },
+  { label: 'Izolacja', desc: 'Zawieranie incydentu. Izolacja zainfekowanych systemów, ograniczenie "promienia wybuchu".' },
+  { label: 'Eradykacja', desc: 'Usunięcie przyczyny ataku — złośliwego oprogramowania, tylnych furtek, skompromitowanych kont.' },
+  { label: 'Odtworzenie', desc: 'Przywrócenie systemów z backupu lub czystych obrazów. Weryfikacja integralności.' },
+  { label: 'Nauki', desc: 'Post-mortem: co się stało, jak szybko wykryto, co można poprawić. Timeline incydentu.' },
 ];
 
 function renderIRCycle() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🚨 Cykl reagowania na incydenty')
+    el('div', { class: 'section-title' }, 'Cykl reagowania na incydenty')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
@@ -146,14 +142,13 @@ function renderIRCycle() {
         detailEl.innerHTML = '';
         detailEl.appendChild(
           el('div', { class: 'alert alert-info', style: { animation: 'fadeIn 0.2s ease' } },
-            el('strong', {}, `${phase.icon} Faza ${i + 1}: ${phase.label} — `),
+            el('strong', {}, `Faza ${i + 1}: ${phase.label} — `),
             phase.desc
           )
         );
       }
     },
-      el('div', { style: { fontSize: '1.4rem', marginBottom: '0.25rem' } }, phase.icon),
-      el('div', { style: { fontSize: '0.75rem', fontWeight: '600' } }, phase.label)
+        el('div', { style: { fontSize: '0.75rem', fontWeight: '600' } }, phase.label)
     );
     cycle.appendChild(seg);
   });
@@ -167,7 +162,7 @@ function renderIRCycle() {
 
 function renderIncidentScenario() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🎭 Symulator incydentu: Ransomware!')
+    el('div', { class: 'section-title' }, 'Symulator incydentu: Ransomware')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
@@ -176,7 +171,7 @@ function renderIncidentScenario() {
 
   const SCENARIO = [
     {
-      q: '🚨 ALERT: Serwer plików w siedzibie wykazuje masowe odczyty i zapisy. EDR wykrył podejrzany proces "encrypt.exe". Co robisz?',
+      q: 'ALERT: Serwer plików w siedzibie wykazuje masowe odczyty i zapisy. EDR wykrył podejrzany proces "encrypt.exe". Co robisz?',
       choices: [
         { text: 'Izoluję serwer od sieci natychmiast', outcome: 'Dobra decyzja! Izolacja ogranicza propagację ransomware na inne systemy.', good: true },
         { text: 'Czekam i obserwuję jeszcze 30 minut', outcome: 'Błąd! Każda minuta to kolejne zaszyfrowane pliki. Ransomware rozprzestrzenia się w całej sieci.', good: false },
@@ -184,7 +179,7 @@ function renderIncidentScenario() {
       ]
     },
     {
-      q: '✅ Serwer izolowany. Okazuje się, że ransomware zaszyfrował 80% plików. Backup jest na tape (offline). Co jest PRIORYTETEM?',
+      q: 'Serwer izolowany. Okazuje się, że ransomware zaszyfrował 80% plików. Backup jest na tape (offline). Co jest PRIORYTETEM?',
       choices: [
         { text: 'Natychmiast płacę okup — szybciej odtworzę dane', outcome: 'Błąd! Płacenie okupu nie gwarantuje odtworzenia danych, finansuje przestępców i narusza regulacje w niektórych jurysdykcjach.', good: false },
         { text: 'Dokumentuję incydent i sprawdzam zakres przed odtworzeniem', outcome: 'Dobra decyzja! Analiza zakresu jest konieczna — dowiedz się ile systemów jest zainfekowanych zanim zaczniesz odtwarzanie.', good: true },
@@ -192,7 +187,7 @@ function renderIncidentScenario() {
       ]
     },
     {
-      q: '📊 Analiza pokazuje, że ransomware dostał się przez email phishingowy do pracownika HR. Jakie działania prewencyjne teraz wdrożysz?',
+      q: 'Analiza pokazuje, że ransomware dostał się przez email phishingowy do pracownika HR. Jakie działania prewencyjne teraz wdrożysz?',
       choices: [
         { text: 'MFA na wszystkich kontach + szkolenie antyphishingowe', outcome: 'Doskonale! MFA i świadomość pracowników to dwie najskuteczniejsze kontrole przeciw phishingowi.', good: true },
         { text: 'Zablokuję internet dla działu HR', outcome: 'Nieproporcjonalne i nieskuteczne. Blokada internetu uniemożliwi pracę i nie rozwiąże problemu braku świadomości.', good: false },
@@ -212,7 +207,6 @@ function renderIncidentScenario() {
       cardEl.innerHTML = '';
       cardEl.appendChild(
         el('div', { class: 'result-overlay' },
-          el('span', { class: 'result-emoji' }, goodChoices >= 3 ? '🏆' : goodChoices >= 2 ? '✅' : '📚'),
           el('div', { class: 'result-title' }, `${goodChoices}/3 decyzji było optymalnych`),
           el('p', { style: { color: 'var(--text-muted)', marginBottom: '1.5rem' } },
             goodChoices >= 3
@@ -224,7 +218,7 @@ function renderIncidentScenario() {
           el('button', {
             class: 'btn btn-primary',
             onclick: () => { step = 0; goodChoices = 0; scoreEl.textContent = 'Faza 1/3'; render(0); }
-          }, '🔄 Spróbuj ponownie')
+          }, 'Spróbuj ponownie')
         )
       );
       return;
@@ -247,14 +241,14 @@ function renderIncidentScenario() {
                 if (b !== btn) b.disabled = true;
               });
               const outcomeEl = el('div', { class: `decision-outcome ${c.good ? 'good' : 'bad'}` },
-                el('strong', {}, c.good ? '✅ ' : '❌ '), c.outcome
+                el('strong', {}, c.good ? 'Dobrze! ' : 'Niestety: '), c.outcome
               );
               node.appendChild(outcomeEl);
               const nextBtn = el('button', {
                 class: 'btn btn-primary',
                 style: { marginTop: '1rem' },
                 onclick: () => { step++; render(step); }
-              }, step + 1 >= SCENARIO.length ? '📊 Podsumowanie' : '➡️ Następna faza');
+              }, step + 1 >= SCENARIO.length ? 'Podsumowanie' : 'Następna faza');
               node.appendChild(nextBtn);
             }
           }, c.text);
@@ -309,11 +303,11 @@ export function renderSpiecie() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '⚡ Spięcie — Integracja Obrony'),
+    el('h1', {}, 'Spięcie — Integracja Obrony'),
     el('p', { class: 'subtitle' }, 'Jak regulacja, organizacja i technologia łączą się w jedno — wymóg regulacyjny → co robi organizacja → czym (technologia). Czytelny morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, '⏱ ~25 min'),
-      el('span', { class: 'badge badge-accent' }, '🎯 Moduł 5')
+      el('span', { class: 'badge' }, '~25 min'),
+      el('span', { class: 'badge badge-accent' }, 'Moduł 5')
     )
   ));
 
@@ -322,7 +316,7 @@ export function renderSpiecie() {
   wrap.appendChild(renderIncidentScenario());
 
   const quizSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📝 Quiz końcowy')
+    el('div', { class: 'section-title' }, 'Quiz końcowy')
   );
   const qc = el('div', {});
   quizSection.appendChild(qc);
@@ -332,7 +326,7 @@ export function renderSpiecie() {
       earnBadge('spiecie');
       fullBurst();
       wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, '🎉 Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Spięcie" odblokowana!`
+        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Spięcie" odblokowana!`
       ));
     }
   });

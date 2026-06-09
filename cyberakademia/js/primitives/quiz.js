@@ -111,16 +111,8 @@ export function initQuiz(container, data, onResult) {
           b.disabled = true;
           if (i === q.correct) {
             b.classList.add('correct');
-            const icon = document.createElement('span');
-            icon.className = 'quiz-option-icon';
-            icon.textContent = '✓';
-            b.appendChild(icon);
           } else if (i === idx && !isCorrect) {
             b.classList.add('incorrect');
-            const icon = document.createElement('span');
-            icon.className = 'quiz-option-icon';
-            icon.textContent = '✗';
-            b.appendChild(icon);
           }
         });
 
@@ -128,12 +120,8 @@ export function initQuiz(container, data, onResult) {
         if (q.explanation) {
           const expEl = document.createElement('div');
           expEl.className = `quiz-explanation ${isCorrect ? 'quiz-explanation--correct' : 'quiz-explanation--incorrect'} slide-up`;
-          const expIcon = document.createElement('span');
-          expIcon.className = 'quiz-explanation-icon';
-          expIcon.textContent = isCorrect ? '💡' : '📖';
           const expText = document.createElement('span');
           expText.textContent = q.explanation;
-          expEl.appendChild(expIcon);
           expEl.appendChild(expText);
           card.appendChild(expEl);
         }
@@ -165,19 +153,19 @@ export function initQuiz(container, data, onResult) {
 
     let gradeText, gradeClass;
     if (pct >= 90) {
-      gradeText = '🏆 Doskonale!';
+      gradeText = 'Doskonale!';
       gradeClass = 'quiz-grade--excellent';
     } else if (pct >= 75) {
-      gradeText = '🥈 Bardzo dobrze!';
+      gradeText = 'Bardzo dobrze!';
       gradeClass = 'quiz-grade--good';
     } else if (pct >= 60) {
-      gradeText = '👍 Dobrze';
+      gradeText = 'Dobrze';
       gradeClass = 'quiz-grade--ok';
     } else if (pct >= 40) {
-      gradeText = '📚 Wymagasz powtórki';
+      gradeText = 'Wymagasz powtórki';
       gradeClass = 'quiz-grade--review';
     } else {
-      gradeText = '💪 Trzeba więcej ćwiczyć';
+      gradeText = 'Trzeba więcej ćwiczyć';
       gradeClass = 'quiz-grade--poor';
     }
 
@@ -202,7 +190,7 @@ export function initQuiz(container, data, onResult) {
     // Retry button
     const retryBtn = document.createElement('button');
     retryBtn.className = 'quiz-retry-btn btn-primary';
-    retryBtn.textContent = '🔄 Spróbuj ponownie';
+    retryBtn.textContent = 'Spróbuj ponownie';
     retryBtn.addEventListener('click', () => {
       current = 0;
       score = 0;

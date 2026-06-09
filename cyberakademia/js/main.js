@@ -4,6 +4,7 @@
 // ============================================================
 
 import { init as initRouter, register } from './router.js';
+import { initLucide } from './icons.js';
 import { initGlossary } from './glossary.js';
 import { renderHome } from './modules/home.js';
 import { renderFundamenty } from './modules/fundamenty.js';
@@ -71,3 +72,4 @@ document.addEventListener('keydown', (e) => {
 
 initGlossary();
 initRouter();
+initLucide();

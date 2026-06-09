@@ -195,7 +195,7 @@ export function initMatchGame(container, data, onResult) {
     const summary = document.createElement('div');
     summary.className = 'match-summary slide-up';
     summary.innerHTML = `
-      <div class="match-summary-grade">🏆 Wszystkie pary dopasowane!</div>
+      <div class="match-summary-grade">Wszystkie pary dopasowane!</div>
       <div class="match-summary-score">${matched} / ${total} par poprawnie</div>
     `;
     container.appendChild(summary);

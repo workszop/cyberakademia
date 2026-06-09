@@ -8,12 +8,13 @@ import { CIA_TRIAD, CIA_SCENARIOS, RISK_RESPONSES, RISK_SCENARIOS } from '../con
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { icon } from '../icons.js';
 
 // ── CIA Triangle SVG ─────────────────────────────────────
 
 function renderCIATriangle() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🔺 Triada CIA')
+    el('div', { class: 'section-title' }, 'Triada CIA')
   );
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
@@ -25,15 +26,19 @@ function renderCIATriangle() {
   // Three CIA cards
   const grid = el('div', { class: 'card-grid' });
 
+  const CIA_ICON_MAP = { C: 'lock', I: 'check-circle', A: 'zap' };
+
   Object.values(CIA_TRIAD).forEach(entry => {
+    const iconEl = el('div', { style: { marginBottom: '0.5rem' } });
+    iconEl.appendChild(icon(CIA_ICON_MAP[entry.id] || 'shield', 24));
     const card = el('div', { class: 'card' },
-      el('div', { style: { fontSize: '2rem', marginBottom: '0.5rem' } }, entry.icon),
+      iconEl,
       el('h3', {}, `${entry.id} — ${entry.namePL}`),
       el('p', { style: { fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' } }, entry.name),
       el('p', { style: { marginTop: '0.5rem', fontSize: '1rem', lineHeight: '1.5' } }, entry.description),
       el('p', { style: { marginTop: '0.6rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic' } }, entry.violationExample),
       el('div', { style: { marginTop: '1rem' } },
-        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.4rem' } }, '🛡️ Przykładowe kontrole'),
+        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.4rem' } }, 'Przykładowe kontrole'),
         el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.7' } },
           ...entry.controls.map(c => el('li', {}, c))
         )
@@ -50,7 +55,7 @@ function renderCIATriangle() {
 
 function renderCIASortingGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🎯 Gra: Przyporządkuj incydent')
+    el('div', { class: 'section-title' }, 'Gra — Przyporządkuj incydent')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -72,7 +77,6 @@ function renderCIASortingGame() {
       const pct = Math.round((score / scenarios.length) * 100);
       cardEl.appendChild(
         el('div', { class: 'result-overlay' },
-          el('span', { class: 'result-emoji' }, pct >= 70 ? '🏆' : '📚'),
           el('div', { class: 'result-title' }, `${score} / ${scenarios.length} poprawnych (${pct}%)`),
           el('div', { class: 'result-subtitle', style: { marginBottom: '1rem' } },
             pct >= 70 ? 'Rozumiesz triadę CIA!' : 'Powtórz definicje C, I, A i spróbuj ponownie.'
@@ -80,7 +84,7 @@ function renderCIASortingGame() {
           el('button', {
             class: 'btn btn-primary',
             onclick: () => { current = 0; score = 0; scoreEl.textContent = `Wynik: 0 / ${scenarios.length}`; renderScenario(0); }
-          }, '🔄 Zagraj jeszcze raz')
+          }, 'Zagraj jeszcze raz')
         )
       );
       return;
@@ -108,7 +112,7 @@ function renderCIASortingGame() {
               cardEl.innerHTML = '';
               cardEl.appendChild(
                 el('div', { class: `alert ${correct ? 'alert-success' : 'alert-warning'}` },
-                  el('strong', {}, correct ? '✅ Poprawnie! ' : `❌ Nie tym razem. Prawidłowa odpowiedź: ${s.answer} — ${CIA_TRIAD[s.answer].namePL}. `),
+                  el('strong', {}, correct ? 'Poprawnie! ' : `Nie tym razem. Prawidłowa odpowiedź: ${s.answer} — ${CIA_TRIAD[s.answer].namePL}. `),
                   s.explanation
                 )
               );
@@ -117,10 +121,10 @@ function renderCIASortingGame() {
                 class: 'btn btn-primary',
                 style: { marginTop: '1rem' },
                 onclick: () => renderScenario(current)
-              }, current >= scenarios.length ? '📊 Zobacz wynik' : '➡️ Następny');
+              }, current >= scenarios.length ? 'Zobacz wynik' : 'Następny');
               cardEl.appendChild(nextBtn);
             }
-          }, `${t.icon} ${letter} — ${t.namePL}`);
+          }, `${letter} — ${t.namePL}`);
           return btn;
         })
       )
@@ -140,7 +144,7 @@ function renderCIASortingGame() {
 
 function renderRiskResponses() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📊 Ryzyko zamiast „czy jesteśmy bezpieczni"')
+    el('div', { class: 'section-title' }, 'Ryzyko zamiast "czy jesteśmy bezpieczni"')
   );
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
@@ -155,7 +159,6 @@ function renderRiskResponses() {
   const grid = el('div', { class: 'card-grid' });
   RISK_RESPONSES.forEach(r => {
     const card = el('div', { class: 'card' },
-      el('div', { style: { fontSize: '2rem', marginBottom: '0.5rem' } }, r.icon),
       el('h3', {}, r.name),
       el('p', {}, r.description),
       el('div', { style: { marginTop: '0.75rem', fontSize: '0.82rem', color: 'var(--text-muted)' } },
@@ -163,7 +166,7 @@ function renderRiskResponses() {
         r.whenToUse
       ),
       el('div', { style: { marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--text-muted)' } },
-        el('strong', { style: { color: 'var(--warning)' } }, '💰 Koszt: '),
+        el('strong', { style: { color: 'var(--warning)' } }, 'Koszt: '),
         r.cost
       )
     );
@@ -177,7 +180,7 @@ function renderRiskResponses() {
 
 function renderRiskGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🃏 Gra: Dobierz odpowiedź na ryzyko')
+    el('div', { class: 'section-title' }, 'Gra — Dobierz odpowiedź na ryzyko')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -198,10 +201,9 @@ function renderRiskGame() {
       cardEl.innerHTML = '';
       cardEl.appendChild(
         el('div', { class: 'result-overlay' },
-          el('span', { class: 'result-emoji' }, pct >= 80 ? '🏆' : '📚'),
           el('div', { class: 'result-title' }, `${score} / ${scenarios.length} (${pct}%)`),
           el('div', { class: 'result-subtitle', style: { marginBottom: '1rem' } }, pct >= 70 ? 'Rozumiesz 4T!' : 'Powtórz strategie i spróbuj ponownie.'),
-          el('button', { class: 'btn btn-primary', onclick: () => { current = 0; score = 0; scoreEl.textContent = `Wynik: 0 / ${scenarios.length}`; render(0); } }, '🔄 Ponów')
+          el('button', { class: 'btn btn-primary', onclick: () => { current = 0; score = 0; scoreEl.textContent = `Wynik: 0 / ${scenarios.length}`; render(0); } }, 'Ponów')
         )
       );
       return;
@@ -211,7 +213,7 @@ function renderRiskGame() {
     cardEl.innerHTML = '';
 
     const question = el('div', {},
-      el('p', { style: { fontSize: '0.95rem', marginBottom: '1.25rem', lineHeight: '1.6', padding: '0.75rem', background: 'rgba(0,212,255,0.05)', borderRadius: '8px', borderLeft: '3px solid var(--accent)' } }, `⚠️ ${s.risk}`),
+      el('p', { style: { fontSize: '0.95rem', marginBottom: '1.25rem', lineHeight: '1.6', padding: '0.75rem', background: 'rgba(0,212,255,0.05)', borderRadius: '8px', borderLeft: '3px solid var(--accent)' } }, s.risk),
       el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } },
         ...RISK_RESPONSES.map(r => {
           const btn = el('button', {
@@ -225,7 +227,7 @@ function renderRiskGame() {
               cardEl.innerHTML = '';
               cardEl.appendChild(
                 el('div', { class: `alert ${correct ? 'alert-success' : 'alert-warning'}` },
-                  el('strong', {}, correct ? '✅ Dobrze! ' : `❌ Lepiej: "${RISK_RESPONSES.find(r2 => r2.id === s.correctResponse).name}". `),
+                  el('strong', {}, correct ? 'Dobrze! ' : `Lepiej: "${RISK_RESPONSES.find(r2 => r2.id === s.correctResponse).name}". `),
                   s.explanation
                 )
               );
@@ -233,10 +235,10 @@ function renderRiskGame() {
                 class: 'btn btn-primary',
                 style: { marginTop: '1rem' },
                 onclick: () => render(current)
-              }, current >= scenarios.length ? '📊 Wyniki' : '➡️ Dalej');
+              }, current >= scenarios.length ? 'Wyniki' : 'Dalej');
               cardEl.appendChild(nextBtn);
             }
-          }, `${r.icon} ${r.name}`);
+          }, r.name);
           return btn;
         })
       )
@@ -287,7 +289,7 @@ const QUIZ_QUESTIONS = [
 
 function renderQuiz(onPass) {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📝 Quiz końcowy')
+    el('div', { class: 'section-title' }, 'Quiz końcowy')
   );
 
   const container = el('div', {});
@@ -311,11 +313,11 @@ export function renderFundamenty() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '🔐 Fundamenty Cyberbezpieczeństwa'),
+    el('h1', {}, 'Fundamenty Cyberbezpieczeństwa'),
     el('p', { class: 'subtitle' }, 'Zanim przejdziemy do skrótów — trzy pojęcia, które są fundamentem całej reszty.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, '⏱ ~25 min'),
-      el('span', { class: 'badge badge-accent' }, '🎯 Moduł 1')
+      el('span', { class: 'badge' }, '~25 min'),
+      el('span', { class: 'badge badge-accent' }, 'Moduł 1')
     )
   ));
 
@@ -329,7 +331,7 @@ export function renderFundamenty() {
     if (!passed) {
       passed = true;
       const banner = el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, '🎉 Moduł zaliczony! '),
+        el('strong', {}, 'Moduł zaliczony! '),
         `Wynik: ${score}/${total}. Odznaka "Fundamenty" odblokowana!`
       );
       wrap.appendChild(banner);

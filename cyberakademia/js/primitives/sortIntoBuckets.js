@@ -167,7 +167,7 @@ export function initSortIntoBuckets(container, data, onResult) {
     // Add result icon
     const icon = document.createElement('span');
     icon.className = 'sib-result-icon';
-    icon.textContent = isCorrect ? '✅' : '❌';
+    icon.textContent = isCorrect ? '✓' : '✗';
     icon.setAttribute('aria-label', isCorrect ? 'Poprawnie' : 'Niepoprawnie');
     itemEl.appendChild(icon);
 
@@ -208,7 +208,7 @@ export function initSortIntoBuckets(container, data, onResult) {
     const summary = document.createElement('div');
     summary.className = 'sib-summary slide-up';
     const pct = Math.round((correct / total) * 100);
-    const grade = pct >= 80 ? '🏆 Świetnie!' : pct >= 60 ? '👍 Dobrze' : '📚 Ćwicz dalej';
+    const grade = pct >= 80 ? 'Świetnie!' : pct >= 60 ? 'Dobrze' : 'Ćwicz dalej';
     summary.innerHTML = `
       <div class="sib-summary-grade">${grade}</div>
       <div class="sib-summary-score">${correct} / ${total} poprawnych (${pct}%)</div>

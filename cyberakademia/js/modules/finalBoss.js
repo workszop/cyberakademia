@@ -147,12 +147,12 @@ export function renderFinalBoss() {
   const alreadyPassed = state.completed?.finalboss;
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '🎯 Final Boss — Egzamin Końcowy'),
+    el('h1', {}, 'Final Boss — Egzamin Końcowy'),
     el('p', { class: 'subtitle' }, 'Wielki test ze wszystkich modułów CyberAkademii. Wykaż się wiedzą i zdobądź tytuł Mistrza!'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, '⏱ ~45 min'),
-      el('span', { class: 'badge badge-danger' }, '🎯 20 pytań'),
-      alreadyPassed ? el('span', { class: 'badge badge-success' }, '🏆 Zaliczone!') : null
+      el('span', { class: 'badge' }, '~45 min'),
+      el('span', { class: 'badge badge-danger' }, '20 pytań'),
+      alreadyPassed ? el('span', { class: 'badge badge-success' }, 'Zaliczone!') : null
     )
   ));
 
@@ -162,7 +162,6 @@ export function renderFinalBoss() {
 
   arena.appendChild(
     el('div', { class: 'final-boss-header' },
-      el('div', { style: { fontSize: '4rem', marginBottom: '0.5rem' } }, '👿'),
       el('div', { class: 'final-boss-title' }, 'Dr. Cyber Villain'),
       el('div', { class: 'boss-phase' }, 'Tryb: Wiedzmistrz Cyberbezpieczeństwa'),
     )
@@ -210,7 +209,6 @@ export function renderFinalBoss() {
 
         wrap.appendChild(
           el('div', { class: 'alert alert-success', style: { marginTop: '2rem', textAlign: 'center', fontSize: '1.1rem' } },
-            el('div', { style: { fontSize: '3rem', marginBottom: '0.5rem' } }, '🏆'),
             el('strong', {}, 'BOSS POKONANY! '),
             `Wynik: ${score}/${total} (${Math.round(pct * 100)}%). `,
             el('br'),
@@ -232,7 +230,7 @@ export function renderFinalBoss() {
 
   if (!alreadyPassed) {
     const tipsCard = el('div', { class: 'card', style: { marginTop: '1.5rem' } },
-      el('h3', { style: { marginBottom: '1rem' } }, '💡 Wskazówki przed egzaminem'),
+      el('h3', { style: { marginBottom: '1rem' } }, 'Wskazówki przed egzaminem'),
       el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', lineHeight: '1.9', fontSize: '0.9rem' } },
         el('li', {}, 'Pytania obejmują wszystkie 5 modułów: Fundamenty, Regulacje, Organizacja, Technologia, Spięcie'),
         el('li', {}, 'Potrzebujesz 70% (14/20) poprawnych odpowiedzi'),

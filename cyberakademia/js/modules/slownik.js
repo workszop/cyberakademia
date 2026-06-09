@@ -12,7 +12,7 @@ import { getBox, onCorrect, onWrong, getMasteryPct, getDueTerms } from '../lib/l
 
 function renderFlashcards() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🃏 Fiszki Leitner — nauka przez powtarzanie')
+    el('div', { class: 'section-title' }, 'Fiszki Leitner — nauka przez powtarzanie')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
@@ -35,8 +35,8 @@ function renderFlashcards() {
 
   // Stats bar
   const statsBar = el('div', { style: { display: 'flex', gap: '1.5rem', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap' } },
-    el('div', { class: 'badge badge-accent' }, `📚 ${dueTerms.length} fiszek do przejrzenia`),
-    el('div', { class: 'badge badge-success' }, `🎓 Opanowanie: ${mastery}%`),
+    el('div', { class: 'badge badge-accent' }, `${dueTerms.length} fiszek do przejrzenia`),
+    el('div', { class: 'badge badge-success' }, `Opanowanie: ${mastery}%`),
   );
   section.appendChild(statsBar);
 
@@ -85,7 +85,6 @@ function renderFlashcards() {
       const mastery2 = getMasteryPct(flashcardState, allTermIds);
       scene.appendChild(
         el('div', { class: 'result-overlay' },
-          el('span', { class: 'result-emoji' }, mastery2 >= 80 ? '🏆' : '📚'),
           el('div', { class: 'result-title' }, 'Sesja zakończona!'),
           el('p', { style: { color: 'var(--text-muted)', marginBottom: '1rem' } }, `Opanowanie słownika: ${mastery2}%`),
           el('button', { class: 'btn btn-primary', onclick: () => {
@@ -93,9 +92,9 @@ function renderFlashcards() {
             queue = [...allTermIds].sort(() => Math.random() - 0.5);
             idx = 0; flipped = false;
             section.innerHTML = '';
-            section.appendChild(el('div', { class: 'section-title' }, '🃏 Fiszki Leitner — nauka przez powtarzanie'));
+            section.appendChild(el('div', { class: 'section-title' }, 'Fiszki Leitner — nauka przez powtarzanie'));
             renderFlashcardsInto(section);
-          }}, '🔄 Nowa sesja')
+          }}, 'Nowa sesja')
         )
       );
       return;
@@ -112,12 +111,12 @@ function renderFlashcards() {
     front.innerHTML = '';
     back.innerHTML = '';
 
-    front.appendChild(el('div', { class: 'card-icon', style: { fontSize: '1.5rem', marginBottom: '0.5rem' } }, '🔤'));
+    front.appendChild(el('div', { class: 'card-icon', style: { marginBottom: '0.5rem' } }));
     front.appendChild(el('h3', { style: { fontSize: '1.2rem', textAlign: 'center' } }, term.term));
     if (term.full) {
       front.appendChild(el('p', { style: { fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.35rem', textAlign: 'center' } }, term.full));
     }
-    front.appendChild(el('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem' } }, '👆 Kliknij, aby zobaczyć definicję'));
+    front.appendChild(el('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem' } }, 'Kliknij, aby zobaczyć definicję'));
 
     back.appendChild(el('h4', { style: { color: 'var(--accent)', marginBottom: '0.5rem', textAlign: 'center' } }, term.term));
     back.appendChild(el('p', { class: 'card-answer', style: { fontSize: '0.88rem' } }, term.short));
@@ -135,7 +134,7 @@ function renderFlashcards() {
       idx++;
       loadCard();
     }
-  }, '❌ Nie wiedziałem/am');
+  }, 'Nie wiedziałem/am');
 
   const rightBtn = el('button', {
     class: 'btn btn-primary',
@@ -148,7 +147,7 @@ function renderFlashcards() {
       idx++;
       loadCard();
     }
-  }, '✅ Wiedziałem/am');
+  }, 'Wiedziałem/am');
 
   answerBtns.appendChild(wrongBtn);
   answerBtns.appendChild(rightBtn);
@@ -178,7 +177,7 @@ function renderFlashcardsInto(section) {
 
 function renderTermList() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🔎 Pełny słownik')
+    el('div', { class: 'section-title' }, 'Pełny słownik')
   );
 
   const terms = getAllTerms();
@@ -186,7 +185,7 @@ function renderTermList() {
   // Search box
   const searchInput = el('input', {
     type: 'search',
-    placeholder: '🔍 Szukaj akronimu lub pojęcia...',
+    placeholder: 'Szukaj akronimu lub pojęcia...',
     style: {
       width: '100%',
       background: 'var(--bg-card)',
@@ -249,11 +248,11 @@ export function renderSlownik() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '📖 Słownik Cyberbezpieczeństwa'),
+    el('h1', {}, 'Słownik Cyberbezpieczeństwa'),
     el('p', { class: 'subtitle' }, 'Wszystkie akronimy i pojęcia w jednym miejscu. Fiszki Leitner do efektywnej nauki.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, `📚 ${getAllTerms().length} terminów`),
-      el('span', { class: 'badge badge-accent' }, '🔄 Spaced Repetition')
+      el('span', { class: 'badge' }, `${getAllTerms().length} terminów`),
+      el('span', { class: 'badge badge-accent' }, 'Spaced Repetition')
     )
   ));
 

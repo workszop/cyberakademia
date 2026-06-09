@@ -11,64 +11,64 @@ const PATH_STEPS = [
   {
     id: 'fundamenty',
     hash: '#/fundamenty',
-    icon: '🔐',
+    icon: 'shield',
     title: 'Fundamenty',
     desc: 'Triada CIA i zarządzanie ryzykiem',
-    badge: '🎖️ Fundamenty',
+    badge: 'Fundamenty',
     order: 1,
   },
   {
     id: 'regulacje',
     hash: '#/regulacje',
-    icon: '📋',
+    icon: 'clipboard-list',
     title: 'Regulacje',
     desc: 'RODO, NIS2, KSC, DORA',
-    badge: '🎖️ Regulacje',
+    badge: 'Regulacje',
     order: 2,
   },
   {
     id: 'organizacja',
     hash: '#/organizacja',
-    icon: '🏢',
+    icon: 'building-2',
     title: 'Organizacja',
     desc: 'SOC, CISO, role i struktury',
-    badge: '🎖️ Organizacja',
+    badge: 'Organizacja',
     order: 3,
   },
   {
     id: 'technologia',
     hash: '#/technologia',
-    icon: '⚙️',
+    icon: 'cpu',
     title: 'Technologia',
     desc: 'SIEM, EDR, MFA, Zero Trust',
-    badge: '🎖️ Technologia',
+    badge: 'Technologia',
     order: 4,
   },
   {
     id: 'spiecie',
     hash: '#/spiecie',
-    icon: '⚡',
+    icon: 'layers',
     title: 'Spięcie',
     desc: 'NIST CSF i reagowanie na incydenty',
-    badge: '🎖️ Spięcie',
+    badge: 'Spięcie',
     order: 5,
   },
   {
     id: 'slownik',
     hash: '#/slownik',
-    icon: '📖',
+    icon: 'book-open',
     title: 'Słownik',
     desc: 'Fiszki Leitner — mistrzowskie opanowanie terminologii',
-    badge: '🎖️ Słownik',
+    badge: 'Słownik',
     order: 6,
   },
   {
     id: 'finalboss',
     hash: '#/finalboss',
-    icon: '🎯',
+    icon: 'target',
     title: 'Final Boss',
     desc: 'Egzamin końcowy — potwierdź swoją wiedzę',
-    badge: '🏆 Mistrz CyberAkademii',
+    badge: 'Mistrz CyberAkademii',
     order: 7,
   },
 ];
@@ -79,18 +79,18 @@ export function renderSciezka() {
   const state = getState();
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, '🗺️ Twoja Ścieżka Nauki'),
+    el('h1', {}, 'Twoja Ścieżka Nauki'),
     el('p', { class: 'subtitle' }, 'Wizualizacja postępu, zdobyte odznaki i kolejne kroki.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge badge-success' }, `✅ ${completedCount} / ${totalModules} modułów`),
-      el('span', { class: 'badge badge-accent' }, `📊 ${pct}% ukończone`)
+      el('span', { class: 'badge badge-success' }, `${completedCount} / ${totalModules} modułów`),
+      el('span', { class: 'badge badge-accent' }, `${pct}% ukończone`)
     )
   ));
 
   // ── Overall progress ──────────────────────────────────
 
   const overallSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '📊 Ogólny postęp')
+    el('div', { class: 'section-title' }, 'Ogólny postęp')
   );
 
   const progressGrid = el('div', { class: 'module-progress' });
@@ -121,7 +121,7 @@ export function renderSciezka() {
   // ── Path visualization ────────────────────────────────
 
   const pathSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🗺️ Ścieżka modułów')
+    el('div', { class: 'section-title' }, 'Ścieżka modułów')
   );
 
   const path = el('div', { class: 'sciezka-path' });
@@ -134,7 +134,7 @@ export function renderSciezka() {
     const isActive = !done && prevDone;
 
     const stepEl = el('div', { class: `sciezka-step${done ? ' completed' : isActive ? ' active' : ''}` },
-      el('div', { class: 'sciezka-node' }, done ? '✅' : isActive ? step.icon : step.icon),
+      el('div', { class: 'sciezka-node' }, done ? '✓' : String(step.order)),
       el('div', { class: 'sciezka-content' },
         el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem', flexWrap: 'wrap' } },
           el('div', {},
@@ -143,10 +143,10 @@ export function renderSciezka() {
           ),
           el('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.35rem' } },
             done
-              ? el('span', { class: 'badge badge-success' }, `✅ ${score?.pct || 100}%`)
+              ? el('span', { class: 'badge badge-success' }, `${score?.pct || 100}%`)
               : isActive
-              ? el('a', { href: step.hash, class: 'btn btn-primary btn-sm' }, '🎯 Zacznij')
-              : el('span', { class: 'badge', style: { opacity: '0.5' } }, '🔒 Zablokowane'),
+              ? el('a', { href: step.hash, class: 'btn btn-primary btn-sm' }, 'Zacznij')
+              : el('span', { class: 'badge', style: { opacity: '0.5' } }, 'Zablokowane'),
             done
               ? el('span', { class: 'badge badge-purple' }, step.badge)
               : null
@@ -163,7 +163,7 @@ export function renderSciezka() {
   // ── Earned badges ─────────────────────────────────────
 
   const badgeSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, '🏆 Zdobyte odznaki')
+    el('div', { class: 'section-title' }, 'Zdobyte odznaki')
   );
 
   const earnedBadges = state.badges || [];
@@ -176,7 +176,7 @@ export function renderSciezka() {
     const badgeGrid = el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '1rem' } });
     earnedBadges.forEach(badgeId => {
       const step = PATH_STEPS.find(s => s.id === badgeId);
-      const label = step ? step.badge : `🎖️ ${badgeId}`;
+      const label = step ? step.badge : badgeId;
       badgeGrid.appendChild(
         el('div', {
           class: 'badge badge-purple badge-earned',
@@ -193,7 +193,7 @@ export function renderSciezka() {
 
   if (completedCount > 0) {
     const scoreSection = el('div', { class: 'section' },
-      el('div', { class: 'section-title' }, '📈 Wyniki quizów')
+      el('div', { class: 'section-title' }, 'Wyniki quizów')
     );
 
     const scoreGrid = el('div', { class: 'card-grid' });
@@ -225,7 +225,7 @@ export function renderSciezka() {
 
   const resetSection = el('div', { class: 'section', style: { borderTop: '1px solid var(--border)', paddingTop: '2rem', marginTop: '1rem' } });
   resetSection.appendChild(el('p', { style: { color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem' } },
-    '⚠️ Zresetuj postęp jeśli chcesz zacząć od nowa. Tej operacji nie można cofnąć.'
+    'Zresetuj postęp jeśli chcesz zacząć od nowa. Tej operacji nie można cofnąć.'
   ));
   const resetBtn = el('button', {
     class: 'btn btn-danger btn-sm',
@@ -235,7 +235,7 @@ export function renderSciezka() {
         window.location.hash = '#/';
       }
     }
-  }, '🗑️ Resetuj postęp');
+  }, 'Resetuj postęp');
   resetSection.appendChild(resetBtn);
   wrap.appendChild(resetSection);
 

@@ -228,7 +228,7 @@ export function initConnectGame(container, data, onResult) {
     const summary = document.createElement('div');
     summary.className = 'connect-summary slide-up';
     summary.innerHTML = `
-      <div class="connect-summary-grade">🏆 Wszystkie połączenia odkryte!</div>
+      <div class="connect-summary-grade">Wszystkie połączenia odkryte!</div>
       <div class="connect-summary-score">${matched} / ${total} zestawów poprawnie</div>
     `;
     container.appendChild(summary);
