@@ -77,62 +77,72 @@ export function initGlossary() {
   document.addEventListener('scroll', hideTip, { passive: true });
 }
 
-/**
- * Enriches an HTML string by wrapping known glossary terms in
- * <span class="term" data-term="…"> elements.
- *
- * Only wraps the first occurrence per term, skips terms already
- * wrapped, and avoids double-wrapping inside existing data-term spans.
- *
- * @param {string} html - Input HTML string
- * @returns {string} - Enriched HTML string
- */
-export function enrichText(html) {
-  // Sort terms longest-first to avoid partial-match issues
-  const terms = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
-
-  let result = html;
-
-  for (const term of terms) {
-    // Don't double-wrap already-wrapped terms
-    if (result.includes(`data-term="${term}"`)) continue;
-
-    // Escape for regex
-    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-    // Match the term only when surrounded by word boundaries / non-alpha
-    // and not inside an HTML attribute (simple heuristic: not inside < … >)
-    const re = new RegExp(
-      `(?<![a-zA-Z0-9_-])(?<!data-term="[^"]*)(${escaped})(?![a-zA-Z0-9_-])`,
-      'g'
-    );
-
-    let replaced = false;
-    result = result.replace(re, (match, p1, offset) => {
-      // Skip if inside an HTML tag attribute
-      const before = result.slice(0, offset);
-      const openTags = (before.match(/</g) || []).length;
-      const closeTags = (before.match(/>/g) || []).length;
-      if (openTags > closeTags) return match; // inside a tag
-
-      // Only replace first occurrence
-      if (replaced) return match;
-      replaced = true;
-
-      return `<span class="term" data-term="${term}">${p1}</span>`;
-    });
-  }
-
-  return result;
-}
+// Combined word-boundary regex for all glossary terms (longest-first so
+// multi-word/keys win over substrings). Lookarounds avoid matching inside
+// larger words (e.g. won't match "SOC" inside "SOComething").
+const TERM_PATTERN = (() => {
+  const escaped = Object.keys(GLOSSARY)
+    .sort((a, b) => b.length - a.length)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return new RegExp(`(?<![\\w])(${escaped.join('|')})(?![\\w])`, 'g');
+})();
 
 /**
- * Returns the glossary entry for a term, or null.
- * @param {string} term
- * @returns {{ full: string, short: string, long?: string } | null}
+ * Walks the DOM under `root` and wraps every glossary term found in a text
+ * node with a <span class="term" data-term="…"> so the hover tooltip works.
+ * Skips text already inside .term, headings, scripts, styles, SVG.
+ *
+ * Called by the router after each route mounts (content is rebuilt fresh
+ * each navigation, so there is no double-wrapping across renders).
+ *
+ * @param {HTMLElement} root
  */
-export function lookupTerm(term) {
-  return GLOSSARY[term] || null;
+export function enrichGlossaryDom(root) {
+  if (!root) return;
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = node.parentElement;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      // Don't enrich inside already-wrapped terms, code, headings, or non-text containers
+      if (p.closest('.term, code, pre, script, style, svg, .section-title, h1, h2')) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      TERM_PATTERN.lastIndex = 0;
+      return TERM_PATTERN.test(node.nodeValue)
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT;
+    },
+  });
+
+  // Collect first (mutating during walk invalidates the walker)
+  const targets = [];
+  let node;
+  while ((node = walker.nextNode())) targets.push(node);
+
+  targets.forEach((textNode) => {
+    const text = textNode.nodeValue;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    let m;
+    TERM_PATTERN.lastIndex = 0;
+    while ((m = TERM_PATTERN.exec(text))) {
+      if (m.index > last) {
+        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      }
+      const span = document.createElement('span');
+      span.className = 'term';
+      span.dataset.term = m[1];
+      span.textContent = m[1];
+      frag.appendChild(span);
+      last = m.index + m[1].length;
+    }
+    if (last < text.length) {
+      frag.appendChild(document.createTextNode(text.slice(last)));
+    }
+    textNode.parentNode.replaceChild(frag, textNode);
+  });
 }
 
 /**

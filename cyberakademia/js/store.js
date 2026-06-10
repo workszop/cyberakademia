@@ -31,7 +31,13 @@ function loadState() {
 }
 
 let state = loadState();
-const listeners = {}; // event → Set<fn>
+
+// Modules that can actually be "completed" (call completeModule).
+// Słownik and Ścieżka are reference views, not completable — so they
+// must NOT count toward the progress denominator.
+export const COMPLETABLE_MODULES = [
+  'fundamenty', 'regulacje', 'organizacja', 'technologia', 'spiecie', 'finalboss',
+];
 
 // ── Internal helpers ─────────────────────────────────────
 
@@ -41,14 +47,6 @@ function save() {
   } catch (e) {
     console.warn('[store] Could not save state:', e);
   }
-}
-
-function emit(event, data) {
-  const fns = listeners[event];
-  if (!fns) return;
-  fns.forEach(fn => {
-    try { fn(data); } catch (e) { console.error('[store] listener error', e); }
-  });
 }
 
 // ── Public API ───────────────────────────────────────────
@@ -77,7 +75,6 @@ export function completeModule(moduleId, score = 0, total = 0) {
   state.completed[moduleId] = true;
   state.scores[moduleId] = { score, total, pct };
   save();
-  emit('progress', { moduleId, score, total, pct });
 }
 
 /**
@@ -88,7 +85,6 @@ export function earnBadge(badgeId) {
   if (state.badges.includes(badgeId)) return;
   state.badges = [...state.badges, badgeId];
   save();
-  emit('badge', { badgeId });
 }
 
 /**
@@ -102,7 +98,6 @@ export function updateFlashcard(term, box) {
     [term]: { box: Math.max(1, Math.min(5, box)), lastSeen: Date.now() },
   };
   save();
-  emit('flashcard', { term, box });
 }
 
 /**
@@ -118,10 +113,14 @@ export function setLastVisited(hash) {
  * Reset all progress.
  */
 export function resetProgress() {
-  state = { ...DEFAULT };
+  state = {
+    ...DEFAULT,
+    completed: {},
+    scores: {},
+    badges: [],
+    flashcards: {},
+  };
   save();
-  emit('progress', null);
-  emit('badge', null);
 }
 
 /**
@@ -129,8 +128,8 @@ export function resetProgress() {
  * @returns {{ totalModules: number, completed: number, pct: number }}
  */
 export function getProgress() {
-  const totalModules = 9;
-  const completed = Object.keys(state.completed).filter(k => state.completed[k]).length;
+  const totalModules = COMPLETABLE_MODULES.length;
+  const completed = COMPLETABLE_MODULES.filter(id => state.completed[id]).length;
   const pct = Math.round((completed / totalModules) * 100);
   return { totalModules, completed, pct };
 }
@@ -149,24 +148,4 @@ export function isCompleted(moduleId) {
  */
 export function getScore(moduleId) {
   return state.scores[moduleId] || null;
-}
-
-/**
- * Subscribe to a store event.
- * Events: 'progress', 'badge', 'flashcard'
- * @param {string} event
- * @param {Function} fn
- */
-export function on(event, fn) {
-  if (!listeners[event]) listeners[event] = new Set();
-  listeners[event].add(fn);
-}
-
-/**
- * Unsubscribe from a store event.
- * @param {string} event
- * @param {Function} fn
- */
-export function off(event, fn) {
-  listeners[event]?.delete(fn);
 }

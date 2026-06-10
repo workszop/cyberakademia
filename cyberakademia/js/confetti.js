@@ -3,15 +3,15 @@
 // Canvas-based confetti burst animations
 // ============================================================
 
+// Quantica brand palette (matches the light-theme design system)
 const COLORS = [
-  '#00d4ff', // accent cyan
-  '#7c3aed', // purple
-  '#10b981', // green
-  '#f59e0b', // amber
-  '#ef4444', // red
-  '#ffffff', // white
-  '#a78bfa', // light purple
-  '#34d399', // light green
+  '#C41E54', // quantica pink
+  '#FF4D9A', // rose pink
+  '#FF20A1', // electric pink
+  '#7030A0', // violet primary
+  '#7861FF', // violet accent
+  '#FFC107', // amber
+  '#00A37A', // success green
 ];
 
 let canvas = null;
@@ -115,20 +115,6 @@ function loop() {
 function startLoop() {
   if (animationId) return; // already running
   animationId = requestAnimationFrame(loop);
-}
-
-/**
- * Fire a confetti burst at given screen coordinates.
- * @param {number} x - screen X
- * @param {number} y - screen Y
- * @param {number} count - number of particles (default 60)
- */
-export function burst(x, y, count = 60) {
-  if (!getCanvas()) return;
-  for (let i = 0; i < count; i++) {
-    particles.push(createParticle(x, y));
-  }
-  startLoop();
 }
 
 /**

@@ -40,7 +40,7 @@ export function createProgressRing(pct, label, size = 80) {
   track.setAttribute('cy', cy);
   track.setAttribute('r', radius);
   track.setAttribute('fill', 'none');
-  track.setAttribute('stroke', 'var(--border, #1e2d47)');
+  track.setAttribute('stroke', 'var(--border, #E6E8EC)');
   track.setAttribute('stroke-width', strokeWidth);
   svg.appendChild(track);
 
@@ -50,7 +50,7 @@ export function createProgressRing(pct, label, size = 80) {
   fill.setAttribute('cy', cy);
   fill.setAttribute('r', radius);
   fill.setAttribute('fill', 'none');
-  fill.setAttribute('stroke', 'var(--accent, #00d4ff)');
+  fill.setAttribute('stroke', 'var(--accent, #C41E54)');
   fill.setAttribute('stroke-width', strokeWidth);
   fill.setAttribute('stroke-linecap', 'round');
   // Start from the top (rotate -90deg)
@@ -60,13 +60,13 @@ export function createProgressRing(pct, label, size = 80) {
   fill.style.transition = 'stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
   // Colour overrides for common thresholds
   if (clampedPct >= 80) {
-    fill.setAttribute('stroke', 'var(--success, #10b981)');
+    fill.setAttribute('stroke', 'var(--success, #00A37A)');
   } else if (clampedPct >= 50) {
-    fill.setAttribute('stroke', 'var(--accent, #00d4ff)');
+    fill.setAttribute('stroke', 'var(--accent, #C41E54)');
   } else if (clampedPct >= 30) {
-    fill.setAttribute('stroke', 'var(--warning, #f59e0b)');
+    fill.setAttribute('stroke', 'var(--warning, #FFC107)');
   } else {
-    fill.setAttribute('stroke', 'var(--danger, #ef4444)');
+    fill.setAttribute('stroke', 'var(--danger, #DC2626)');
   }
   svg.appendChild(fill);
 
@@ -80,7 +80,7 @@ export function createProgressRing(pct, label, size = 80) {
   pctText.setAttribute('font-size', fontSize);
   pctText.setAttribute('font-weight', '700');
   pctText.setAttribute('font-family', 'var(--font, system-ui)');
-  pctText.setAttribute('fill', 'var(--text, #e2e8f0)');
+  pctText.setAttribute('fill', 'var(--text, #111111)');
   pctText.textContent = `${Math.round(clampedPct)}%`;
   svg.appendChild(pctText);
 

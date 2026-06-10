@@ -4,8 +4,10 @@
 // ============================================================
 
 import { el } from '../dom.js';
-import { getState, getProgress, isCompleted, getScore, resetProgress } from '../store.js';
+import { getState, getProgress, isCompleted, getScore, resetProgress, COMPLETABLE_MODULES } from '../store.js';
 import { createProgressRing } from '../primitives/progressRing.js';
+import { initExpandable } from '../primitives/expandable.js';
+import { STEPS } from '../content/sciezka.js';
 
 const PATH_STEPS = [
   {
@@ -95,11 +97,14 @@ export function renderSciezka() {
 
   const progressGrid = el('div', { class: 'module-progress' });
 
-  PATH_STEPS.forEach(step => {
-    const done = isCompleted(step.id);
-    const score = getScore(step.id);
+  // Progress rings only for completable modules (source of truth: store).
+  COMPLETABLE_MODULES.forEach(id => {
+    const step = PATH_STEPS.find(s => s.id === id);
+    const label = step ? step.title : id;
+    const done = isCompleted(id);
+    const score = getScore(id);
     const ringPct = done ? (score?.pct || 100) : 0;
-    const ring = createProgressRing(ringPct, step.title, 72);
+    const ring = createProgressRing(ringPct, label, 72);
     if (done) {
       ring.querySelector('circle:last-of-type')?.setAttribute('stroke', 'var(--success)');
     }
@@ -220,6 +225,26 @@ export function renderSciezka() {
     scoreSection.appendChild(scoreGrid);
     wrap.appendChild(scoreSection);
   }
+
+  // ── Ścieżka wdrożenia — od czego zacząć ───────────────
+
+  const wdrozenieSection = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Ścieżka wdrożenia — od czego zacząć'),
+    el('p', { style: { color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem' } },
+      'Praktyczny załącznik z przewodnika: jak organizacja powinna wdrażać cyberbezpieczeństwo krok po kroku, we właściwej kolejności — od diagnozy regulacyjnej po ciągłe doskonalenie.'
+    )
+  );
+
+  const wdrozenieContainer = el('div', {});
+  wdrozenieSection.appendChild(wdrozenieContainer);
+
+  initExpandable(wdrozenieContainer, STEPS.map(step => ({
+    title: `${step.n}. ${step.name}`,
+    summary: step.description,
+    detail: step.detail + (step.tools?.length ? ` Narzędzia/pomoce: ${step.tools.join(', ')}` : ''),
+  })));
+
+  wrap.appendChild(wdrozenieSection);
 
   // ── Reset button ──────────────────────────────────────
 

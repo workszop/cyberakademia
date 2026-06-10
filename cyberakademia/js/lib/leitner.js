@@ -53,11 +53,12 @@ export function onWrong(term, state) {
 
 /**
  * Returns true if this card is due for review based on its box.
+ * Internal helper for getDueTerms.
  * @param {string} term
  * @param {Object} state
  * @returns {boolean}
  */
-export function shouldReview(term, state) {
+function shouldReview(term, state) {
   const entry = state[term];
   if (!entry) return true; // never seen = always due
 
@@ -89,19 +90,4 @@ export function getMasteryPct(state, terms) {
   if (!terms.length) return 0;
   const total = terms.reduce((sum, t) => sum + (state[t]?.box || 1), 0);
   return Math.round((total / (terms.length * 5)) * 100);
-}
-
-/**
- * Returns a distribution object showing how many cards are in each box.
- * @param {Object} state
- * @param {string[]} terms
- * @returns {{ 1: number, 2: number, 3: number, 4: number, 5: number }}
- */
-export function getBoxDistribution(state, terms) {
-  const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-  for (const term of terms) {
-    const box = state[term]?.box || 1;
-    dist[box] = (dist[box] || 0) + 1;
-  }
-  return dist;
 }

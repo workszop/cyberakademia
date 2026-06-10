@@ -1,36 +1,92 @@
 // ============================================================
 // CyberAkademia — modules/organizacja.js
 // Module 3: SOC, CISO, security teams and structures
+// Data sourced from js/content/organizacja.js
 // ============================================================
 
 import { el } from '../dom.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { initExpandable } from '../primitives/expandable.js';
 import { icon } from '../icons.js';
+import {
+  ROLES,
+  SOC_COMPONENTS,
+  SOC_MODELS,
+  IR_PHASES,
+  PROCESSES,
+  GOVERNANCE_FRAMEWORKS,
+  ORG_QUIZ,
+} from '../content/organizacja.js';
+
+// ── Security team roles ──────────────────────────────────
+
+// Map content ROLES (id) → a Lucide wireframe icon from the allowed set:
+// user-check, eye, activity, alert-triangle, file-text, target, users, settings, building-2
+const ROLE_ICONS = {
+  zarzad: 'building-2',
+  ciso: 'user-check',
+  'cso-cio-cto': 'settings',
+  dpo: 'file-text',
+  analitycy: 'eye',
+};
+
+function renderRoles() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Kluczowe role w cyberbezpieczeństwie')
+  );
+
+  section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
+    'Cyberbezpieczeństwo to nie zadanie jednej osoby — to podział ról i odpowiedzialności od zarządu po analityków SOC. ' +
+    'Kto raportuje do kogo i kto za co odpowiada decyduje o tym, czy organizacja reaguje sprawnie, czy w chaosie.'
+  ));
+
+  const grid = el('div', { class: 'card-grid' });
+  ROLES.forEach(r => {
+    const iconEl = el('div', { style: { marginBottom: '0.5rem' } });
+    iconEl.appendChild(icon(ROLE_ICONS[r.id] || 'users', 24));
+
+    const card = el('div', { class: 'card' },
+      iconEl,
+      el('h3', {}, r.name),
+      el('p', { style: { fontSize: '0.78rem', color: 'var(--accent)', marginBottom: '0.5rem' } },
+        r.reports_to ? `Raportuje do: ${r.reports_to}` : 'Najwyższy szczebel nadzoru'
+      ),
+      el('p', {}, r.responsibility)
+    );
+
+    if (r.trap) {
+      card.appendChild(el('div', { class: 'alert alert-warning', style: { marginTop: '0.75rem', marginBottom: '0', fontSize: '0.8rem' } },
+        el('strong', {}, 'Pułapka: '), r.trap
+      ));
+    }
+
+    grid.appendChild(card);
+  });
+
+  section.appendChild(grid);
+  return section;
+}
 
 // ── SOC Builder ──────────────────────────────────────────
 
-const SOC_PIECES = [
-  { id: 'analityk-l1', label: 'Analityk SOC L1', category: 'Ludzie' },
-  { id: 'analityk-l2', label: 'Analityk SOC L2', category: 'Ludzie' },
-  { id: 'threat-hunter', label: 'Threat Hunter', category: 'Ludzie' },
-  { id: 'ir-spec', label: 'Specjalista IR', category: 'Ludzie' },
-  { id: 'siem', label: 'SIEM', category: 'Technologia' },
-  { id: 'edr', label: 'EDR', category: 'Technologia' },
-  { id: 'soar', label: 'SOAR', category: 'Technologia' },
-  { id: 'ticketing', label: 'System ticketów', category: 'Technologia' },
-  { id: 'playbook', label: 'Playbooki IR', category: 'Procesy' },
-  { id: 'sla', label: 'SLA / metryki', category: 'Procesy' },
-  { id: 'escalation', label: 'Eskalacja alertów', category: 'Procesy' },
-  { id: 'postmortem', label: 'Post-mortem', category: 'Procesy' },
+const SOC_ZONES = [
+  { id: 'people', label: 'Ludzie', desc: 'Upuść tu role SOC' },
+  { id: 'processes', label: 'Procesy', desc: 'Upuść tu procesy' },
+  { id: 'technology', label: 'Technologia', desc: 'Upuść tu narzędzia' },
 ];
 
-const SOC_ZONES = [
-  { id: 'Ludzie', label: 'Ludzie', desc: 'Upuść tu role SOC' },
-  { id: 'Procesy', label: 'Procesy', desc: 'Upuść tu procesy' },
-  { id: 'Technologia', label: 'Technologia', desc: 'Upuść tu narzędzia' },
-];
+// Flatten SOC_COMPONENTS into draggable pieces tagged with their category (zone id)
+function buildSOCPieces() {
+  const pieces = [];
+  SOC_ZONES.forEach(zone => {
+    (SOC_COMPONENTS[zone.id] || []).forEach(comp => {
+      pieces.push({ id: comp.id, label: comp.name, category: zone.id });
+    });
+  });
+  return pieces;
+}
 
 function renderSOCBuilder() {
   const section = el('div', { class: 'section' },
@@ -44,14 +100,17 @@ function renderSOCBuilder() {
     'ktoś patrzy na ekrany 24/7, a gdy zapali się alarm, uruchamia procedurę.'
   ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'SOC nie jest produktem, który się kupuje — to zestawienie trzech elementów. Przeciągnij elementy do właściwych stref.'
+    'SOC nie jest produktem, który się kupuje — to zestawienie trzech filarów: Ludzie, Procesy i Technologia. Przeciągnij elementy do właściwych stref.'
   ));
 
+  const SOC_PIECES = buildSOCPieces();
   const placed = {}; // pieceId → zoneId
 
   const zonesEl = el('div', { class: 'soc-zones' });
   const zoneEls = {};
   const pieceEls = {};
+
+  const statusEl = el('div', { class: 'badge badge-accent', style: { marginBottom: '1rem' } }, `Umieszczono: 0 / ${SOC_PIECES.length}`);
 
   SOC_ZONES.forEach(zone => {
     const zoneEl = el('div', { class: 'soc-zone', 'data-zone': zone.id },
@@ -75,6 +134,7 @@ function renderSOCBuilder() {
         setTimeout(() => zoneEl.style.borderColor = '', 600);
         return;
       }
+      if (placed[pieceId]) return; // already placed
       placed[pieceId] = zone.id;
       pieceEls[pieceId]?.classList.add('soc-piece-placed');
       const placedEl = el('div', { style: { fontSize: '0.8rem', padding: '0.35rem 0.6rem', background: 'rgba(16,185,129,0.1)', border: '1px solid var(--success)', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.3rem' } },
@@ -111,8 +171,6 @@ function renderSOCBuilder() {
     pool.appendChild(p);
   });
 
-  const statusEl = el('div', { class: 'badge badge-accent', style: { marginBottom: '1rem' } }, `Umieszczono: 0 / ${SOC_PIECES.length}`);
-
   section.appendChild(statusEl);
   section.appendChild(pool);
   section.appendChild(zonesEl);
@@ -126,34 +184,10 @@ function renderSOCModels() {
     el('div', { class: 'section-title' }, 'Modele SOC')
   );
 
-  const models = [
-    {
-      id: 'inhouse',
-      label: 'In-house',
-      pros: ['Pełna kontrola nad danymi', 'Głęboka znajomość infrastruktury', 'Krótszy czas reakcji', 'Brak ryzyka udostępnienia danych dostawcy'],
-      cons: ['Bardzo wysokie koszty (zespół 24/7)', 'Trudno znaleźć ekspertów', 'Ryzyko "wypalenia" zespołu', 'Wolne skalowanie'],
-      best: 'Duże organizacje z wysokimi wymaganiami regulacyjnymi',
-    },
-    {
-      id: 'mssp',
-      label: 'MSSP (Outsourcing)',
-      pros: ['Niższy koszt wejścia', 'Dostęp do ekspertów i zaawansowanych narzędzi', 'Szybkie wdrożenie', 'Skalowanie na żądanie'],
-      cons: ['Mniejsza kontrola', 'Dane przetwarzane poza organizacją', 'Zależność od dostawcy', 'Mniejsza znajomość Twojej infrastruktury'],
-      best: 'MŚP bez zasobów na własny SOC',
-    },
-    {
-      id: 'hybrid',
-      label: 'Hybrydowy',
-      pros: ['Kontrola wrażliwych danych in-house', 'Wsparcie MSSP 24/7 gdy brak zasobów', 'Elastyczność', 'Optymalny koszt'],
-      cons: ['Złożoność zarządzania', 'Konieczność jasnych umów SLA', 'Ryzyko "szarej strefy" odpowiedzialności'],
-      best: 'Organizacje średniej wielkości lub wysoko regulowane',
-    },
-  ];
-
   const grid = el('div', { class: 'card-grid' });
-  models.forEach(m => {
+  SOC_MODELS.forEach(m => {
     const card = el('div', { class: 'card' },
-      el('h3', { style: { marginBottom: '1rem' } }, m.label),
+      el('h3', { style: { marginBottom: '1rem' } }, m.name),
       el('div', { style: { marginBottom: '0.75rem' } },
         el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--success)', textTransform: 'uppercase', marginBottom: '0.35rem' } }, 'Zalety'),
         el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.8' } },
@@ -167,9 +201,16 @@ function renderSOCModels() {
         )
       ),
       el('div', { class: 'alert alert-info', style: { margin: '0', fontSize: '0.8rem' } },
-        el('strong', {}, 'Najlepszy dla: '), m.best
+        el('strong', {}, 'Najlepszy dla: '), m.bestFor
       )
     );
+
+    if (m.relatedConcept) {
+      card.appendChild(el('p', { style: { marginTop: '0.6rem', marginBottom: '0', fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' } },
+        m.relatedConcept
+      ));
+    }
+
     grid.appendChild(card);
   });
 
@@ -177,70 +218,77 @@ function renderSOCModels() {
   return section;
 }
 
-// ── Security team roles ──────────────────────────────────
+// ── Incident Response cycle ──────────────────────────────
 
-function renderRoles() {
+function renderIncidentResponse() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Kluczowe role w cyberbezpieczeństwie')
+    el('div', { class: 'section-title' }, 'Cykl reagowania na incydenty (Incident Response)')
   );
 
-  const roles = [
-    { iconName: 'user-check', role: 'CISO', full: 'Chief Information Security Officer', desc: 'Odpowiada za całą strategię cyberbezpieczeństwa. Raportuje do zarządu. Tłumaczy ryzyko na język biznesu.' },
-    { iconName: 'eye', role: 'Analityk SOC L1', full: 'Security Operations Center Analyst', desc: 'Pierwsza linia obrony. Monitoruje alerty SIEM, filtruje fałszywe pozytywy, eskaluje do L2.' },
-    { iconName: 'activity', role: 'Threat Hunter', full: 'Threat Intelligence Analyst', desc: 'Proaktywnie poszukuje zagrożeń ukrytych w sieci. Analizuje TTPs i IOC. Nie czeka na alerty.' },
-    { iconName: 'alert-triangle', role: 'Specjalista IR', full: 'Incident Response Specialist', desc: 'Reaguje na potwierdzone incydenty. Prowadzi analizę powłamaniową (forensics). Izoluje systemy.' },
-    { iconName: 'file-text', role: 'DPO / IOD', full: 'Data Protection Officer', desc: 'Doradza w kwestii RODO. Punkt kontaktowy z UODO. Niezależny od CISO.' },
-    { iconName: 'target', role: 'Pentester', full: 'Penetration Tester / Red Team', desc: 'Legalnie atakuje systemy organizacji szukając podatności. Myśli jak napastnik.' },
-  ];
+  section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
+    'Reagowanie na incydent to nie chaotyczne gaszenie pożaru, lecz ustrukturyzowany proces siedmiu faz — ' +
+    'od przygotowania jeszcze przed atakiem, przez powstrzymanie i odtworzenie, aż po wnioski. ' +
+    'Każda faza ma swoje działania i wymogi regulacyjne (NIS2/KSC, DORA). Rozwiń fazę, by poznać szczegóły.'
+  ));
 
-  const grid = el('div', { class: 'card-grid' });
-  roles.forEach(r => {
-    const roleIconEl = el('div', { style: { marginBottom: '0.5rem' } });
-    roleIconEl.appendChild(icon(r.iconName, 24));
-    grid.appendChild(el('div', { class: 'card' },
-      roleIconEl,
-      el('h3', {}, r.role),
-      el('p', { style: { fontSize: '0.78rem', color: 'var(--accent)', marginBottom: '0.5rem' } }, r.full),
-      el('p', {}, r.desc)
-    ));
-  });
+  const accordion = el('div', {});
+  section.appendChild(accordion);
 
-  section.appendChild(grid);
+  initExpandable(accordion, IR_PHASES.map(phase => ({
+    title: phase.name,
+    summary: phase.description,
+    detail: phase.regulatoryLink || phase.detail || '',
+  })));
+
   return section;
 }
 
-const QUIZ_QUESTIONS = [
-  {
-    question: 'Co to jest SOC?',
-    options: ['System operacyjny serwerów', 'Centrum operacji bezpieczeństwa — monitoruje i reaguje na incydenty 24/7', 'Protokół sieciowy', 'Narzędzie do backupu'],
-    correct: 1,
-    explanation: 'SOC (Security Operations Center) to zespół i infrastruktura odpowiedzialne za ciągłe monitorowanie, wykrywanie zagrożeń i reagowanie na incydenty bezpieczeństwa.'
-  },
-  {
-    question: 'Który model SOC jest zalecany dla MŚP bez własnego team-u bezpieczeństwa?',
-    options: ['In-house (własny SOC)', 'MSSP (outsourcing do dostawcy)', 'Brak SOC — to zbędny koszt', 'SOC tylko w modelu chmurowym'],
-    correct: 1,
-    explanation: 'MSSP (Managed Security Service Provider) umożliwia MŚP dostęp do ekspertów i zaawansowanych narzędzi bez kosztów budowania własnego SOC 24/7.'
-  },
-  {
-    question: 'Czym różni się Threat Hunter od Analityka SOC L1?',
-    options: ['Threat Hunter reaguje na alerty SIEM', 'Threat Hunter proaktywnie szuka zagrożeń bez czekania na alerty', 'Threat Hunter zarządza infrastrukturą', 'Nie ma różnicy — to ta sama rola'],
-    correct: 1,
-    explanation: 'Analityk L1 reaguje na alerty SIEM. Threat Hunter działa proaktywnie — zakłada, że atakujący już jest w sieci i szuka jego śladów bez czekania na alert.'
-  },
-  {
-    question: 'SOC opiera się na trzech filarach. Które to?',
-    options: ['Hardware, Software, Network', 'Ludzie, Procesy, Technologia', 'SIEM, EDR, Firewall', 'Detekcja, Reakcja, Odtwarzanie'],
-    correct: 1,
-    explanation: 'SOC opiera się na triadzie: Ludzie (analitycy, role), Procesy (playbooki, SLA, eskalacja) i Technologia (SIEM, EDR, SOAR). Brak jednego filaru osłabia cały SOC.'
-  },
-  {
-    question: 'Jaka jest kluczowa wada modelu MSSP?',
-    options: ['Wysokie koszty wejścia', 'Mniejsza kontrola i dane przetwarzane poza organizacją', 'Brak dostępu do ekspertów', 'Tylko monitoring w godzinach pracy'],
-    correct: 1,
-    explanation: 'MSSP daje dostęp do ekspertów i oszczędności, ale wymaga przekazania wrażliwych logów/danych zewnętrznemu dostawcy, co rodzi ryzyka prywatności i zależności.'
-  },
-];
+// ── Governance frameworks ────────────────────────────────
+
+function renderGovernance() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Frameworki ładu')
+  );
+
+  section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
+    'Frameworki ładu (governance) to sprawdzone ramy, które porządkują zarządzanie bezpieczeństwem i pomagają spełnić wymagania NIS2/KSC i DORA. ' +
+    'Nie wykluczają się — często łączy się je razem. Rozwiń, by poznać zastosowanie i relację do regulacji.'
+  ));
+
+  const accordion = el('div', {});
+  section.appendChild(accordion);
+
+  initExpandable(accordion, GOVERNANCE_FRAMEWORKS.map(fw => ({
+    title: fw.name,
+    summary: fw.useCase,
+    detail: `${fw.description} ${fw.relation}`,
+  })));
+
+  return section;
+}
+
+// ── Key processes ────────────────────────────────────────
+
+function renderProcesses() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Kluczowe procesy bezpieczeństwa')
+  );
+
+  section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
+    'Bezpieczeństwo opiera się na powtarzalnych, udokumentowanych procesach — to one zamieniają narzędzia i ludzi w realną zdolność obronną. Rozwiń, by poznać szczegóły.'
+  ));
+
+  const accordion = el('div', {});
+  section.appendChild(accordion);
+
+  initExpandable(accordion, PROCESSES.map(proc => ({
+    title: proc.name,
+    summary: proc.description,
+    detail: `${proc.fullDescription} ${proc.regulatoryReq || ''}`.trim(),
+  })));
+
+  return section;
+}
 
 export function renderOrganizacja() {
   const wrap = el('div', { class: 'slide-up' });
@@ -257,20 +305,27 @@ export function renderOrganizacja() {
   wrap.appendChild(renderRoles());
   wrap.appendChild(renderSOCBuilder());
   wrap.appendChild(renderSOCModels());
+  wrap.appendChild(renderIncidentResponse());
+  wrap.appendChild(renderProcesses());
+  wrap.appendChild(renderGovernance());
 
   const quizSection = el('div', { class: 'section' },
     el('div', { class: 'section-title' }, 'Quiz końcowy')
   );
   const qc = el('div', {});
   quizSection.appendChild(qc);
-  initQuiz(qc, { questions: QUIZ_QUESTIONS }, (score, total) => {
+  let bannerShown = false;
+  initQuiz(qc, { questions: ORG_QUIZ }, (score, total) => {
     if (score / total >= 0.7) {
       completeModule('organizacja', score, total);
       earnBadge('organizacja');
       fullBurst();
-      wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Organizacja" odblokowana!`
-      ));
+      if (!bannerShown) {
+        bannerShown = true;
+        wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
+          el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Organizacja" odblokowana!`
+        ));
+      }
     }
   });
   wrap.appendChild(quizSection);

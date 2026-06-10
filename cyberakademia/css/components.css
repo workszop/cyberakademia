@@ -476,37 +476,6 @@
   opacity: 0.7;
 }
 
-/* ── Drop zones ───────────────────────────────────────────── */
-.drop-zone {
-  border: 2px dashed var(--border-2);
-  border-radius: var(--radius-lg);
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-4);
-  transition: border-color var(--dur-2) var(--ease-standard),
-              background var(--dur-2) var(--ease-standard);
-  gap: 0.5rem;
-  color: var(--fg-4);
-  font-size: var(--fs-body);
-  text-align: center;
-}
-
-.drop-zone.over,
-.drop-zone.drag-over {
-  border-color: var(--quantica-pink);
-  background: var(--bg-3);
-  border-style: solid;
-}
-
-.drop-zone.filled {
-  border-color: var(--status-success);
-  border-style: solid;
-  background: rgba(0, 163, 122, 0.05);
-}
-
 /* ── Draggables ───────────────────────────────────────────── */
 .draggable {
   cursor: grab;
@@ -1451,13 +1420,6 @@
 
 .connect-summary-score { color: var(--fg-2); }
 
-/* ── SOC builder ──────────────────────────────────────────── */
-.soc-builder {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-}
-
 .soc-zones {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2056,14 +2018,6 @@
   margin-bottom: var(--space-5);
 }
 
-/* ── Progress ring (SVG) — ring component ─────────────────── */
-.progress-ring {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-}
-
 /* ── MFA simulator ────────────────────────────────────────── */
 .mfa-sim {
   max-width: 400px;
@@ -2483,80 +2437,6 @@
   width: 100%;
 }
 
-.risk-matrix-cell {
-  aspect-ratio: 1;
-  border-radius: var(--radius-xs);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: var(--fs-micro);
-  font-weight: 600;
-  min-height: 44px;
-  cursor: pointer;
-  transition: transform var(--dur-2) var(--ease-standard),
-              box-shadow var(--dur-2) var(--ease-standard);
-  position: relative;
-  z-index: 0;
-}
-
-.risk-matrix-cell:hover { transform: scale(1.05); z-index: 2; }
-
-.risk-matrix-cell.highlighted {
-  box-shadow: 0 0 0 3px var(--quantica-pink);
-  z-index: 3;
-}
-
-.risk-matrix-cell[data-level="1"],
-.risk-matrix-cell[data-level="2"] {
-  background: rgba(0, 163, 122, 0.14);
-  color: #065F46;
-  border: 1px solid rgba(0, 163, 122, 0.25);
-}
-
-.risk-matrix-cell[data-level="3"],
-.risk-matrix-cell[data-level="4"],
-.risk-matrix-cell[data-level="5"],
-.risk-matrix-cell[data-level="6"] {
-  background: rgba(0, 163, 122, 0.22);
-  color: #065F46;
-  border: 1px solid rgba(0, 163, 122, 0.32);
-}
-
-.risk-matrix-cell[data-level="7"],
-.risk-matrix-cell[data-level="8"],
-.risk-matrix-cell[data-level="9"],
-.risk-matrix-cell[data-level="10"],
-.risk-matrix-cell[data-level="11"],
-.risk-matrix-cell[data-level="12"] {
-  background: rgba(255, 193, 7, 0.18);
-  color: #78350F;
-  border: 1px solid rgba(255, 193, 7, 0.28);
-}
-
-.risk-matrix-cell[data-level="13"],
-.risk-matrix-cell[data-level="14"],
-.risk-matrix-cell[data-level="15"],
-.risk-matrix-cell[data-level="16"],
-.risk-matrix-cell[data-level="17"],
-.risk-matrix-cell[data-level="18"],
-.risk-matrix-cell[data-level="19"],
-.risk-matrix-cell[data-level="20"] {
-  background: rgba(234, 88, 12, 0.15);
-  color: #7C2D12;
-  border: 1px solid rgba(234, 88, 12, 0.22);
-}
-
-.risk-matrix-cell[data-level="21"],
-.risk-matrix-cell[data-level="22"],
-.risk-matrix-cell[data-level="23"],
-.risk-matrix-cell[data-level="24"],
-.risk-matrix-cell[data-level="25"] {
-  background: rgba(220, 38, 38, 0.15);
-  color: #991B1B;
-  border: 1px solid rgba(220, 38, 38, 0.25);
-}
-
 .risk-cell-score {
   font-size: var(--fs-body);
   font-weight: 700;
@@ -2602,37 +2482,6 @@
   letter-spacing: 0.07em;
   color: var(--fg-3);
   padding-top: 0.25rem;
-}
-
-.risk-matrix-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--fs-micro);
-  color: var(--fg-3);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: transparent;
-}
-
-.risk-matrix-corner { background: transparent; }
-
-.risk-matrix-axis-label {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  font-size: var(--fs-micro);
-  color: var(--quantica-pink);
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  grid-column: 1;
-  grid-row: 1 / 7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .risk-info-panel {

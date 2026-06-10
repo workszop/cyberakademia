@@ -10,6 +10,16 @@ import { getBox, onCorrect, onWrong, getMasteryPct, getDueTerms } from '../lib/l
 
 // ── Flashcard viewer ─────────────────────────────────────
 
+// Fisher–Yates shuffle (uniform, unlike sort(() => Math.random() - 0.5))
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function renderFlashcards() {
   const section = el('div', { class: 'section' },
     el('div', { class: 'section-title' }, 'Fiszki Leitner — nauka przez powtarzanie')
@@ -23,53 +33,30 @@ function renderFlashcards() {
   const allTermIds = allTerms.map(t => t.term);
   let flashcardState = getState().flashcards || {};
 
-  // Filter to due terms, or show all if none due
-  let dueTerms = getDueTerms(allTermIds, flashcardState);
-  if (dueTerms.length === 0) dueTerms = allTermIds;
-
-  let queue = [...dueTerms].sort(() => Math.random() - 0.5);
+  let queue = [];
   let idx = 0;
   let flipped = false;
 
-  const mastery = getMasteryPct(flashcardState, allTermIds);
-
-  // Stats bar
+  // ── Stats bar (badges refreshed after every answer) ────
+  const dueBadge = el('div', { class: 'badge badge-accent' }, '');
+  const masteryBadge = el('div', { class: 'badge badge-success' }, '');
   const statsBar = el('div', { style: { display: 'flex', gap: '1.5rem', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap' } },
-    el('div', { class: 'badge badge-accent' }, `${dueTerms.length} fiszek do przejrzenia`),
-    el('div', { class: 'badge badge-success' }, `Opanowanie: ${mastery}%`),
+    dueBadge, masteryBadge
   );
   section.appendChild(statsBar);
 
-  // Main flashcard
-  const scene = el('div', { class: 'flashcard-scene' });
-
-  const cardWrap = el('div', { class: 'flip-card flashcard-large', onclick: () => {
-    if (!flipped) {
-      cardWrap.classList.add('flipped');
-      flipped = true;
-    }
-  }});
-
-  const inner = el('div', { class: 'flip-card-inner' });
-  const front = el('div', { class: 'flip-card-front' });
-  const back = el('div', { class: 'flip-card-back' });
-
-  inner.appendChild(front);
-  inner.appendChild(back);
-  cardWrap.appendChild(inner);
-
-  // Progress
-  const progressEl = el('div', { class: 'flashcard-progress' }, `1 / ${queue.length}`);
-
-  // Leitner boxes display
-  const boxesWrap = el('div', { style: { display: 'flex', alignItems: 'center', gap: '0.5rem' } },
-    el('span', { style: { fontSize: '0.75rem', color: 'var(--text-muted)' } }, 'Koszyk:'),
-  );
-  const leitnerBoxes = el('div', { class: 'leitner-boxes' });
-  for (let i = 1; i <= 5; i++) {
-    leitnerBoxes.appendChild(el('div', { class: 'leitner-box', 'data-box': i }, ''));
+  function refreshStats() {
+    const due = getDueTerms(allTermIds, flashcardState);
+    dueBadge.textContent = `${due.length} fiszek do przejrzenia`;
+    masteryBadge.textContent = `Opanowanie: ${getMasteryPct(flashcardState, allTermIds)}%`;
   }
-  boxesWrap.appendChild(leitnerBoxes);
+
+  // ── Scene (persistent container; rebuilt per session) ──
+  const scene = el('div', { class: 'flashcard-scene' });
+  section.appendChild(scene);
+
+  // Mutable refs to the current card's parts (recreated by buildScene)
+  let cardWrap, front, back, progressEl, leitnerBoxes;
 
   function updateBoxes(term) {
     const box = getBox(term, flashcardState);
@@ -78,23 +65,64 @@ function renderFlashcards() {
     });
   }
 
+  function answer(correct) {
+    const term = queue[idx];
+    flashcardState = correct ? onCorrect(term, flashcardState) : onWrong(term, flashcardState);
+    updateFlashcard(term, flashcardState[term]?.box || 1);
+    refreshStats();
+    idx++;
+    loadCard();
+  }
+
+  function buildScene() {
+    scene.innerHTML = '';
+    flipped = false;
+
+    cardWrap = el('div', { class: 'flip-card flashcard-large', onclick: () => {
+      if (!flipped) { cardWrap.classList.add('flipped'); flipped = true; }
+    }});
+    const inner = el('div', { class: 'flip-card-inner' });
+    front = el('div', { class: 'flip-card-front' });
+    back = el('div', { class: 'flip-card-back' });
+    inner.appendChild(front);
+    inner.appendChild(back);
+    cardWrap.appendChild(inner);
+
+    progressEl = el('div', { class: 'flashcard-progress' }, '');
+
+    const boxesWrap = el('div', { style: { display: 'flex', alignItems: 'center', gap: '0.5rem' } },
+      el('span', { style: { fontSize: '0.75rem', color: 'var(--text-muted)' } }, 'Koszyk:'),
+    );
+    leitnerBoxes = el('div', { class: 'leitner-boxes' });
+    for (let i = 1; i <= 5; i++) {
+      leitnerBoxes.appendChild(el('div', { class: 'leitner-box', 'data-box': i }, ''));
+    }
+    boxesWrap.appendChild(leitnerBoxes);
+
+    const answerBtns = el('div', { style: { display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' } },
+      el('button', { class: 'btn btn-danger', onclick: () => answer(false) }, 'Nie wiedziałem/am'),
+      el('button', { class: 'btn btn-primary', style: { background: 'var(--success)', color: '#fff' }, onclick: () => answer(true) }, 'Wiedziałem/am')
+    );
+
+    scene.appendChild(el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '540px', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' } },
+      progressEl, boxesWrap
+    ));
+    scene.appendChild(cardWrap);
+    scene.appendChild(el('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' } },
+      'Kliknij kartę, żeby zobaczyć definicję, potem oceń się:'
+    ));
+    scene.appendChild(answerBtns);
+  }
+
   function loadCard() {
     if (idx >= queue.length) {
-      // All done
+      // Session done — overlay with a working restart
       scene.innerHTML = '';
-      const mastery2 = getMasteryPct(flashcardState, allTermIds);
       scene.appendChild(
         el('div', { class: 'result-overlay' },
           el('div', { class: 'result-title' }, 'Sesja zakończona!'),
-          el('p', { style: { color: 'var(--text-muted)', marginBottom: '1rem' } }, `Opanowanie słownika: ${mastery2}%`),
-          el('button', { class: 'btn btn-primary', onclick: () => {
-            flashcardState = getState().flashcards || {};
-            queue = [...allTermIds].sort(() => Math.random() - 0.5);
-            idx = 0; flipped = false;
-            section.innerHTML = '';
-            section.appendChild(el('div', { class: 'section-title' }, 'Fiszki Leitner — nauka przez powtarzanie'));
-            renderFlashcardsInto(section);
-          }}, 'Nowa sesja')
+          el('p', { style: { color: 'var(--text-muted)', marginBottom: '1rem' } }, `Opanowanie słownika: ${getMasteryPct(flashcardState, allTermIds)}%`),
+          el('button', { class: 'btn btn-primary', onclick: startSession }, 'Nowa sesja')
         )
       );
       return;
@@ -111,7 +139,6 @@ function renderFlashcards() {
     front.innerHTML = '';
     back.innerHTML = '';
 
-    front.appendChild(el('div', { class: 'card-icon', style: { marginBottom: '0.5rem' } }));
     front.appendChild(el('h3', { style: { fontSize: '1.2rem', textAlign: 'center' } }, term.term));
     if (term.full) {
       front.appendChild(el('p', { style: { fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.35rem', textAlign: 'center' } }, term.full));
@@ -122,55 +149,19 @@ function renderFlashcards() {
     back.appendChild(el('p', { class: 'card-answer', style: { fontSize: '0.88rem' } }, term.short));
   }
 
-  // Answer buttons (shown only after flip)
-  const answerBtns = el('div', { style: { display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' } });
+  function startSession() {
+    flashcardState = getState().flashcards || {};
+    let due = getDueTerms(allTermIds, flashcardState);
+    if (due.length === 0) due = allTermIds;
+    queue = shuffle(due);
+    idx = 0;
+    refreshStats();
+    buildScene();
+    loadCard();
+  }
 
-  const wrongBtn = el('button', {
-    class: 'btn btn-danger',
-    onclick: () => {
-      const term = queue[idx];
-      flashcardState = onWrong(term, flashcardState);
-      updateFlashcard(term, flashcardState[term]?.box || 1);
-      idx++;
-      loadCard();
-    }
-  }, 'Nie wiedziałem/am');
-
-  const rightBtn = el('button', {
-    class: 'btn btn-primary',
-    style: { background: 'var(--success)', color: '#fff' },
-    onclick: () => {
-      const term = queue[idx];
-      flashcardState = onCorrect(term, flashcardState);
-      const newBox = flashcardState[term]?.box || 1;
-      updateFlashcard(term, newBox);
-      idx++;
-      loadCard();
-    }
-  }, 'Wiedziałem/am');
-
-  answerBtns.appendChild(wrongBtn);
-  answerBtns.appendChild(rightBtn);
-
-  scene.appendChild(el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '540px', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' } },
-    progressEl, boxesWrap
-  ));
-  scene.appendChild(cardWrap);
-  scene.appendChild(el('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' } },
-    'Kliknij kartę, żeby zobaczyć definicję, potem oceń się:'
-  ));
-  scene.appendChild(answerBtns);
-  section.appendChild(scene);
-
-  loadCard();
+  startSession();
   return section;
-}
-
-// Helper: re-render flashcards into section (for restart)
-function renderFlashcardsInto(section) {
-  // Just re-append the same content
-  const inner = renderFlashcards();
-  while (inner.firstChild) section.appendChild(inner.firstChild);
 }
 
 // ── Term list / search ───────────────────────────────────

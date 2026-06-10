@@ -7,6 +7,8 @@ import { el } from '../dom.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { initConnectGame } from '../primitives/connectGame.js';
+import { CONNECTIONS, MORAL } from '../content/spiecie.js';
 
 // ── NIST CSF Wheel ───────────────────────────────────────
 
@@ -17,7 +19,7 @@ const NIST_SEGMENTS = [
     name: 'Zarządzaj',
     icon: null,
     desc: 'Nowa funkcja w CSF 2.0. Ustanowienie kontekstu, priorytetów i zarządzanie ryzykiem cyberbezpieczeństwa na poziomie organizacyjnym. Zaangażowanie zarządu.',
-    color: '#7c3aed',
+    color: '#7861FF',
     examples: ['Polityka bezpieczeństwa', 'Strategia zarządzania ryzykiem', 'Role i odpowiedzialności', 'Nadzór zarządu'],
   },
   {
@@ -110,51 +112,37 @@ function renderNISTWheel() {
   return section;
 }
 
-// ── IR Cycle ─────────────────────────────────────────────
+// ── Połącz warstwy (tabela spięcia) ──────────────────────
 
-const IR_PHASES = [
-  { label: 'Przygotowanie', desc: 'Playbooki, szkolenia, narzędzia, plan komunikacji — zanim incydent nastąpi.' },
-  { label: 'Identyfikacja', desc: 'Wykrycie i potwierdzenie incydentu. Czy to prawdziwy alarm, czy fałszywy pozytyw?' },
-  { label: 'Izolacja', desc: 'Zawieranie incydentu. Izolacja zainfekowanych systemów, ograniczenie "promienia wybuchu".' },
-  { label: 'Eradykacja', desc: 'Usunięcie przyczyny ataku — złośliwego oprogramowania, tylnych furtek, skompromitowanych kont.' },
-  { label: 'Odtworzenie', desc: 'Przywrócenie systemów z backupu lub czystych obrazów. Weryfikacja integralności.' },
-  { label: 'Nauki', desc: 'Post-mortem: co się stało, jak szybko wykryto, co można poprawić. Timeline incydentu.' },
-];
-
-function renderIRCycle() {
+function renderConnectGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Cykl reagowania na incydenty')
+    el('div', { class: 'section-title' }, 'Połącz warstwy: regulacja → organizacja → technologia')
   );
 
+  section.appendChild(el('p', { style: { marginBottom: '0.75rem' } },
+    'Sednem dojrzałego bezpieczeństwa jest spięcie trzech warstw. Każdy wiersz łączy wymóg regulacyjny (co nakazuje prawo) z tym, co robi organizacja (proces i role) oraz technologią, która ten proces obsługuje.'
+  ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Każdy incydent cyberbezpieczeństwa wymaga ustrukturyzowanego reagowania. Znajomość cyklu IR jest kluczowa dla każdej organizacji.'
+    'Wybierz po jednej karcie z każdej kolumny tak, aby tworzyły spójny zestaw, i kliknij "Połącz". Właściwa kolejność myślenia: zrozum obowiązek i ryzyko → ułóż proces i role → dobierz narzędzie.'
   ));
 
-  const cycle = el('div', { class: 'ir-cycle' });
-  const detailEl = el('div', {});
+  const gameEl = el('div', {});
+  section.appendChild(gameEl);
 
-  IR_PHASES.forEach((phase, i) => {
-    const seg = el('div', {
-      class: 'ir-segment',
-      onclick: () => {
-        cycle.querySelectorAll('.ir-segment').forEach(s => s.classList.remove('active'));
-        seg.classList.add('active');
-        detailEl.innerHTML = '';
-        detailEl.appendChild(
-          el('div', { class: 'alert alert-info', style: { animation: 'fadeIn 0.2s ease' } },
-            el('strong', {}, `Faza ${i + 1}: ${phase.label} — `),
-            phase.desc
-          )
-        );
-      }
-    },
-        el('div', { style: { fontSize: '0.75rem', fontWeight: '600' } }, phase.label)
-    );
-    cycle.appendChild(seg);
+  const moralBox = el('div', { class: 'alert alert-info', style: { marginTop: '1.5rem' } });
+  function renderMoral() {
+    moralBox.innerHTML = '';
+    moralBox.appendChild(el('strong', {}, 'Morał: '));
+    moralBox.appendChild(document.createTextNode(MORAL));
+  }
+  renderMoral();
+  section.appendChild(moralBox);
+
+  initConnectGame(gameEl, { connections: CONNECTIONS }, () => {
+    moralBox.classList.remove('alert-info');
+    moralBox.classList.add('alert-success');
   });
 
-  section.appendChild(cycle);
-  section.appendChild(el('div', { style: { marginTop: '1rem' } }, detailEl));
   return section;
 }
 
@@ -274,10 +262,10 @@ const QUIZ_QUESTIONS = [
     explanation: 'NIST CSF 2.0 dodał funkcję GOVERN (Zarządzaj) skupioną na zaangażowaniu zarządu i ustanowieniu kontekstu organizacyjnego. Poprzednie 5 funkcji pozostało bez zmian.'
   },
   {
-    question: 'Jaka jest kolejność faz reagowania na incydent (IR)?',
-    options: ['Eradykacja → Identyfikacja → Izolacja → Odtworzenie', 'Przygotowanie → Identyfikacja → Izolacja → Eradykacja → Odtworzenie → Nauki', 'Identyfikacja → Izolacja → Nauki → Eradykacja', 'Odtworzenie → Eradykacja → Przygotowanie'],
+    question: 'Jaka jest kolejność faz reagowania na incydent (IR) według przewodnika?',
+    options: ['Usunięcie → Wykrycie → Powstrzymanie → Odtworzenie', 'Przygotowanie → Wykrycie i zgłoszenie → Analiza → Powstrzymanie → Usunięcie → Odtworzenie → Wnioski', 'Wykrycie → Powstrzymanie → Wnioski → Usunięcie', 'Odtworzenie → Usunięcie → Przygotowanie → Analiza'],
     correct: 1,
-    explanation: 'Standardowy cykl IR: Przygotowanie (zanim nastąpi), Identyfikacja, Izolacja (containment), Eradykacja, Odtworzenie, Nauki (lessons learned). Fazy mogą się nakładać.'
+    explanation: 'Pełny cykl IR ma 7 faz: Przygotowanie (zanim nastąpi), Wykrycie i zgłoszenie, Analiza, Powstrzymanie (containment), Usunięcie zagrożenia (eradication), Odtworzenie (recovery), Wnioski (lessons learned). Szczegóły poszczególnych faz omawia moduł "Organizacja".'
   },
   {
     question: 'Co NALEŻY zrobić PRZED odtworzeniem systemów po ataku ransomware?',
@@ -311,8 +299,8 @@ export function renderSpiecie() {
     )
   ));
 
+  wrap.appendChild(renderConnectGame());
   wrap.appendChild(renderNISTWheel());
-  wrap.appendChild(renderIRCycle());
   wrap.appendChild(renderIncidentScenario());
 
   const quizSection = el('div', { class: 'section' },

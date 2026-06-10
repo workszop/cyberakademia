@@ -5,9 +5,12 @@
 
 import { el } from '../dom.js';
 import { CIA_TRIAD, CIA_SCENARIOS, RISK_RESPONSES, RISK_SCENARIOS } from '../content/fundamenty.js';
+import { THREATS } from '../content/threats.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { initSortIntoBuckets } from '../primitives/sortIntoBuckets.js';
+import { initExpandable } from '../primitives/expandable.js';
 import { icon } from '../icons.js';
 
 // ── CIA Triangle SVG ─────────────────────────────────────
@@ -51,7 +54,7 @@ function renderCIATriangle() {
   return section;
 }
 
-// ── CIA Sorting Game ─────────────────────────────────────
+// ── CIA Sorting Game (sortIntoBuckets) ───────────────────
 
 function renderCIASortingGame() {
   const section = el('div', { class: 'section' },
@@ -59,84 +62,62 @@ function renderCIASortingGame() {
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Przeczytaj opis incydentu i zdecyduj — które z właściwości CIA zostało naruszone? Kliknij C, I lub A.'
+    'Przeczytaj opis incydentu i wrzuć go do właściwego koszyka — które z właściwości CIA zostało naruszone? ' +
+    'Przeciągnij element do kategorii Poufność, Integralność lub Dostępność, albo kliknij element i wybierz kategorię.'
   );
   section.appendChild(desc);
 
-  const scenarios = [...CIA_SCENARIOS].sort(() => Math.random() - 0.5).slice(0, 6);
-  let current = 0;
-  let score = 0;
+  const gameEl = el('div', {});
+  section.appendChild(gameEl);
 
-  const scoreEl = el('div', { class: 'badge badge-accent', style: { marginBottom: '1rem' } }, `Wynik: 0 / ${scenarios.length}`);
-  const cardEl = el('div', { class: 'card', style: { maxWidth: '600px', margin: '0 auto' } });
-  const feedbackEl = el('div', {});
+  const buckets = [
+    { id: 'C', label: 'Poufność', color: CIA_TRIAD.C.color },
+    { id: 'I', label: 'Integralność', color: CIA_TRIAD.I.color },
+    { id: 'A', label: 'Dostępność', color: CIA_TRIAD.A.color },
+  ];
 
-  function renderScenario(i) {
-    if (i >= scenarios.length) {
-      cardEl.innerHTML = '';
-      const pct = Math.round((score / scenarios.length) * 100);
-      cardEl.appendChild(
-        el('div', { class: 'result-overlay' },
-          el('div', { class: 'result-title' }, `${score} / ${scenarios.length} poprawnych (${pct}%)`),
-          el('div', { class: 'result-subtitle', style: { marginBottom: '1rem' } },
-            pct >= 70 ? 'Rozumiesz triadę CIA!' : 'Powtórz definicje C, I, A i spróbuj ponownie.'
-          ),
-          el('button', {
-            class: 'btn btn-primary',
-            onclick: () => { current = 0; score = 0; scoreEl.textContent = `Wynik: 0 / ${scenarios.length}`; renderScenario(0); }
-          }, 'Zagraj jeszcze raz')
-        )
-      );
-      return;
-    }
+  const items = CIA_SCENARIOS.map((scenario, index) => ({
+    id: index,
+    text: scenario.text,
+    answer: scenario.answer,
+    explanation: scenario.explanation,
+  }));
 
-    const s = scenarios[i];
-    cardEl.innerHTML = '';
-    feedbackEl.innerHTML = '';
+  // Practice exercise — result does not gate module completion.
+  initSortIntoBuckets(gameEl, { buckets, items });
 
-    const q = el('div', {},
-      el('p', { style: { fontSize: '1rem', marginBottom: '1.5rem', lineHeight: '1.6' } }, `"${s.text}"`),
-      el('div', { style: { display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' } },
-        ...['C', 'I', 'A'].map(letter => {
-          const t = CIA_TRIAD[letter];
-          const btn = el('button', {
-            class: 'btn btn-secondary',
-            style: { minWidth: '120px', gap: '0.35rem' },
-            onclick: () => {
-              const correct = s.answer === letter;
-              if (correct) score++;
-              current++;
-              scoreEl.textContent = `Wynik: ${score} / ${scenarios.length}`;
+  return section;
+}
 
-              // Show feedback
-              cardEl.innerHTML = '';
-              cardEl.appendChild(
-                el('div', { class: `alert ${correct ? 'alert-success' : 'alert-warning'}` },
-                  el('strong', {}, correct ? 'Poprawnie! ' : `Nie tym razem. Prawidłowa odpowiedź: ${s.answer} — ${CIA_TRIAD[s.answer].namePL}. `),
-                  s.explanation
-                )
-              );
+// ── Krajobraz zagrożeń (expandable) ──────────────────────
 
-              const nextBtn = el('button', {
-                class: 'btn btn-primary',
-                style: { marginTop: '1rem' },
-                onclick: () => renderScenario(current)
-              }, current >= scenarios.length ? 'Zobacz wynik' : 'Następny');
-              cardEl.appendChild(nextBtn);
-            }
-          }, `${letter} — ${t.namePL}`);
-          return btn;
-        })
-      )
-    );
-    cardEl.appendChild(q);
-  }
+function renderThreatLandscape() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Krajobraz zagrożeń')
+  );
 
-  renderScenario(0);
+  const intro = el('p', { style: { marginBottom: '1.5rem' } },
+    'Te same trzy właściwości CIA są atakowane przez powtarzalny zestaw zagrożeń. ' +
+    'Rozwiń każdą kartę, aby zobaczyć punkt wejścia, skutek, naruszane właściwości CIA, obronę i realny przykład.'
+  );
+  section.appendChild(intro);
 
-  section.appendChild(scoreEl);
-  section.appendChild(cardEl);
-  section.appendChild(feedbackEl);
+  const listEl = el('div', {});
+  section.appendChild(listEl);
+
+  const threatItems = THREATS.map(t => ({
+    title: t.name,
+    summary: t.front,
+    detail:
+      `Punkt wejścia: ${t.entryPoint} ` +
+      `Skutek: ${t.effect} ` +
+      `Narusza: ${t.cia} ` +
+      `Obrona: ${t.defense} ` +
+      `Przykład: ${t.example}`,
+  }));
+
+  initExpandable(listEl, threatItems);
+
   return section;
 }
 
@@ -323,6 +304,7 @@ export function renderFundamenty() {
 
   wrap.appendChild(renderCIATriangle());
   wrap.appendChild(renderCIASortingGame());
+  wrap.appendChild(renderThreatLandscape());
   wrap.appendChild(renderRiskResponses());
   wrap.appendChild(renderRiskGame());
 

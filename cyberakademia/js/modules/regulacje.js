@@ -7,86 +7,17 @@ import { el } from '../dom.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
-import { icon } from '../icons.js';
+import { initTimeline } from '../primitives/timeline.js';
+import { initExpandable } from '../primitives/expandable.js';
+import {
+  REGULATIONS,
+  TIMELINE_EVENTS,
+  DORA_PILLARS,
+  OBLIGATIONS_NIS2,
+  REGULATION_QUIZ,
+} from '../content/regulacje.js';
 
-const REGULATIONS = [
-  {
-    id: 'rodo',
-    name: 'RODO / GDPR',
-    iconName: 'file-text',
-    color: '#4F46E5',
-    full: 'Rozporządzenie o Ochronie Danych Osobowych',
-    since: '25 maja 2018',
-    scope: 'Wszystkie organizacje przetwarzające dane osobowe obywateli UE',
-    keyReqs: [
-      'Podstawa prawna przetwarzania danych (zgoda, umowa, obowiązek prawny...)',
-      'Prawa osób: dostęp, sprostowanie, usunięcie, przeniesienie danych',
-      'Inspektor Ochrony Danych (DPO) — obowiązkowy w wielu podmiotach',
-      'Zgłaszanie naruszeń do UODO w ciągu 72h',
-      'Privacy by Design i Privacy by Default',
-    ],
-    penalties: 'Do 20 mln EUR lub 4% rocznego globalnego obrotu',
-    badge: 'dane',
-    tip: 'RODO chroni prywatność, NIS2/DORA chronią ciągłość i odporność — to inna oś. Nakładają się przy wyciekach danych osobowych: podwójny obowiązek zgłoszenia (do UODO i do CSIRT). DPO ≠ CISO.',
-  },
-  {
-    id: 'nis2',
-    name: 'NIS2',
-    iconName: 'layers',
-    color: '#0891B2',
-    full: 'Dyrektywa o Bezpieczeństwie Sieci i Systemów Informacyjnych 2',
-    since: 'Implementacja do 17.10.2024 (PL: KSC 2.0 — 3.04.2026)',
-    scope: 'Podmioty kluczowe i ważne w 18 sektorach (energetyka, transport, bankowość, zdrowie, woda, infrastruktura cyfrowa...)',
-    keyReqs: [
-      'Wdrożenie Systemu Zarządzania Bezpieczeństwem Informacji (SZBI)',
-      'Szacowanie ryzyka i zarządzanie nim',
-      'Zgłaszanie incydentów: ostrzeżenie 24h, raport 72h, raport końcowy 1 miesiąc',
-      'Zarządzanie ryzykiem dostawców (supply chain security)',
-      'Odpowiedzialność zarządu — zarząd musi zatwierdzić program bezpieczeństwa',
-    ],
-    penalties: 'Do 10 mln EUR lub 2% obrotu (kluczowe); 7 mln EUR lub 1,4% (ważne)',
-    badge: 'siec',
-    tip: '„Czy nas to dotyczy?" jest pierwszym i najważniejszym pytaniem. Decyduje sektor (kody PKD), wielkość i wyjątki. Zakres z ok. 400 do ~30 000 podmiotów w Polsce.',
-  },
-  {
-    id: 'ksc',
-    name: 'KSC (Ustawa o KSC)',
-    iconName: 'shield',
-    color: '#DC2626',
-    full: 'Krajowy System Cyberbezpieczeństwa',
-    since: 'Nowelizacja KSC 2.0: 3 kwietnia 2026',
-    scope: 'Operatorzy usług kluczowych i ważnych w Polsce; dostawcy usług cyfrowych',
-    keyReqs: [
-      'Wdrożenie SZBI zgodnego z wymogami KSC',
-      'Zgłaszanie incydentów do właściwego CSIRT (NASK/GOV/MON)',
-      'Regularne audyty bezpieczeństwa (co 2-3 lata)',
-      'Zarządzanie ryzykiem w łańcuchu dostaw',
-      'Szkolenia i podnoszenie świadomości pracowników',
-    ],
-    penalties: 'Do 10 mln EUR lub 2% obrotu (za naruszenia jako podmiot kluczowy)',
-    badge: 'ksc',
-    tip: 'Polska implementuje NIS2 przez KSC 2.0 — wejście w życie: 3.04.2026.',
-  },
-  {
-    id: 'dora',
-    name: 'DORA',
-    iconName: 'activity',
-    color: '#059669',
-    full: 'Digital Operational Resilience Act',
-    since: '17 stycznia 2025',
-    scope: 'Cały sektor finansowy UE: banki, ubezpieczyciele, firmy inwestycyjne, giełdy, dostawcy ICT',
-    keyReqs: [
-      'Zarządzanie ryzykiem ICT — framework, polityki, procedury',
-      'Zarządzanie incydentami ICT — klasyfikacja, zgłaszanie, analiza',
-      'Testy odporności cyfrowej — w tym TLPT co 3 lata (największe instytucje)',
-      'Zarządzanie ryzykiem zewnętrznych dostawców ICT (umowy, rejestr)',
-      'Wymiana informacji o zagrożeniach i podatnościach',
-    ],
-    penalties: 'Do 1% dziennego obrotu (dla dostawców ICT do 5 mln EUR/rok)',
-    badge: 'dora',
-    tip: 'NIS2 to szeroka „podłoga" bezpieczeństwa dla całej gospodarki. DORA to wyspecjalizowany, surowszy reżim dla finansów. Tam gdzie oba mogłyby kolidować — DORA jest przepisem szczególnym (lex specialis).',
-  },
-];
+// ── Overview: regulation cards (single source of truth) ──
 
 function renderRegTable() {
   const section = el('div', { class: 'section' },
@@ -97,6 +28,7 @@ function renderRegTable() {
     'W Europie nie ma „jednej ustawy o cyberbezpieczeństwie". Jest zestaw aktów, które dotyczą różnych grup podmiotów. Najważniejsze rozróżnienie:'
   );
   section.appendChild(intro);
+
   const diffNote = el('div', { class: 'alert alert-info', style: { marginBottom: '1.5rem' } },
     el('strong', {}, 'Kluczowa różnica prawna: '),
     'dyrektywa (NIS2) wymaga „przepisania" do prawa krajowego — stąd polska ustawa o KSC. ',
@@ -104,47 +36,98 @@ function renderRegTable() {
     '(DORA, RODO) obowiązuje bezpośrednio, identycznie w całej UE, bez ustawy krajowej. ',
     el('br', {}),
     el('em', {}, 'Czy mój podmiot może podlegać kilku naraz? '),
-    'Tak. Bank podlega DORA i RODO. Szpital podlega NIS2/KSC i RODO. Regulacje się uzupełniają, nie wykluczają.'
+    'Tak. Bank podlega DORA i RODO. Szpital podlega NIS2/KSC i RODO. Regulacje się uzupełniają, nie wykluczają. Tam gdzie DORA i NIS2 mogłyby kolidować — DORA jest przepisem szczególnym (lex specialis).'
   );
-  const fakeSection = section; // reference for append below
   section.appendChild(diffNote);
 
   const grid = el('div', { class: 'card-grid' });
 
   REGULATIONS.forEach(reg => {
-    const regIconEl = el('div', {});
-    regIconEl.appendChild(icon(reg.iconName, 28));
-    const card = el('div', { class: 'card' },
-      el('div', { style: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' } },
-        regIconEl,
-        el('div', {},
-          el('h3', { style: { marginBottom: '0.1rem' } }, reg.name),
-          el('div', { style: { fontSize: '0.78rem', color: 'var(--text-muted)' } }, reg.full)
-        )
+    const card = el('div', { class: 'card', style: { borderTop: `3px solid ${reg.color}` } },
+      el('div', { style: { marginBottom: '0.75rem' } },
+        el('h3', { style: { marginBottom: '0.1rem' } }, reg.name),
+        el('div', { style: { fontSize: '0.78rem', color: 'var(--text-muted)' } }, reg.legalForm)
       ),
-      el('div', { style: { fontSize: '0.82rem', color: 'var(--accent)', marginBottom: '0.35rem' } },
-        `Od: ${reg.since}`
+      el('div', { style: { fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.5rem' } },
+        el('strong', { style: { color: 'var(--text-dim)' } }, 'Zakres: '), reg.scope
       ),
       el('div', { style: { fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.75rem' } },
-        `Zakres: ${reg.scope}`
+        el('strong', { style: { color: 'var(--text-dim)' } }, 'Czego dotyczy: '), reg.topic
       ),
-      el('div', { style: { marginBottom: '0.75rem' } },
-        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' } }, 'Kluczowe wymagania'),
-        el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.8' } },
-          ...reg.keyReqs.map(r => el('li', {}, r))
+      el('p', { style: { fontSize: '0.85rem', marginBottom: '0.75rem' } }, reg.description),
+      el('div', {},
+        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' } }, 'Kluczowe fakty'),
+        el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.7' } },
+          ...reg.keyFacts.map(f => el('li', {}, f))
         )
-      ),
-      el('div', { class: 'alert alert-danger', style: { margin: '0', fontSize: '0.8rem' } },
-        el('strong', {}, 'Kary: '), reg.penalties
-      ),
-      el('div', { class: 'alert alert-info', style: { marginTop: '0.5rem', fontSize: '0.78rem' } },
-        el('strong', {}, 'Uwaga: '), reg.tip
       )
     );
     grid.appendChild(card);
   });
 
   section.appendChild(grid);
+  return section;
+}
+
+// ── Regulation timeline ──────────────────────────────────
+
+function renderTimeline() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Oś czasu regulacji')
+  );
+
+  const desc = el('p', { style: { marginBottom: '1.5rem' } },
+    'Od pierwszej dyrektywy NIS (2016) po stopniowe wchodzenie w życie KSC 2.0 w Polsce. Kliknij wydarzenie, aby poznać szczegóły.'
+  );
+  section.appendChild(desc);
+
+  const container = el('div', {});
+  section.appendChild(container);
+  initTimeline(container, TIMELINE_EVENTS);
+  return section;
+}
+
+// ── NIS2 obligations ─────────────────────────────────────
+
+function renderNIS2Obligations() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'NIS2 / KSC — kluczowe obowiązki')
+  );
+
+  const desc = el('p', { style: { marginBottom: '1.5rem' } },
+    'Cztery filary obowiązków podmiotów kluczowych i ważnych. Kliknij, aby rozwinąć szczegóły.'
+  );
+  section.appendChild(desc);
+
+  const container = el('div', {});
+  section.appendChild(container);
+  initExpandable(container, OBLIGATIONS_NIS2.map(o => ({
+    title: o.name,
+    summary: o.description,
+    detail: o.detail,
+  })));
+  return section;
+}
+
+// ── DORA pillars ─────────────────────────────────────────
+
+function renderDORAPillars() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'DORA — 5 filarów')
+  );
+
+  const desc = el('p', { style: { marginBottom: '1.5rem' } },
+    'DORA porządkuje wymagania odporności cyfrowej sektora finansowego wokół pięciu filarów. Kliknij, aby rozwinąć szczegóły.'
+  );
+  section.appendChild(desc);
+
+  const container = el('div', {});
+  section.appendChild(container);
+  initExpandable(container, DORA_PILLARS.map(p => ({
+    title: p.name,
+    summary: p.description,
+    detail: p.detail,
+  })));
   return section;
 }
 
@@ -289,40 +272,7 @@ function renderDPOvsCISO() {
   return section;
 }
 
-// ── Quiz ─────────────────────────────────────────────────
-
-const QUIZ_QUESTIONS = [
-  {
-    question: 'W jakim czasie należy zgłosić naruszenie danych osobowych do UODO zgodnie z RODO?',
-    options: ['24 godziny', '48 godzin', '72 godziny', '7 dni'],
-    correct: 2,
-    explanation: 'RODO art. 33 wymaga zgłoszenia naruszenia danych osobowych organowi nadzorczemu (UODO) bez zbędnej zwłoki, nie później niż 72h po stwierdzeniu naruszenia.'
-  },
-  {
-    question: 'Które sektory są NOWE w zakresie NIS2 (nieobecne w NIS1)?',
-    options: ['Energetyka i transport', 'Produkcja, poczta i zarządzanie odpadami', 'Bankowość i finanse', 'Infrastruktura cyfrowa'],
-    correct: 1,
-    explanation: 'NIS2 znacząco rozszerzyło zakres o nowe sektory m.in. produkcję, pocztę, zarządzanie odpadami i wiele innych nieobecnych w pierwotnej NIS1.'
-  },
-  {
-    question: 'Czym jest DPO (Inspektor Ochrony Danych)?',
-    options: ['Kierownik działu IT odpowiedzialny za bezpieczeństwo', 'Niezależna funkcja doradcza ds. zgodności z RODO', 'Osoba zarządzająca całym SOC', 'Audytor zewnętrzny weryfikujący bezpieczeństwo'],
-    correct: 1,
-    explanation: 'DPO (IOD) to niezależna funkcja doradcza skupiona wyłącznie na zgodności z RODO — inna niż CISO. Musi być niezależny i chroniony przed dyscyplinarnym zwolnieniem.'
-  },
-  {
-    question: 'Jakie testy odporności wymaga DORA dla największych instytucji finansowych?',
-    options: ['Pentest co rok', 'TLPT (Threat-Led Penetration Testing) co 3 lata', 'Skan podatności co kwartał', 'Red team exercise co 5 lat'],
-    correct: 1,
-    explanation: 'DORA wymaga od największych instytucji finansowych przeprowadzania TLPT (Threat-Led Penetration Testing) co 3 lata według standardu TIBER-EU.'
-  },
-  {
-    question: 'Jakie są maksymalne kary za naruszenie RODO?',
-    options: ['Do 1 mln EUR', 'Do 5 mln EUR lub 2% obrotu', 'Do 20 mln EUR lub 4% obrotu', 'Do 50 mln EUR'],
-    correct: 2,
-    explanation: 'Kary za najpoważniejsze naruszenia RODO (art. 83 ust. 5) wynoszą do 20 mln EUR lub 4% rocznego światowego obrotu — w zależności co jest wyższe.'
-  },
-];
+// ── Render ───────────────────────────────────────────────
 
 export function renderRegulacje() {
   const wrap = el('div', { class: 'slide-up' });
@@ -337,6 +287,9 @@ export function renderRegulacje() {
   ));
 
   wrap.appendChild(renderRegTable());
+  wrap.appendChild(renderTimeline());
+  wrap.appendChild(renderNIS2Obligations());
+  wrap.appendChild(renderDORAPillars());
   wrap.appendChild(renderMatchGame());
   wrap.appendChild(renderDPOvsCISO());
 
@@ -346,7 +299,7 @@ export function renderRegulacje() {
   const quizContainer = el('div', {});
   quizSection.appendChild(quizContainer);
 
-  initQuiz(quizContainer, { questions: QUIZ_QUESTIONS }, (score, total) => {
+  initQuiz(quizContainer, { questions: REGULATION_QUIZ }, (score, total) => {
     if (score / total >= 0.7) {
       completeModule('regulacje', score, total);
       earnBadge('regulacje');

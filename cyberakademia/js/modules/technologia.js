@@ -7,7 +7,17 @@ import { el } from '../dom.js';
 import { completeModule, earnBadge } from '../store.js';
 import { fullBurst } from '../confetti.js';
 import { initQuiz } from '../primitives/quiz.js';
+import { initExpandable } from '../primitives/expandable.js';
 import { icon } from '../icons.js';
+import {
+  SOC_TOOLS,
+  NETWORK_TOOLS,
+  IDENTITY_TOOLS,
+  DATA_PROTECTION,
+  OFFENSIVE_TESTING,
+  DEFENSE_LAYERS,
+  TECH_QUIZ,
+} from '../content/technologia.js';
 
 // ── MFA Simulator ────────────────────────────────────────
 
@@ -214,79 +224,214 @@ function renderZeroTrust() {
   return section;
 }
 
-// ── Key tools overview ───────────────────────────────────
+// ── Tool families (z content/technologia.js) ─────────────
 
-function renderToolsOverview() {
+// Buduje pojedynczą rodzinę narzędzi jako accordion (initExpandable).
+// Mapuje pola z content: name → title, full → summary, opis/szczegóły → detail.
+function renderToolFamily(title, intro, tools, buildDetail) {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Kluczowe narzędzia bezpieczeństwa')
+    el('div', { class: 'section-title' }, title)
   );
 
-  section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Tu pojawiają się narzędzia. Najważniejsza zasada porządkująca to obrona warstwowa (defense in depth): ' +
-    'nie ma jednego „magicznego pudełka" — jest wiele warstw, z których każda łapie to, co przepuści poprzednia. ' +
-    'Trzymanie tej zasady w głowie chroni przed kupowaniem narzędzi bez zrozumienia, jakiemu obowiązkowi i jakiemu ryzyku mają służyć.'
-  ));
+  if (intro) {
+    section.appendChild(el('p', { style: { marginBottom: '1.5rem' } }, intro));
+  }
 
-  const tools = [
-    { iconName: 'server', name: 'SIEM', full: 'Security Information and Event Management', desc: 'Mózg SOC. Zbiera logi i zdarzenia z całej infrastruktury (serwery, sieć, aplikacje), koreluje je i generuje alarmy. Analogia: centrala, do której spływają wszystkie kamery i czujniki, i która zapala alarm, gdy coś nie pasuje. Przykłady: Splunk, Microsoft Sentinel, Elastic.' },
-    { iconName: 'shield', name: 'EDR', full: 'Endpoint Detection and Response', desc: 'Następca antywirusa. Monitoruje zachowanie procesów na urządzeniach końcowych.' },
-    { iconName: 'zap', name: 'SOAR', full: 'Security Orchestration, Automation and Response', desc: 'Automatyzuje reagowanie — gdy SIEM wykryje phishing, SOAR automatycznie izoluje zagrożenie.' },
-    { iconName: 'eye', name: 'XDR', full: 'Extended Detection and Response', desc: 'Integruje endpoint, sieć, email i chmurę. Pełniejszy obraz zagrożeń niż sam EDR.' },
-    { iconName: 'wifi-off', name: 'WAF', full: 'Web Application Firewall', desc: 'Chroni aplikacje webowe przed SQL injection, XSS, CSRF i innymi atakami HTTP.' },
-    { iconName: 'key', name: 'PAM', full: 'Privileged Access Management', desc: 'Specjalna kontrola kont administratorów — sejf na hasła, nagrywanie sesji, rotacja haseł.' },
-    { iconName: 'database', name: 'IAM', full: 'Identity and Access Management', desc: 'Zarządzanie tożsamościami i dostępem. Kto, do czego, kiedy i jak. Fundament Zero Trust.' },
-    { iconName: 'activity', name: 'DLP', full: 'Data Loss Prevention', desc: 'Monitoruje i blokuje wyciek wrażliwych danych — przez email, USB, chmurę.' },
-    { iconName: 'lock', name: 'MFA', full: 'Multi-Factor Authentication', desc: 'Hasło to za mało. MFA wymaga drugiego czynnika. Eliminuje 99% ataków na konta.' },
-  ];
+  const items = tools.map(t => ({
+    title: t.full ? `${t.name} — ${t.full}` : t.name,
+    summary: t.description || '',
+    detail: buildDetail(t),
+  }));
 
-  const grid = el('div', { class: 'card-grid' });
-  tools.forEach(t => {
-    const toolIconEl = el('div', { style: { marginBottom: '0.5rem' } });
-    toolIconEl.appendChild(icon(t.iconName, 24));
-    grid.appendChild(el('div', { class: 'card' },
-      toolIconEl,
-      el('h3', {}, t.name),
-      el('div', { style: { fontSize: '0.75rem', color: 'var(--accent)', marginBottom: '0.4rem' } }, t.full),
-      el('p', { style: { fontSize: '0.85rem' } }, t.desc)
-    ));
-  });
-
-  section.appendChild(grid);
+  const acc = el('div', {});
+  section.appendChild(acc);
+  initExpandable(acc, items);
   return section;
 }
 
-const QUIZ_QUESTIONS = [
-  {
-    question: 'Co oznacza zasada "3-2-1" w strategii backupu?',
-    options: ['3 serwery, 2 lokalizacje, 1 admin', '3 kopie danych, 2 różne nośniki, 1 kopia poza siedzibą', '3 backupy dziennie, 2 tygodniowo, 1 miesięcznie', '3 wersje pliku, 2 formaty, 1 archiwum'],
-    correct: 1,
-    explanation: 'Zasada 3-2-1: 3 kopie danych, na 2 różnych nośnikach (np. dysk + chmura), 1 kopia offline lub poza siedzibą. Chroni przed ransomware i katastrofami fizycznymi.'
-  },
-  {
-    question: 'Jaka jest fundamentalna zasada Zero Trust?',
-    options: ['Ufaj sieci wewnętrznej', '"Never trust, always verify" — weryfikuj każdy dostęp', 'Blokuj cały ruch zewnętrzny', 'Tylko VPN dla zdalnych użytkowników'],
-    correct: 1,
-    explanation: 'Zero Trust: "Never trust, always verify" + Least Privilege + Assume Breach. Zakłada, że sieć jest już skompromitowana i weryfikuje każdy dostęp z osobna.'
-  },
-  {
-    question: 'Czym różni się EDR od klasycznego antywirusa?',
-    options: ['EDR jest tylko dla laptopów', 'EDR monitoruje zachowanie procesów i umożliwia izolację urządzeń', 'Antywirus jest skuteczniejszy', 'Nie ma różnicy — to to samo narzędzie'],
-    correct: 1,
-    explanation: 'Klasyczny AV szuka znanych sygnatur. EDR monitoruje zachowanie procesów w czasie rzeczywistym, wykrywa anomalie i umożliwia izolację urządzenia oraz zebranie dowodów.'
-  },
-  {
-    question: 'Które czynniki składają się na MFA?',
-    options: ['Tylko hasło i PIN', 'Coś co wiesz + coś co masz + coś czym jesteś', 'Login i email weryfikacyjny', 'VPN i hasło'],
-    correct: 1,
-    explanation: 'MFA wymaga co najmniej 2 różnych kategorii czynników: Wiedza (hasło, PIN), Posiadanie (telefon, token), Biometria (odcisk palca, twarz). Dwa hasła to NIE MFA.'
-  },
-  {
-    question: 'Do czego służy SOAR?',
-    options: ['Skanowania podatności w sieci', 'Automatyzacji reagowania na incydenty i orkiestracji narzędzi', 'Zarządzania tożsamościami', 'Backupu danych'],
-    correct: 1,
-    explanation: 'SOAR automatyzuje powtarzalne zadania IR — gdy SIEM wykryje zagrożenie, SOAR może automatycznie zablokować IP, poddać kwarantannie endpoint i powiadomić analityka.'
-  },
-];
+// Składa czytelny tekst szczegółów z dostępnych pól danej rodziny.
+function joinDetail(parts) {
+  return parts.filter(Boolean).join('\n\n');
+}
+
+function renderSocTools() {
+  return renderToolFamily(
+    'Centrum operacji bezpieczeństwa (SOC)',
+    'Narzędzia SOC wykrywają i obsługują incydenty. Sercem jest SIEM — centrala monitoringu, ' +
+    'do której spływają logi i zdarzenia z całej infrastruktury, jak obrazy z wszystkich kamer i czujników w budynku, ' +
+    'a SOAR automatyzuje reagowanie. Warstwy detekcji różnią się zasięgiem: EDR widzi endpoint, ' +
+    'NDR — ruch w sieci, XDR łączy oba obrazy, a MDR oddaje całość w ręce zewnętrznego zespołu.',
+    SOC_TOOLS,
+    (t) => joinDetail([
+      t.analogy && `Analogia: ${t.analogy}`,
+      t.howItWorks && `Jak działa: ${t.howItWorks}`,
+      Array.isArray(t.examples) && t.examples.length && `Przykłady: ${t.examples.join(', ')}.`,
+      Array.isArray(t.pros) && t.pros.length && `Zalety: ${t.pros.join('; ')}.`,
+      Array.isArray(t.cons) && t.cons.length && `Ograniczenia: ${t.cons.join('; ')}.`,
+    ])
+  );
+}
+
+function renderNetworkTools() {
+  return renderToolFamily(
+    'Narzędzia sieciowe',
+    'Kontrolują ruch wchodzący, wychodzący i przemieszczający się wewnątrz sieci — od bramy (NGFW) ' +
+    'przez wykrywanie i blokowanie włamań (IDS/IPS), po ochronę aplikacji webowych (WAF) i bezpieczny dostęp zdalny (VPN/ZTNA).',
+    NETWORK_TOOLS,
+    (t) => joinDetail([
+      t.detail,
+      Array.isArray(t.examples) && t.examples.length && `Przykłady: ${t.examples.join(', ')}.`,
+      Array.isArray(t.useCases) && t.useCases.length && `Zastosowania: ${t.useCases.join('; ')}.`,
+    ])
+  );
+}
+
+function renderIdentityTools() {
+  return renderToolFamily(
+    'Tożsamość i dostęp',
+    'W modelu Zero Trust granicą bezpieczeństwa nie jest już sieć, lecz tożsamość. ' +
+    'IAM porządkuje „kto, do czego, kiedy i jak", MFA dokłada drugi czynnik, a PAM pilnuje kont uprzywilejowanych — „kluczy do królestwa".',
+    IDENTITY_TOOLS,
+    (t) => joinDetail([
+      t.detail,
+      t.zeroTrustRelation && `Rola w Zero Trust: ${t.zeroTrustRelation}`,
+      Array.isArray(t.pillars) && t.pillars.length && `Filary: ${t.pillars.join('; ')}.`,
+      Array.isArray(t.examples) && t.examples.length && `Przykłady: ${t.examples.join(', ')}.`,
+    ])
+  );
+}
+
+function renderDataProtectionTools() {
+  return renderToolFamily(
+    'Ochrona danych',
+    'Poufność, integralność i dostępność danych: szyfrowanie (w spoczynku i w tranzycie), ' +
+    'kopie zapasowe według zasady 3-2-1 oraz DLP zapobiegające wyciekom.',
+    DATA_PROTECTION,
+    (t) => {
+      const parts = [t.description];
+      if (Array.isArray(t.types)) {
+        t.types.forEach(ty => {
+          parts.push(`${ty.name}: ${ty.description} ${ty.standards || ''} ${ty.regulatoryReq || ''}`.trim());
+        });
+      }
+      if (Array.isArray(t.rules)) {
+        parts.push(t.rules.map(r => `${r.rule} — ${r.explanation}`).join(' '));
+      }
+      if (Array.isArray(t.extensions)) {
+        parts.push(t.extensions.map(e => `${e.name}: ${e.description}`).join(' '));
+      }
+      if (t.rtoRpo) {
+        parts.push(`${t.rtoRpo.rto} ${t.rtoRpo.rpo}`);
+      }
+      if (Array.isArray(t.channels)) {
+        parts.push(`Kanały: ${t.channels.join('; ')}.`);
+      }
+      if (t.prerequisites) parts.push(t.prerequisites);
+      if (t.regulatoryLink) parts.push(t.regulatoryLink);
+      return joinDetail(parts);
+    }
+  );
+}
+
+function renderOffensiveTesting() {
+  return renderToolFamily(
+    'Testowanie ofensywne',
+    'Najlepszy sposób, by sprawdzić obronę, to ją zaatakować w kontrolowanych warunkach: ' +
+    'od testu penetracyjnego, przez ćwiczenia Red/Blue Team, po regulacyjne TLPT wymagane przez DORA.',
+    OFFENSIVE_TESTING,
+    (t) => {
+      const parts = [t.detail];
+      if (Array.isArray(t.types)) {
+        parts.push(t.types.map(ty => `${ty.name}: ${ty.description}`).join(' '));
+      }
+      if (t.scope) parts.push(`Zakres: ${t.scope}`);
+      if (t.frequency) parts.push(`Częstotliwość: ${t.frequency}`);
+      if (t.vspentest) parts.push(t.vspentest);
+      if (t.purpleTeam) parts.push(t.purpleTeam);
+      if (t.tiber) parts.push(t.tiber);
+      if (t.regulatoryLink) parts.push(t.regulatoryLink);
+      return joinDetail(parts);
+    }
+  );
+}
+
+// ── Obrona warstwowa (defense in depth) ──────────────────
+
+// Mapuje warstwy z DEFENSE_LAYERS na ikony z naszego zestawu (bez emoji).
+const LAYER_ICONS = {
+  mfa: 'lock',
+  backup: 'database',
+  edr: 'shield',
+  ngfw: 'wifi-off',
+  waf: 'server',
+  'iam-layer': 'key',
+  'pam-layer': 'key',
+  'siem-layer': 'eye',
+  'dlp-layer': 'activity',
+  segmentation: 'layers',
+  'vuln-mgmt-layer': 'zap',
+};
+
+function renderDefenseInDepth() {
+  const section = el('div', { class: 'section' },
+    el('div', { class: 'section-title' }, 'Obrona warstwowa (defense in depth)')
+  );
+
+  section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
+    'Nie ma magicznego pudełka — jest wiele warstw, z których każda łapie to, co przepuści poprzednia. ' +
+    'Żadna pojedyncza kontrola nie zatrzyma każdego ataku, ale ułożone jedna za drugą znacząco podnoszą koszt i ryzyko dla atakującego. ' +
+    'Każda warstwa coś blokuje — i czegoś nie blokuje, dlatego dopiero razem tworzą głęboką obronę.'
+  ));
+
+  const list = el('div', { class: 'card-grid', style: { gridTemplateColumns: '1fr' } });
+
+  DEFENSE_LAYERS.forEach((layer, idx) => {
+    const iconName = LAYER_ICONS[layer.id] || 'shield';
+
+    const head = el('div', { style: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' } });
+    const num = el('div', {
+      style: {
+        flexShrink: '0', width: '1.75rem', height: '1.75rem', borderRadius: '50%',
+        background: 'var(--accent)', color: '#fff', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: '600',
+      }
+    }, String(idx + 1));
+    head.appendChild(num);
+
+    const iconWrap = el('div', { style: { flexShrink: '0', color: 'var(--accent)' } });
+    iconWrap.appendChild(icon(iconName, 22));
+    head.appendChild(iconWrap);
+
+    head.appendChild(el('h3', { style: { margin: '0' } }, layer.name));
+
+    const card = el('div', { class: 'card' }, head);
+
+    card.appendChild(el('p', { style: { fontSize: '0.9rem', marginBottom: '0.6rem' } }, layer.description));
+
+    if (Array.isArray(layer.blocks) && layer.blocks.length) {
+      card.appendChild(el('div', { style: { fontSize: '0.8rem', color: 'var(--success)', marginBottom: '0.25rem' } },
+        el('strong', {}, 'Blokuje: '), layer.blocks.join(', ')
+      ));
+    }
+    if (Array.isArray(layer.doesNotBlock) && layer.doesNotBlock.length) {
+      card.appendChild(el('div', { style: { fontSize: '0.8rem', color: 'var(--text-muted)' } },
+        el('strong', {}, 'Nie blokuje: '), layer.doesNotBlock.join('; ')
+      ));
+    }
+
+    list.appendChild(card);
+  });
+
+  section.appendChild(list);
+
+  section.appendChild(el('div', { class: 'alert alert-info', style: { marginTop: '1rem' } },
+    el('strong', {}, 'Zasada porządkująca: '),
+    'Trzymanie obrony warstwowej w głowie chroni przed kupowaniem narzędzi „bo modne" — każda warstwa ' +
+    'powinna odpowiadać konkretnemu ryzyku i obowiązkowi, a luki jednej warstwy domyka kolejna.'
+  ));
+
+  return section;
+}
 
 export function renderTechnologia() {
   const wrap = el('div', { class: 'slide-up' });
@@ -300,7 +445,12 @@ export function renderTechnologia() {
     )
   ));
 
-  wrap.appendChild(renderToolsOverview());
+  wrap.appendChild(renderDefenseInDepth());
+  wrap.appendChild(renderSocTools());
+  wrap.appendChild(renderNetworkTools());
+  wrap.appendChild(renderIdentityTools());
+  wrap.appendChild(renderDataProtectionTools());
+  wrap.appendChild(renderOffensiveTesting());
   wrap.appendChild(renderMFASim());
   wrap.appendChild(renderBackup321());
   wrap.appendChild(renderZeroTrust());
@@ -310,7 +460,7 @@ export function renderTechnologia() {
   );
   const qc = el('div', {});
   quizSection.appendChild(qc);
-  initQuiz(qc, { questions: QUIZ_QUESTIONS }, (score, total) => {
+  initQuiz(qc, { questions: TECH_QUIZ }, (score, total) => {
     if (score / total >= 0.7) {
       completeModule('technologia', score, total);
       earnBadge('technologia');

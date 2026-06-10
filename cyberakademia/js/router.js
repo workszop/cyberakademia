@@ -4,9 +4,9 @@
 // ============================================================
 
 import { setLastVisited } from './store.js';
+import { enrichGlossaryDom } from './glossary.js';
 
 const routes = {};
-let currentRoute = null;
 
 /**
  * Register a route.
@@ -18,27 +18,11 @@ export function register(hash, renderFn) {
 }
 
 /**
- * Navigate to a route by updating location.hash.
- * @param {string} hash
- */
-export function navigate(hash) {
-  window.location.hash = hash;
-}
-
-/**
- * Returns the currently active route hash.
- */
-export function getCurrentRoute() {
-  return currentRoute;
-}
-
-/**
  * Initialise the router — binds hashchange and handles the initial URL.
  */
 export function init() {
   function handle() {
     const hash = window.location.hash || '#/';
-    currentRoute = hash;
 
     // Keep last visited
     setLastVisited(hash);
@@ -72,6 +56,8 @@ export function init() {
       const fragment = renderFn();
       if (fragment instanceof Node) {
         app.appendChild(fragment);
+        // Wrap glossary acronyms so hover tooltips work
+        enrichGlossaryDom(app);
       }
     } catch (err) {
       console.error('[router] render error for', hash, err);
@@ -79,17 +65,14 @@ export function init() {
         <strong>Błąd:</strong> Nie można załadować modułu (${hash}).
         <br><small>${err.message}</small>
       </div>`;
+    } finally {
+      // Always restore visibility, even after a render error
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      requestAnimationFrame(() => {
+        app.style.transition = 'opacity 0.2s ease';
+        app.style.opacity = '1';
+      });
     }
-
-    // Scroll to top
-    app.scrollTop = 0;
-    window.scrollTo({ top: 0, behavior: 'instant' });
-
-    // Fade in
-    requestAnimationFrame(() => {
-      app.style.transition = 'opacity 0.2s ease';
-      app.style.opacity = '1';
-    });
   }
 
   window.addEventListener('hashchange', handle);
