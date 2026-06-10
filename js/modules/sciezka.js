@@ -60,7 +60,7 @@ const PATH_STEPS = [
     hash: '#/slownik',
     icon: 'book-open',
     title: 'Słownik',
-    desc: 'Fiszki Leitner - mistrzowskie opanowanie terminologii',
+    desc: 'Fiszki Leitnera – mistrzowskie opanowanie terminologii',
     badge: 'Słownik',
     order: 6,
   },

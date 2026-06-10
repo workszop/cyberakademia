@@ -14,7 +14,7 @@ export const CIA_TRIAD = {
     color: '#4F46E5',
     description: 'Dostęp do danych mają tylko uprawnieni.',
     violationExample: 'Naruszenie = wyciek danych. Haker wykradł bazę klientów. Pracownik wysłał poufny dokument na prywatny e-mail.',
-    controls: ['Szyfrowanie danych (w spoczynku i w tranzycie)', 'Kontrola dostępu (IAM, PAM)', 'MFA', 'DLP', 'Klasyfikacja danych'],
+    controls: ['Szyfrowanie danych przechowywanych i przesyłanych', 'Kontrola dostępu (IAM, PAM)', 'MFA', 'DLP', 'Klasyfikacja danych'],
     questions: ['Kto może czytać te dane?', 'Czy dane są zaszyfrowane?', 'Czy dostęp jest logowany?']
   },
   I: {
@@ -25,7 +25,7 @@ export const CIA_TRIAD = {
     color: '#059669',
     description: 'Dane nie zostały niepostrzeżenie zmienione.',
     violationExample: 'Naruszenie = sfałszowany przelew, podmieniona faktura. Atakujący zmienił numer konta bankowego w systemie finansowym.',
-    controls: ['Podpisy cyfrowe i sumy kontrolne', 'Kontrola wersji i logi zmian', 'Separacja obowiązków', 'Backupy do weryfikacji', 'SIEM do wykrywania zmian'],
+    controls: ['Podpisy cyfrowe i sumy kontrolne', 'Kontrola wersji i logi zmian', 'Separacja obowiązków', 'Weryfikowane kopie zapasowe', 'SIEM do wykrywania zmian'],
     questions: ['Czy ktoś mógł zmienić te dane?', 'Czy zmiany są logowane?', 'Jak weryfikujemy autentyczność?']
   },
   A: {
@@ -34,10 +34,10 @@ export const CIA_TRIAD = {
     namePL: 'Dostępność',
     icon: '⚡',
     color: '#D97706',
-    description: 'System działa, kiedy jest potrzebny.',
+    description: 'System jest dostępny wtedy, gdy jest potrzebny.',
     violationExample: 'Naruszenie = ransomware, który blokuje firmę, albo atak DDoS. Szpital niedostępny przez tydzień po zaszyfrowaniu serwerów.',
     controls: ['Redundancja systemów (HA)', 'Backup 3-2-1 z testami odtwarzania', 'DRP i BCP', 'Ochrona DDoS (CDN)', 'Monitoring dostępności'],
-    questions: ['Co się stanie gdy system padnie?', 'Jak szybko możemy go odtworzyć?', 'Czy backup działa?']
+    questions: ['Co się stanie, gdy system przestanie działać?', 'Jak szybko możemy go odtworzyć?', 'Czy kopie zapasowe działają?']
   },
 };
 
@@ -51,7 +51,7 @@ export const RISK_RESPONSES = [
     color: '#4F46E5',
     description: 'Wdrożenie kontroli technicznych lub organizacyjnych redukujących prawdopodobieństwo wystąpienia zagrożenia lub jego skutki. Ryzyko pozostaje, ale na akceptowalnym poziomie.',
     whenToUse: 'Gdy ryzyko jest powyżej apetytu na ryzyko organizacji, ale można je zredukować do akceptowalnego poziomu przez kontrole. Najczęstsza i zalecana odpowiedź.',
-    examples: ['Wdrożenie MFA redukuje ryzyko przejęcia kont', 'Aktualizacja oprogramowania redukuje ryzyko eksploitacji', 'Szkolenia zmniejszają ryzyko phishingu', 'Backup redukuje skutki ransomware'],
+    examples: ['Wdrożenie MFA redukuje ryzyko przejęcia kont', 'Aktualizacja oprogramowania redukuje ryzyko wykorzystania podatności', 'Szkolenia zmniejszają ryzyko phishingu', 'Kopie zapasowe redukują skutki ransomware'],
     cost: 'Umiarkowany - inwestycja w kontrole bezpieczeństwa'
   },
   {
@@ -100,19 +100,19 @@ export const CIA_SCENARIOS = [
     explanation: 'Naruszono Integralność (Integrity) - dane zostały zmodyfikowane bez autoryzacji. Faktura jest teraz fałszywa, a przelew trafi do atakującego zamiast do dostawcy.'
   },
   {
-    text: 'Atak DDoS spowodował, że strona banku była niedostępna przez 4 godziny.',
+    text: 'Atak DDoS spowodował, że strona banku była niedostępna przez cztery godziny.',
     answer: 'A',
-    explanation: 'Naruszono Dostępność (Availability) - system nie działał gdy był potrzebny. Klienci nie mogli wykonać przelewów, bank stracił przychody i reputację.'
+    explanation: 'Naruszono Dostępność (Availability) – system nie działał, gdy był potrzebny. Klienci nie mogli wykonać przelewów, bank stracił przychody i reputację.'
   },
   {
     text: 'Pracownik wysłał poufny raport na swój prywatny adres e-mail przed odejściem z firmy.',
     answer: 'C',
-    explanation: 'Naruszono Poufność - tajemnice handlowe lub dane osobowe trafiły poza kontrolę organizacji. To klasyczny przykład zagrożenia wewnętrznego (insider threat).'
+    explanation: 'Naruszono Poufność – tajemnice handlowe lub dane osobowe trafiły poza kontrolę organizacji. To klasyczny przykład zagrożenia wewnętrznego.'
   },
   {
     text: 'Ransomware zaszyfrował wszystkie pliki na serwerach - nikt nie może pracować.',
     answer: 'A',
-    explanation: 'Naruszono Dostępność - dane istnieją, ale są zaszyfrowane i niedostępne. Nowoczesny ransomware (double extortion) może też naruszać Poufność przez wcześniejszą eksfiltrację danych.'
+    explanation: 'Naruszono Dostępność – dane istnieją, ale są zaszyfrowane i niedostępne. Nowoczesny ransomware (podwójne wymuszenie) może też naruszać Poufność przez wcześniejszą eksfiltrację danych.'
   },
   {
     text: 'Złośliwy kod zmienił wyniki badań krwi w systemie szpitalnym.',
@@ -130,12 +130,12 @@ export const CIA_SCENARIOS = [
     explanation: 'Naruszono Poufność - hasła, które miały być tajne, zostały przechwycone przez człowieka w środku (Man-in-the-Middle). Brak szyfrowania transmisji (TLS/HTTPS) lub użycie otwartej sieci Wi-Fi to klasyczna luka.'
   },
   {
-    text: 'Firma nie może wystawić e-faktury bo system ERP padł w środku miesiąca.',
+    text: 'Firma nie może wystawić e-faktury, ponieważ system ERP przestał działać w środku miesiąca.',
     answer: 'A',
-    explanation: 'Naruszono Dostępność - procesy biznesowe są zablokowane. Nawet jeśli dane są bezpieczne i nienaruszone, niemożność korzystania z systemu ma bezpośrednie skutki finansowe i operacyjne.'
+    explanation: 'Naruszono Dostępność – procesy biznesowe są zablokowane. Nawet jeśli dane są bezpieczne i nienaruszone, niemożność korzystania z systemu ma bezpośrednie skutki finansowe i operacyjne.'
   },
   {
-    text: 'Programista przypadkowo wrzucił klucze API do publicznego repozytorium GitHub.',
+    text: 'Programista przypadkowo umieścił klucze API w publicznym repozytorium GitHub.',
     answer: 'C',
     explanation: 'Naruszono Poufność - tajne klucze dostępowe trafiły do publicznej domeny. Każdy, kto je znajdzie (boty skanują GitHub w czasie rzeczywistym), może uzyskać dostęp do systemów lub danych organizacji. Klucze należy natychmiast unieważnić.'
   },
@@ -147,7 +147,7 @@ export const RISK_SCENARIOS = [
   {
     risk: 'Możliwość włamania przez nieaktualne oprogramowanie z krytyczną podatnością',
     correctResponse: 'obniżać',
-    explanation: 'Aktualizacja oprogramowania (patching) bezpośrednio obniża prawdopodobieństwo eksploitacji podatności. To klasyczne i najtańsze działanie mitygacyjne - ignorowanie aktualizacji to jedno z największych zaniedbań bezpieczeństwa.',
+    explanation: 'Aktualizowanie zabezpieczeń (zarządzanie poprawkami) bezpośrednio obniża prawdopodobieństwo wykorzystania podatności. To klasyczne i najtańsze działanie mitygacyjne – ignorowanie aktualizacji to jedno z największych zaniedbań bezpieczeństwa.',
     alternatives: 'Można też rozważyć dodatkowe mitygacje jak segmentacja sieci lub WAF jako środki tymczasowe do czasu aktualizacji.'
   },
   {
@@ -157,9 +157,9 @@ export const RISK_SCENARIOS = [
     alternatives: 'Mitygacja (backup, EDR, MFA) + transfer (ubezpieczenie) to najlepsza kombinacja dla ransomware.'
   },
   {
-    risk: 'Bardzo stary system Legacy bez wsparcia producenta, którego wymiana kosztuje 10 mln PLN',
+    risk: 'Bardzo stary system odziedziczony bez wsparcia producenta, którego wymiana kosztuje 10 mln PLN',
     correctResponse: 'akceptować',
-    explanation: 'Gdy koszt mitygacji (wymiana systemu) jest nieproporcjonalny do ryzyka, lub gdy wymiana jest technicznie niemożliwa (np. sterowanie maszyną przemysłową), formalna akceptacja ryzyka z dokumentacją jest właściwą odpowiedzią. Należy też rozważyć kompensujące kontrole (segmentacja, monitoring).',
+    explanation: 'Gdy koszt mitygacji (wymiana systemu) jest nieproporcjonalny do ryzyka lub gdy wymiana jest technicznie niemożliwa (np. sterowanie maszyną przemysłową), formalna akceptacja ryzyka z dokumentacją jest właściwą odpowiedzią. Należy też rozważyć kontrole uzupełniające (segmentacja, monitoring).',
     alternatives: 'Jeśli ryzyko jest zbyt wysokie do akceptacji - rozważ unikanie (wyłączenie systemu) lub maksymalną izolację jako mitygację.'
   },
   {
@@ -172,6 +172,6 @@ export const RISK_SCENARIOS = [
     risk: 'Ryzyko, że pracownik biurowy może przypadkowo kliknąć w phishingowy link',
     correctResponse: 'obniżać',
     explanation: 'Szkolenia antyphishingowe, filtrowanie poczty, MFA i EDR bezpośrednio redukują prawdopodobieństwo i skutki udanego phishingu. Tego ryzyka nie da się całkowicie wyeliminować (błąd ludzki zawsze istnieje), ale można je znacząco obniżyć wielowarstwową ochroną.',
-    alternatives: 'Zero Risk nie istnieje - celem jest obniżenie do akceptowalnego poziomu. MFA jest szczególnie skuteczne bo nawet jeśli pracownik poda hasło, konto pozostaje chronione.'
+    alternatives: 'Ryzyko zerowe nie istnieje – celem jest obniżenie do akceptowalnego poziomu. MFA jest szczególnie skuteczne, ponieważ nawet jeśli pracownik poda hasło, konto pozostaje chronione.'
   },
 ];

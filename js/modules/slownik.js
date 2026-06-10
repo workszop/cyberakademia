@@ -22,11 +22,11 @@ function shuffle(arr) {
 
 function renderFlashcards() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Fiszki Leitner - nauka przez powtarzanie')
+    el('div', { class: 'section-title' }, 'Fiszki Leitnera – nauka przez powtarzanie')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'System Leitner (spaced repetition): poprawna odpowiedź przesuwa kartę do wyższego koszyka (rzadziej pyta), błędna cofa do koszyka 1. Dotrzyj do koszyka 5 - Mistrz!'
+    'System Leitnera (powtórki rozłożone w czasie): poprawna odpowiedź przesuwa kartę do wyższego koszyka (rzadziej pyta), błędna cofa do koszyka 1. Dotrzyj do koszyka 5 – Mistrz!'
   ));
 
   const allTerms = getAllTerms();
@@ -109,7 +109,7 @@ function renderFlashcards() {
     ));
     scene.appendChild(cardWrap);
     scene.appendChild(el('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' } },
-      'Kliknij kartę, żeby zobaczyć definicję, potem oceń się:'
+      'Kliknij kartę, aby zobaczyć definicję, potem oceń się:'
     ));
     scene.appendChild(answerBtns);
   }
@@ -207,7 +207,7 @@ function renderTermList() {
       const trigger = el('button', { class: 'expandable-trigger', onclick: () => {
         item.classList.toggle('open');
       }},
-        el('span', {}, `${t.term}${t.full ? ` - ${t.full}` : ''}`),
+        el('span', {}, `${t.term}${t.full ? ` – ${t.full}` : ''}`),
         el('span', { class: 'chevron' })
       );
       const content = el('div', { class: 'expandable-content' },
@@ -240,10 +240,10 @@ export function renderSlownik() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Słownik Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Wszystkie akronimy i pojęcia w jednym miejscu. Fiszki Leitner do efektywnej nauki.'),
+    el('p', { class: 'subtitle' }, 'Wszystkie akronimy i pojęcia w jednym miejscu. Fiszki Leitnera do efektywnej nauki.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, `${getAllTerms().length} terminów`),
-      el('span', { class: 'badge badge-accent' }, 'Spaced Repetition')
+      el('span', { class: 'badge badge-accent' }, 'Powtórki rozłożone w czasie')
     )
   ));
 

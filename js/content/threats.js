@@ -54,7 +54,7 @@ export const THREATS = [
     icon: '👤',
     front: 'Zagrożenie ze strony obecnych lub byłych pracowników, kontrahentów lub partnerów mających legalny dostęp.',
     entryPoint: 'Pracownik z dostępem do systemów - działający złośliwie (świadoma kradzież/sabotaż) lub nieświadomie (błąd, brak wiedzy) lub zmuszony (szantaż, socjotechnika zewnętrzna).',
-    effect: 'Kradzież wrażliwych danych (własność intelektualna, dane klientów), sabotaż systemów, celowe wycieki, sprzedaż danych konkurencji lub obcym służbom. Insider threats są najtrudniejsze do wykrycia - osoba ma legalny dostęp i zna procedury bezpieczeństwa.',
+    effect: 'Kradzież wrażliwych danych (własność intelektualna, dane klientów), sabotaż systemów, celowe wycieki, sprzedaż danych konkurencji lub obcym służbom. Zagrożenia wewnętrzne są najtrudniejsze do wykrycia – osoba ma legalny dostęp i zna procedury bezpieczeństwa.',
     cia: 'Poufność (C) - wykradzione dane; Integralność (I) - sabotaż, modyfikacja danych; Dostępność (A) - celowe usunięcie danych lub awaria systemów.',
     defense: 'Zasada minimalnych uprawnień (least privilege), PAM z nagrywaniem sesji, DLP, monitoring anomalii zachowania (UEBA), separacja obowiązków (4-eye principle), offboarding procedury (natychmiastowe odcinanie dostępów), kultura zgłaszania incydentów.',
     example: 'Administrator IT odchodzący z banku w złych relacjach skopiował 500 000 rekordów klientów na prywatny dysk USB. Wykryto to dopiero po 3 miesiącach dzięki analizie logów DLP. Sprawa skończyła się wyrokiem sądowym i karą dla banku od UODO.'

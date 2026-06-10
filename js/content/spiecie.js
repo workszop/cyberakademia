@@ -28,7 +28,7 @@ export const CONNECTIONS = [
   {
     id: 'c3',
     regulatory: 'Zarządzaj ryzykiem łańcucha dostaw (NIS2 Art. 21d, DORA Art. 28-44)',
-    organizational: 'Ocena bezpieczeństwa dostawców ICT, wymogi bezpieczeństwa w umowach, nadzór nad realizacją, exit plans',
+    organizational: 'Ocena bezpieczeństwa dostawców ICT, wymogi bezpieczeństwa w umowach, nadzór nad realizacją, plany wyjścia',
     technology: 'Rejestr dostawców z oceną ryzyka, platformy GRC, klauzule bezpieczeństwa w umowach, audyty dostawców',
     example: 'SolarWinds (2020): 18 000 organizacji skompromitowanych przez jedną zainfekowaną aktualizację zaufanego dostawcy. Brak oceny ryzyka dostawcy = brak ochrony.',
     regulatoryDetail: 'NIS2 wprost wskazuje na atak SolarWinds jako motywację wprowadzenia wymagań dotyczących łańcucha dostaw. DORA dla sektora finansowego: kluczowi dostawcy ICT (np. chmury) pod bezpośrednim nadzorem ESA.',

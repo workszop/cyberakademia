@@ -14,7 +14,7 @@ const MODULES = [
     hash: '#/fundamenty',
     iconName: 'shield',
     title: 'Fundamenty',
-    desc: 'Triada CIA, zarządzanie ryzykiem i krajobraz zagrożeń - fundament całej reszty.',
+    desc: 'Triada CIA, zarządzanie ryzykiem i krajobraz zagrożeń – fundament całej reszty.',
     badge: 'Moduł 1',
     time: '~25 min',
   },
@@ -23,7 +23,7 @@ const MODULES = [
     hash: '#/regulacje',
     iconName: 'clipboard-list',
     title: 'Regulacje',
-    desc: 'NIS2/KSC, DORA, RODO - co trzeba zrobić i kto za to odpowiada.',
+    desc: 'NIS2/KSC, DORA i RODO – co trzeba zrobić i kto za to odpowiada.',
     badge: 'Moduł 2',
     time: '~20 min',
   },
@@ -32,7 +32,7 @@ const MODULES = [
     hash: '#/organizacja',
     iconName: 'building-2',
     title: 'Organizacja',
-    desc: 'Role, SOC, CSIRT - kto i jak realizuje obowiązki wynikające z regulacji.',
+    desc: 'Role, SOC i CSIRT – kto oraz w jaki sposób realizuje obowiązki wynikające z regulacji.',
     badge: 'Moduł 3',
     time: '~20 min',
   },
@@ -41,7 +41,7 @@ const MODULES = [
     hash: '#/technologia',
     iconName: 'cpu',
     title: 'Technologia',
-    desc: 'Narzędzia, które wykrywają i blokują ataki - SIEM, EDR, firewall, MFA i inne.',
+    desc: 'Narzędzia wykrywające i blokujące ataki – SIEM, EDR, zapory sieciowe, MFA i inne.',
     badge: 'Moduł 4',
     time: '~30 min',
   },
@@ -50,7 +50,7 @@ const MODULES = [
     hash: '#/spiecie',
     iconName: 'layers',
     title: 'Integracja',
-    desc: 'Jak regulacja, organizacja i technologia łączą się w jeden spójny system - tabela spięcia z dokumentu.',
+    desc: 'Jak regulacje, organizacja i technologia łączą się w jeden spójny system – tabela powiązań.',
     badge: 'Moduł 5',
     time: '~25 min',
   },
@@ -59,7 +59,7 @@ const MODULES = [
     hash: '#/slownik',
     iconName: 'book-open',
     title: 'Słownik',
-    desc: 'Wszystkie akronimy i pojęcia - fiszki Leitner do nauki spaced repetition.',
+    desc: 'Wszystkie akronimy i pojęcia – fiszki Leitnera do nauki metodą powtórek rozłożonych w czasie.',
     badge: 'Słownik',
     time: 'Zawsze',
   },
@@ -77,7 +77,7 @@ const MODULES = [
     hash: '#/finalboss',
     iconName: 'target',
     title: 'Final Boss',
-    desc: 'Wielki egzamin końcowy ze wszystkich modułów. Czy jesteś gotowy?',
+    desc: 'Końcowe wyzwanie sprawdzające wiedzę ze wszystkich modułów. Czy jesteś gotowy?',
     badge: 'Egzamin',
     time: '~45 min',
   },
@@ -96,10 +96,10 @@ export function renderHome() {
     heroIconWrap,
     el('h1', {}, 'CyberAkademia'),
     el('p', {},
-      'Cyberbezpieczeństwo w firmie najłatwiej zrozumieć, jeśli rozłożyć je na trzy warstwy: ' +
-      'Regulacje mówią co trzeba zrobić i kto za to odpowiada. ' +
-      'Organizacja to kto i jak to robi. ' +
-      'Technologia to czym się to robi.'
+      'Cyberbezpieczeństwo w firmie najłatwiej zrozumieć, gdy rozłożymy je na trzy warstwy: ' +
+      'regulacje określają, co trzeba zrobić i kto za to odpowiada; ' +
+      'organizacja pokazuje, kto i jak realizuje te obowiązki; ' +
+      'technologia wskazuje, jakimi narzędziami można to osiągnąć.'
     ),
   );
 
@@ -107,7 +107,7 @@ export function renderHome() {
   const statsRow = el('div', { class: 'home-stats' },
     el('div', { class: 'home-stat' },
       el('span', { class: 'home-stat-value' }, String(completedCount)),
-      el('span', { class: 'home-stat-label' }, 'Modułów ukończonych')
+      el('span', { class: 'home-stat-label' }, 'Ukończone moduły')
     ),
     el('div', { class: 'home-stat' },
       el('span', { class: 'home-stat-value' }, String(totalModules - completedCount)),
@@ -119,7 +119,7 @@ export function renderHome() {
     ),
     el('div', { class: 'home-stat' },
       el('span', { class: 'home-stat-value' }, String(state.badges?.length ?? 0)),
-      el('span', { class: 'home-stat-label' }, 'Odznak')
+      el('span', { class: 'home-stat-label' }, 'Zdobyte odznaki')
     ),
   );
 
@@ -136,7 +136,7 @@ export function renderHome() {
     href: completedCount === 0 ? '#/fundamenty' : '#/sciezka',
     class: 'btn btn-primary btn-lg',
     style: { marginTop: '1.5rem', display: 'inline-flex' },
-  }, completedCount === 0 ? 'Zacznij naukę' : 'Twoja ścieżka');
+  }, completedCount === 0 ? 'Zacznij naukę' : 'Twoja ścieżka nauki');
   hero.appendChild(ctaBtn);
 
   wrap.appendChild(hero);
@@ -181,16 +181,16 @@ export function renderHome() {
     el('div', { class: 'section-title' }, 'Jak korzystać'),
     el('div', { class: 'card-grid' },
       el('div', { class: 'card' },
-        el('div', { class: 'card-title' }, 'Logika jest jednokierunkowa'),
-        el('div', { class: 'card-body' }, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Prawo nie mówi „kup SIEM” - mówi „musisz wykrywać i zgłaszać incydenty”.')
+        el('div', { class: 'card-title' }, 'Logika zależności jest jednokierunkowa'),
+        el('div', { class: 'card-body' }, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Prawo nie mówi: „kup SIEM”. Mówi raczej: „musisz wykrywać i zgłaszać incydenty”.')
       ),
       el('div', { class: 'card' },
         el('div', { class: 'card-title' }, 'Akronimy z tooltipami'),
-        el('div', { class: 'card-body' }, 'Skróty (CIA, SIEM, MFA, DORA…) są podkreślone - najedź myszką, by zobaczyć definicję. W Słowniku znajdziesz fiszki z całym słownikiem pojęć.')
+        el('div', { class: 'card-body' }, 'Skróty (CIA, SIEM, MFA, DORA…) są podkreślone – najedź kursorem, aby zobaczyć definicję. W Słowniku znajdziesz fiszki z całym słownikiem pojęć.')
       ),
       el('div', { class: 'card' },
         el('div', { class: 'card-title' }, 'Ćwicz, nie tylko czytaj'),
-        el('div', { class: 'card-body' }, 'Każdy moduł ma interakcję - sortowanie scenariuszy, łączenie pojęć, quizy. Wiedza zostaje, gdy się jej użyje.')
+        el('div', { class: 'card-body' }, 'Każdy moduł zawiera interakcje: sortowanie scenariuszy, łączenie pojęć i quizy. Wiedza zostaje, gdy się jej użyje.')
       ),
     )
   );

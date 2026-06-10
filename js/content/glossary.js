@@ -41,7 +41,7 @@ export const GLOSSARY = {
   },
   DLP: {
     full: 'Data Loss Prevention',
-    short: 'System zapobiegający wyciekowi danych - monitoruje i blokuje nieautoryzowany transfer.',
+    short: 'System zapobiegający wyciekowi danych – monitoruje i blokuje nieautoryzowany transfer.',
     long: 'DLP (Data Loss Prevention) to narzędzia i polityki zapobiegające nieautoryzowanemu transferowi wrażliwych danych poza organizację. Monitorują ruch sieciowy, pocztę e-mail, urządzenia USB i chmurę. DLP wspiera realizację wymagań RODO dotyczących ochrony danych osobowych i chroni przed zagrożeniami wewnętrznymi (insider threats).'
   },
   DORA: {
@@ -106,8 +106,8 @@ export const GLOSSARY = {
   },
   MFA: {
     full: 'Multi-Factor Authentication',
-    short: 'Uwierzytelnianie wieloskładnikowe - hasło to za mało, potrzebny drugi czynnik.',
-    long: 'MFA (Multi-Factor Authentication) wymaga potwierdzenia tożsamości co najmniej dwoma różnymi czynnikami: coś co wiesz (hasło), coś co masz (telefon, token), coś czym jesteś (biometria). MFA jest jedną z najskuteczniejszych i najtańszych kontroli bezpieczeństwa - eliminuje 99% ataków na konta wynikających z wykradzionych haseł. Wymagane przez NIS2, DORA i standardy branżowe.'
+    short: 'Uwierzytelnianie wieloskładnikowe – samo hasło nie wystarcza, potrzebny drugi czynnik.',
+    long: 'MFA (Multi-Factor Authentication) wymaga potwierdzenia tożsamości co najmniej dwoma różnymi czynnikami: coś co wiesz (hasło), coś co masz (telefon, token), coś czym jesteś (biometria). MFA jest jedną z najskuteczniejszych i najtańszych kontroli bezpieczeństwa – znacząco ogranicza skuteczność ataków na konta wynikających z wykradzionych haseł. Wymagane przez NIS2, DORA i standardy branżowe.'
   },
   MSSP: {
     full: 'Managed Security Service Provider',

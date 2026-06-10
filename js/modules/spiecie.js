@@ -120,7 +120,7 @@ function renderConnectGame() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '0.75rem' } },
-    'Sednem dojrzałego bezpieczeństwa jest spięcie trzech warstw. Każdy wiersz łączy wymóg regulacyjny (co nakazuje prawo) z tym, co robi organizacja (proces i role) oraz technologią, która ten proces obsługuje.'
+    'Sednem dojrzałego bezpieczeństwa jest integracja trzech warstw. Każdy wiersz łączy wymóg regulacyjny (co nakazuje prawo) z tym, co robi organizacja (proces i role) oraz technologią, która ten proces obsługuje.'
   ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
     'Wybierz po jednej karcie z każdej kolumny tak, aby tworzyły spójny zestaw, i kliknij „Połącz”. Właściwa kolejność myślenia: zrozum obowiązek i ryzyko → ułóż proces i role → dobierz narzędzie.'
@@ -292,7 +292,7 @@ export function renderSpiecie() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Integracja obrony'),
-    el('p', { class: 'subtitle' }, 'Jak regulacja, organizacja i technologia łączą się w jedno - wymóg regulacyjny → co robi organizacja → czym (technologia). Czytelny morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
+    el('p', { class: 'subtitle' }, 'Jak regulacje, organizacja i technologia łączą się w jedno – wymóg regulacyjny → co robi organizacja → czym (technologia). Czytelny morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~25 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 5')

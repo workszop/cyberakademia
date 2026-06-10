@@ -11,8 +11,8 @@ export const DEFENSE_LAYERS = [
     name: 'MFA - Uwierzytelnianie wieloskładnikowe',
     icon: '🔑',
     category: 'tożsamość',
-    description: 'Wymaga co najmniej dwóch czynników uwierzytelniania - hasło to za mało. Eliminuje 99% ataków na skradzione hasła.',
-    detail: 'MFA (Multi-Factor Authentication) jest jedną z najtańszych i najskuteczniejszych kontroli bezpieczeństwa. Nawet gdy atakujący zna hasło (phishing, wyciek bazy), bez drugiego czynnika (kod SMS, aplikacja Authenticator, klucz sprzętowy FIDO2) nie uzyska dostępu. Wymagane przez NIS2, DORA i większość standardów branżowych.',
+    description: 'Wymaga co najmniej dwóch czynników uwierzytelniania – samo hasło nie wystarcza. Znacząco ogranicza skuteczność ataków wykorzystujących skradzione hasła.',
+    detail: 'MFA (Multi-Factor Authentication) jest jedną z najtańszych i najskuteczniejszych kontroli bezpieczeństwa. Nawet jeśli atakujący zna hasło (phishing, wyciek bazy), bez drugiego czynnika (kod SMS, aplikacja uwierzytelniająca albo klucz sprzętowy FIDO2) nie uzyska dostępu. Wymagane przez NIS2, DORA i większość standardów branżowych.',
     blocks: ['phishing', 'brute-force', 'credential-stuffing', 'ransomware'],
     doesNotBlock: ['Ataki na sam drugi czynnik (SIM swapping, phishing w czasie rzeczywistym na kod OTP)']
   },
@@ -34,7 +34,7 @@ export const DEFENSE_LAYERS = [
     description: 'Zaawansowana ochrona urządzeń końcowych - wykrywa złośliwe zachowania (nie tylko sygnatury), umożliwia izolację i forensics.',
     detail: 'EDR (Endpoint Detection and Response) zastąpił klasyczny antywirus. Monitoruje zachowanie procesów w czasie rzeczywistym: co uruchamia, co zapisuje, z czym się łączy. Wykrywa ataki fileless (bez pliku), living-off-the-land (używanie legalnych narzędzi systemowych), szyfrowanie charakterystyczne dla ransomware. Kluczowe funkcje: izolacja hosta (odcięcie od sieci jednym kliknięciem), zbieranie dowodów forensycznych, rollback zmian.',
     blocks: ['ransomware', 'malware', 'apt', 'fileless-attacks', 'supply-chain'],
-    doesNotBlock: ['Ataków sieciowych omijających endpointy (tu potrzebny NDR)']
+    doesNotBlock: ['Ataków sieciowych omijających urządzenia końcowe (tu potrzebny NDR)']
   },
   {
     id: 'ngfw',
@@ -44,7 +44,7 @@ export const DEFENSE_LAYERS = [
     description: 'Kontroluje ruch sieciowy z pełną inspekcją: IPS, identyfikacja aplikacji, odszyfrowywanie SSL, filtrowanie URL.',
     detail: 'NGFW (Next-Generation Firewall) łączy klasyczny firewall (filtracja pakietów, stateful inspection) z: Deep Packet Inspection, Intrusion Prevention System (IPS), identyfikacją aplikacji (nie tylko portów), odszyfrowywaniem SSL/TLS, filtrowaniem URL i kategorii, sandboxingiem plików. NGFW jest „bramą” sieci - kontroluje co wchodzi i wychodzi.',
     blocks: ['external-attacks', 'malware-download', 'c2-communication', 'ddos'],
-    doesNotBlock: ['Zagrożeń wewnętrznych (insider), ataków encrypted C2 jeśli nie odszyfrowuje SSL']
+    doesNotBlock: ['Zagrożeń wewnętrznych, ataków z zaszyfrowanym C2 jeśli nie odszyfrowuje SSL']
   },
   {
     id: 'waf',
@@ -336,8 +336,8 @@ export const IDENTITY_TOOLS = [
     name: 'MFA',
     full: 'Multi-Factor Authentication',
     icon: '📱',
-    description: 'Uwierzytelnianie wieloskładnikowe - wymaga co najmniej dwóch różnych czynników potwierdzenia tożsamości.',
-    detail: 'MFA łączy: coś co wiesz (hasło, PIN), coś co masz (telefon z aplikacją Authenticator, klucz sprzętowy FIDO2/YubiKey, karta OTP), coś czym jesteś (odcisk palca, twarz). Typy: TOTP (kody czasowe - Google/Microsoft Authenticator), push notifications (zatwierdź w aplikacji), SMS (najsłabszy - podatny na SIM swapping), FIDO2/passkeys (najsilniejszy - phishing-resistant). MFA eliminuje ok. 99% ataków na skradzione hasła.',
+    description: 'Uwierzytelnianie wieloskładnikowe – wymaga co najmniej dwóch różnych czynników potwierdzenia tożsamości.',
+    detail: 'MFA łączy: coś co wiesz (hasło, PIN), coś co masz (telefon z aplikacją uwierzytelniającą, klucz sprzętowy FIDO2/YubiKey, karta OTP), coś czym jesteś (odcisk palca, twarz). Typy: TOTP (kody czasowe – Google/Microsoft Authenticator), powiadomienia push (zatwierdź w aplikacji), SMS (najsłabszy – podatny na SIM swapping), FIDO2/passkeys (najsilniejszy – phishing-resistant). MFA znacząco ogranicza skuteczność ataków na skradzione hasła.',
     examples: ['Microsoft Authenticator', 'Google Authenticator', 'Duo Security', 'YubiKey (FIDO2)', 'RSA SecurID'],
     zeroTrustRelation: 'Absolutny minimum Zero Trust - bez MFA nie ma Zero Trust. Phishing-resistant MFA (FIDO2) to gold standard.'
   },

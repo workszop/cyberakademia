@@ -22,7 +22,7 @@ function renderCIATriangle() {
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
     'Bezpieczeństwo informacji sprowadza się do ochrony trzech właściwości (stąd „triada CIA”). ' +
-    'Każdy atak i każdy mechanizm obrony da się przypisać do jednej z trzech kategorii - to uniwersalny „układ współrzędnych” całej dziedziny.'
+    'Większość ataków i mechanizmów obrony można przypisać do jednej z trzech kategorii – to uniwersalny punkt odniesienia dla całej dziedziny.'
   );
   section.appendChild(intro);
 
@@ -36,7 +36,7 @@ function renderCIATriangle() {
     iconEl.appendChild(icon(CIA_ICON_MAP[entry.id] || 'shield', 24));
     const card = el('div', { class: 'card' },
       iconEl,
-      el('h3', {}, `${entry.id} - ${entry.namePL}`),
+      el('h3', {}, `${entry.id} – ${entry.namePL}`),
       el('p', { style: { fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' } }, entry.name),
       el('p', { style: { marginTop: '0.5rem', fontSize: '1rem', lineHeight: '1.5' } }, entry.description),
       el('p', { style: { marginTop: '0.6rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic' } }, entry.violationExample),
@@ -58,11 +58,11 @@ function renderCIATriangle() {
 
 function renderCIASortingGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra - Przyporządkuj incydent')
+    el('div', { class: 'section-title' }, 'Gra – przyporządkuj incydent')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Przeczytaj opis incydentu i wrzuć go do właściwego koszyka - które z właściwości CIA zostało naruszone? ' +
+    'Przeczytaj opis incydentu i przypisz go do właściwej kategorii – która z właściwości CIA została naruszona? ' +
     'Przeciągnij element do kategorii Poufność, Integralność lub Dostępność, albo kliknij element i wybierz kategorię.'
   );
   section.appendChild(desc);
@@ -252,10 +252,10 @@ const QUIZ_QUESTIONS = [
     question: 'Atak ransomware szyfruje dane i uniemożliwia pracę. Które właściwości CIA narusza PRZEDE WSZYSTKIM?',
     options: ['Tylko Poufność (C)', 'Poufność i Integralność (C+I)', 'Przede wszystkim Dostępność (A)', 'Tylko Integralność (I)'],
     correct: 2,
-    explanation: 'Ransomware narusza przede wszystkim Dostępność (A) - dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (double extortion) narusza też C przez wcześniejszą eksfiltrację, ale pierwszorzędnie to A.'
+    explanation: 'Ransomware narusza przede wszystkim Dostępność (A) – dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (podwójne wymuszenie) narusza też C przez wcześniejszą eksfiltrację, ale pierwszorzędnie to A.'
   },
   {
-    question: 'Firma akceptuje ryzyko przestarzałego systemu legacy. Co jest WYMAGANE przy akceptacji ryzyka?',
+    question: 'Firma akceptuje ryzyko przestarzałego systemu bez wsparcia producenta. Co jest WYMAGANE przy akceptacji ryzyka?',
     options: ['Natychmiastowe wyłączenie systemu', 'Świadoma decyzja zarządu i dokumentacja', 'Przeniesienie systemu do chmury', 'Żadnych działań - ignorujemy problem'],
     correct: 1,
     explanation: 'Akceptacja ryzyka ≠ ignorowanie. Wymaga formalnej, świadomej decyzji zarządu z dokumentacją. „Nie wiedzieliśmy” to brak zarządzania ryzykiem, nie akceptacja.'

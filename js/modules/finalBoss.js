@@ -148,7 +148,7 @@ export function renderFinalBoss() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Final Boss - Egzamin Końcowy'),
-    el('p', { class: 'subtitle' }, 'Wielki test ze wszystkich modułów CyberAkademii. Wykaż się wiedzą i zdobądź tytuł Mistrza!'),
+    el('p', { class: 'subtitle' }, 'Końcowe wyzwanie sprawdzające wiedzę ze wszystkich modułów CyberAkademii. Wykaż się i zdobądź tytuł Mistrza!'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~45 min'),
       el('span', { class: 'badge badge-danger' }, '20 pytań'),

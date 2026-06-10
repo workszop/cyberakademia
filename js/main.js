@@ -24,6 +24,7 @@ register('#/regulacje', renderRegulacje);
 register('#/organizacja', renderOrganizacja);
 register('#/technologia', renderTechnologia);
 register('#/spiecie', renderSpiecie);
+register('#/integracja', renderSpiecie);
 register('#/slownik', renderSlownik);
 register('#/sciezka', renderSciezka);
 register('#/finalboss', renderFinalBoss);

@@ -31,15 +31,15 @@ export const REGULATIONS = [
     type: 'rozporządzenie',
     scope: 'Wyłącznie sektor finansowy UE: banki, ubezpieczyciele, firmy inwestycyjne, instytucje płatnicze, fundusze emerytalne, giełdy kryptowalut - oraz ich kluczowi dostawcy ICT (w tym dostawcy chmury).',
     topic: 'Operacyjna odporność cyfrowa instytucji finansowych - ujednolicenie wymagań bezpieczeństwa ICT w całym sektorze.',
-    legalForm: 'Rozporządzenie UE 2022/2554 - działa bezpośrednio, bez implementacji krajowej. Stosowane od 17.01.2025.',
+    legalForm: 'Rozporządzenie UE 2022/2554 – działa bezpośrednio, bez implementacji krajowej. Stosowane od 17 stycznia 2025 roku.',
     description: 'DORA to lex specialis dla sektora finansowego - jest bardziej szczegółowe i surowsze niż NIS2. Jako rozporządzenie (a nie dyrektywa) działa wprost we wszystkich krajach UE, bez potrzeby implementacji krajowej. Objęło ok. 22 000 podmiotów finansowych i ich kluczowych dostawców ICT.',
     keyFacts: [
       'Obowiązuje od 17 stycznia 2025 roku - brak okresu przejściowego',
       'Dotyczy też dostawców ICT - kluczowi dostawcy (np. chmury dla banków) podlegają nadzorowi ESA',
-      'Filar 1: Zarządzanie ryzykiem ICT - polityki, procedury, governance, aktualizacje, szyfrowanie',
+      'Filar 1: Zarządzanie ryzykiem ICT – polityki, procedury, ład zarządczy, aktualizacje i szyfrowanie',
       'Filar 2: Zarządzanie incydentami - klasyfikacja, zgłaszanie do KNF/EBA w 4h (poważny) i 24h (aktualizacja)',
       'Filar 3: Testowanie odporności - TLPT co 3 lata dla największych instytucji (standard TIBER-EU)',
-      'Filar 4: Ryzyko dostawców ICT - rejestr umów, ocena koncentracji, exit plans, klauzule umowne',
+      'Filar 4: Ryzyko dostawców ICT – rejestr umów, ocena koncentracji, plany wyjścia, klauzule umowne',
       'Filar 5: Wymiana informacji - uczestnictwo w strukturach wymiany informacji o zagrożeniach',
       'Kary: do 1% dziennego globalnego obrotu przez max 6 miesięcy; zarząd do 1 mln EUR'
     ],
@@ -57,7 +57,7 @@ export const REGULATIONS = [
       'Zasady: celowość, minimalizacja danych, ograniczenie przechowywania, prawidłowość, integralność i poufność',
       'Podstawy prawne przetwarzania: zgoda, umowa, obowiązek prawny, żywotne interesy, interes publiczny, uzasadniony interes',
       'Prawa osób: dostęp, sprostowanie, usunięcie („prawo do bycia zapomnianym”), przenoszalność, sprzeciw',
-      'Privacy by design i privacy by default - ochrona wbudowana w projekty od początku',
+      'Privacy by design i privacy by default – ochrona prywatności wbudowana w projekt od początku',
       'DPO (IOD) obowiązkowy dla organów publicznych, podmiotów masowo przetwarzających dane, przetwarzających szczególne kategorie',
       'Naruszenia: zgłoszenie do UODO w 72h, powiadomienie osób gdy wysokie ryzyko',
       'Kary: do 20 mln EUR lub 4% globalnego obrotu (wyższa kwota)',
@@ -161,8 +161,8 @@ export const DORA_PILLARS = [
     id: 'risk-management',
     name: 'Zarządzanie ryzykiem ICT',
     icon: '⚙️',
-    description: 'Governance i framework zarządzania ryzykiem ICT - polityki, procedury, odpowiedzialność zarządu.',
-    detail: 'Instytucja musi wdrożyć kompleksowy framework zarządzania ryzykiem ICT: identyfikację i klasyfikację zasobów ICT, ciągłą ocenę ryzyka, polityki bezpieczeństwa, plany ochrony i odtwarzania. Zarząd jest bezpośrednio odpowiedzialny za zatwierdzenie i nadzór nad frameworkiem. Wymagane jest też regularne szkolenie zarządu i pracowników w zakresie bezpieczeństwa ICT.'
+    description: 'Ład zarządczy i ramy zarządzania ryzykiem ICT – polityki, procedury, odpowiedzialność zarządu.',
+    detail: 'Instytucja musi wdrożyć kompleksowe ramy zarządzania ryzykiem ICT: identyfikację i klasyfikację zasobów ICT, ciągłą ocenę ryzyka, polityki bezpieczeństwa, plany ochrony i odtwarzania. Zarząd jest bezpośrednio odpowiedzialny za zatwierdzenie i nadzór nad tymi ramami. Wymagane jest też regularne szkolenie zarządu i pracowników w zakresie bezpieczeństwa ICT.'
   },
   {
     id: 'incident-management',
@@ -183,7 +183,7 @@ export const DORA_PILLARS = [
     name: 'Ryzyko dostawców ICT',
     icon: '🔗',
     description: 'Zarządzanie ryzykiem zewnętrznych dostawców ICT, szczególnie dostawców chmury.',
-    detail: 'Instytucje muszą utrzymywać rejestr umów z dostawcami ICT, regularnie oceniać ryzyko koncentracji (zbyt duże uzależnienie od jednego dostawcy), negocjować wymagane klauzule umowne (prawo do audytu, SLA, plany wyjścia) i przygotować exit plans. Kluczowi dostawcy ICT (np. wielkie firmy chmurowe obsługujące wiele banków) podlegają bezpośredniemu nadzorowi ESA (EBA, ESMA, EIOPA).'
+    detail: 'Instytucje muszą utrzymywać rejestr umów z dostawcami ICT, regularnie oceniać ryzyko koncentracji (zbyt duże uzależnienie od jednego dostawcy), negocjować wymagane klauzule umowne (prawo do audytu, SLA, plany wyjścia) i przygotować plany wyjścia. Kluczowi dostawcy ICT (np. wielkie firmy chmurowe obsługujące wiele banków) podlegają bezpośredniemu nadzorowi ESA (EBA, ESMA, EIOPA).'
   },
   {
     id: 'information-sharing',
@@ -272,7 +272,7 @@ export const NIST_FUNCTIONS = [
       'Szyfrowanie dysków i transmisji',
       'Regularne szkolenia pracowników',
       'Zasada minimalnych uprawnień',
-      'Zarządzanie podatnościami (patching)',
+      'Zarządzanie podatnościami (zarządzanie poprawkami)',
       'Firewall i segmentacja sieci'
     ]
   },

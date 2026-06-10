@@ -25,18 +25,18 @@ function renderRegTable() {
   );
 
   const intro = el('p', { style: { marginBottom: '0.75rem' } },
-    'W Europie nie ma „jednej ustawy o cyberbezpieczeństwie”. Jest zestaw aktów, które dotyczą różnych grup podmiotów. Najważniejsze rozróżnienie:'
+    'W Europie nie ma jednej, uniwersalnej ustawy o cyberbezpieczeństwie. Istnieje zestaw aktów prawnych, które dotyczą różnych grup podmiotów. Najważniejsze rozróżnienie:'
   );
   section.appendChild(intro);
 
   const diffNote = el('div', { class: 'alert alert-info', style: { marginBottom: '1.5rem' } },
     el('strong', {}, 'Kluczowa różnica prawna: '),
-    'dyrektywa (NIS2) wymaga „przepisania” do prawa krajowego - stąd polska ustawa o KSC. ',
-    el('strong', {}, 'Rozporządzenie '),
-    '(DORA, RODO) obowiązuje bezpośrednio, identycznie w całej UE, bez ustawy krajowej. ',
+    'dyrektywa, taka jak NIS2, wymaga implementacji do prawa krajowego – stąd polska ustawa o KSC. ',
+    el('strong', {}, 'Rozporządzenia, takie jak DORA i RODO, '),
+    'obowiązują bezpośrednio, identycznie w całej UE, bez ustawy krajowej. ',
     el('br', {}),
-    el('em', {}, 'Czy mój podmiot może podlegać kilku naraz? '),
-    'Tak. Bank podlega DORA i RODO. Szpital podlega NIS2/KSC i RODO. Regulacje się uzupełniają, nie wykluczają. Tam gdzie DORA i NIS2 mogłyby kolidować - DORA jest przepisem szczególnym (lex specialis).'
+    el('em', {}, 'Czy jedna organizacja może podlegać kilku regulacjom jednocześnie? '),
+    'Tak. Bank podlega DORA i RODO. Szpital podlega NIS2/KSC i RODO. Regulacje się uzupełniają, nie wykluczają. Tam, gdzie DORA i NIS2 mogłyby się nakładać, DORA działa jako przepis szczególny (lex specialis).'
   );
   section.appendChild(diffNote);
 
@@ -77,7 +77,7 @@ function renderTimeline() {
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Od pierwszej dyrektywy NIS (2016) po stopniowe wchodzenie w życie KSC 2.0 w Polsce. Kliknij wydarzenie, aby poznać szczegóły.'
+    'Od pierwszej dyrektywy NIS z 2016 roku po stopniowe wejście w życie KSC 2.0 w Polsce. Kliknij wydarzenie, aby poznać szczegóły.'
   );
   section.appendChild(desc);
 
@@ -91,11 +91,11 @@ function renderTimeline() {
 
 function renderNIS2Obligations() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'NIS2 / KSC - kluczowe obowiązki')
+    el('div', { class: 'section-title' }, 'NIS2 / KSC – kluczowe obowiązki')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Cztery filary obowiązków podmiotów kluczowych i ważnych. Kliknij, aby rozwinąć szczegóły.'
+    'Cztery główne grupy obowiązków podmiotów kluczowych i ważnych. Kliknij, aby rozwinąć szczegóły.'
   );
   section.appendChild(desc);
 
@@ -117,7 +117,7 @@ function renderDORAPillars() {
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'DORA porządkuje wymagania odporności cyfrowej sektora finansowego wokół pięciu filarów. Kliknij, aby rozwinąć szczegóły.'
+    'DORA porządkuje wymagania dotyczące odporności cyfrowej sektora finansowego w pięciu filarach. Kliknij, aby rozwinąć szczegóły.'
   );
   section.appendChild(desc);
 

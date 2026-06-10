@@ -114,7 +114,7 @@ function renderMFASim() {
         ),
         el('div', { class: 'alert alert-info', style: { textAlign: 'left', marginTop: '1rem' } },
           el('strong', {}, 'Dlaczego MFA działa? '),
-          'Atakujący może ukraść Twoje hasło (phishing, data breach), ale bez drugiego czynnika - telefonu z TOTP lub klucza U2F - nie zaloguje się. MFA eliminuje 99% ataków na konta.'
+          'Atakujący może ukraść Twoje hasło (phishing, wyciek danych), ale bez drugiego czynnika – telefonu z TOTP lub klucza U2F – nie zaloguje się. MFA znacząco ogranicza skuteczność ataków na konta.'
         ),
         el('button', {
           class: 'btn btn-secondary',
@@ -134,13 +134,13 @@ function renderMFASim() {
 
 function renderBackup321() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Zasada 3-2-1 Backup')
+    el('div', { class: 'section-title' }, 'Zasada 3-2-1 kopii zapasowych')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Kopie zapasowe i ich regularne testowanie odtwarzania - najlepsza obrona przed ransomware. ' +
+    'Kopie zapasowe i ich regularne testowanie odtwarzania – najlepsza obrona przed ransomware. ' +
     'Zasada 3-2-1: 3 kopie, 2 nośniki, 1 poza siedzibą. ' +
-    'Z backupem firma wstaje po ataku. Bez backupu - płaci okup.'
+    'Z kopią zapasową firma wstaje po ataku. Bez kopii zapasowej – płaci okup.'
   ));
 
   const viz = el('div', { class: 'backup-321' },
@@ -164,7 +164,7 @@ function renderBackup321() {
 
   section.appendChild(el('div', { class: 'alert alert-danger' },
     el('strong', {}, 'Krytyczne: '),
-    'Backup, który nie był testowany, NIE ISTNIEJE. Regularnie testuj odtwarzanie danych!'
+    'Kopia zapasowa, która nie była testowana, NIE ISTNIEJE. Regularnie testuj odtwarzanie danych!'
   ));
 
   section.appendChild(el('div', { class: 'alert alert-info', style: { marginTop: '0.5rem' } },
@@ -438,7 +438,7 @@ export function renderTechnologia() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Technologia Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Technologia to czym się to robi - narzędzia (SIEM, EDR, firewalle), które wykrywają i blokują ataki.'),
+    el('p', { class: 'subtitle' }, 'Technologia to czym się to robi – narzędzia (SIEM, EDR, zapory sieciowe), które wykrywają, ograniczają lub blokują ataki.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~30 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 4')

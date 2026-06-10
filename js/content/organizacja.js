@@ -10,7 +10,7 @@ export const ROLES = [
     id: 'zarzad',
     name: 'Zarząd / Rada Nadzorcza',
     icon: '👔',
-    responsibility: 'Zatwierdzanie strategii i polityk cyberbezpieczeństwa, nadzór nad programem bezpieczeństwa, akceptacja apetytu na ryzyko, zapewnienie zasobów. NIS2 i DORA wprost nakładają na zarząd osobistą odpowiedzialność za cyberbezpieczeństwo organizacji.',
+    responsibility: 'Zatwierdzanie strategii i polityk cyberbezpieczeństwa, nadzór nad programem bezpieczeństwa, zatwierdzanie apetytu na ryzyko, zapewnienie zasobów. NIS2 i DORA wprost nakładają na zarząd odpowiedzialność osobistą za cyberbezpieczeństwo organizacji.',
     reports_to: null,
     keyActions: [
       'Zatwierdza politykę bezpieczeństwa informacji',
@@ -19,13 +19,13 @@ export const ROLES = [
       'Odbiera regularne raporty od CISO',
       'Odpowiada osobiście za naruszenia (NIS2/DORA)'
     ],
-    trap: 'Błąd: „To sprawa IT - my nie musimy się tym zajmować.” NIS2 i DORA wprost nakładają osobistą odpowiedzialność na zarząd!'
+    trap: 'Błąd: „To sprawa IT – my nie musimy się tym zajmować”. NIS2 i DORA wprost nakładają odpowiedzialność osobistą na zarząd!'
   },
   {
     id: 'ciso',
     name: 'CISO - Chief Information Security Officer',
     icon: '🛡️',
-    responsibility: 'Zarządzanie całościowym programem cyberbezpieczeństwa organizacji: strategia bezpieczeństwa, zarządzanie ryzykiem, compliance z regulacjami (NIS2, DORA, RODO), nadzór nad SOC, polityki i procedury, szkolenia, reagowanie na incydenty. Raportuje do zarządu.',
+    responsibility: 'Zarządzanie całościowym programem cyberbezpieczeństwa organizacji: strategia bezpieczeństwa, zarządzanie ryzykiem, zgodność z regulacjami (NIS2, DORA, RODO), nadzór nad SOC, polityki i procedury, szkolenia, reagowanie na incydenty. Raportuje do zarządu.',
     reports_to: 'Zarząd / CEO',
     keyActions: [
       'Opracowuje i wdraża strategię cyberbezpieczeństwa',
@@ -34,7 +34,7 @@ export const ROLES = [
       'Raportuje zarządowi o stanie bezpieczeństwa',
       'Zapewnia zgodność z NIS2, DORA, RODO'
     ],
-    trap: 'Błąd: "CISO = DPO" - to zupełnie różne funkcje! CISO odpowiada za całe bezpieczeństwo IT, DPO wyłącznie za ochronę danych osobowych (RODO).'
+    trap: 'Błąd: „CISO = DPO" – to zupełnie różne funkcje! CISO odpowiada za całościowe bezpieczeństwo informacji i systemów IT, DPO wyłącznie za ochronę danych osobowych (RODO).'
   },
   {
     id: 'cso-cio-cto',
@@ -48,18 +48,18 @@ export const ROLES = [
       'CSO: całościowe bezpieczeństwo (fizyczne + cyfrowe)',
       'Współpraca z CISO w zakresie integracji bezpieczeństwa z IT'
     ],
-    trap: 'W małych organizacjach często jedna osoba łączy role CISO+CIO lub CISO+CTO. W dużych - rozdzielenie ról zapobiega konfliktom interesów między „budowaniem systemów” a „ich zabezpieczaniem”.'
+    trap: 'W małych organizacjach jedna osoba często łączy role CISO i CIO albo CISO i CTO. W dużych organizacjach rozdzielenie ról pomaga uniknąć konfliktów interesów między „budowaniem systemów” a „ich zabezpieczaniem”.'
   },
   {
     id: 'dpo',
     name: 'DPO - Inspektor Ochrony Danych (IOD)',
     icon: '📋',
-    responsibility: 'Nadzorowanie przestrzegania RODO: doradztwo w zakresie ochrony danych osobowych, monitoring zgodności z RODO, punkt kontaktowy dla UODO i osób fizycznych, oceny skutków dla ochrony danych (DPIA), szkolenia pracowników w zakresie RODO.',
+    responsibility: 'Nadzorowanie przestrzegania RODO: doradztwo w zakresie ochrony danych osobowych, monitorowanie zgodności z RODO, punkt kontaktowy dla UODO i osób fizycznych, oceny skutków dla ochrony danych (DPIA), szkolenia pracowników w zakresie RODO.',
     reports_to: 'Zarząd (niezależna funkcja - DPO nie może otrzymywać poleceń w zakresie swoich zadań)',
     keyActions: [
       'Doradza w kwestiach ochrony danych osobowych',
       'Monitoruje zgodność z RODO',
-      'Jest punktem kontaktowym dla UODO',
+      'Pełni funkcję punktu kontaktowego dla UODO',
       'Prowadzi i opiniuje oceny skutków (DPIA)',
       'Szkoli pracowników z RODO'
     ],
