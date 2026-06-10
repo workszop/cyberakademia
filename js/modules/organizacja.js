@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/organizacja.js
+// CyberAkademia - modules/organizacja.js
 // Module 3: SOC, CISO, security teams and structures
 // Data sourced from js/content/organizacja.js
 // ============================================================
@@ -38,7 +38,7 @@ function renderRoles() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'Cyberbezpieczeństwo to nie zadanie jednej osoby — to podział ról i odpowiedzialności od zarządu po analityków SOC. ' +
+    'Cyberbezpieczeństwo to nie zadanie jednej osoby - to podział ról i odpowiedzialności od zarządu po analityków SOC. ' +
     'Kto raportuje do kogo i kto za co odpowiada decyduje o tym, czy organizacja reaguje sprawnie, czy w chaosie.'
   ));
 
@@ -94,13 +94,13 @@ function renderSOCBuilder() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '0.75rem' } },
-    'SOC to centrum operacji bezpieczeństwa — zespół (i jego narzędzia oraz procesy), którego zadaniem jest ' +
+    'SOC to centrum operacji bezpieczeństwa - zespół (i jego narzędzia oraz procesy), którego zadaniem jest ' +
     'całodobowe monitorowanie, wykrywanie, analiza i reagowanie na zagrożenia. ' +
-    'Najprostsza analogia: to „centrum monitoringu lub dyspozytornia 112" dla infrastruktury cyfrowej firmy — ' +
+    'Najprostsza analogia: to „centrum monitoringu lub dyspozytornia 112” dla infrastruktury cyfrowej firmy - ' +
     'ktoś patrzy na ekrany 24/7, a gdy zapali się alarm, uruchamia procedurę.'
   ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'SOC nie jest produktem, który się kupuje — to zestawienie trzech filarów: Ludzie, Procesy i Technologia. Przeciągnij elementy do właściwych stref.'
+    'SOC nie jest produktem, który się kupuje - to zestawienie trzech filarów: Ludzie, Procesy i Technologia. Przeciągnij elementy do właściwych stref.'
   ));
 
   const SOC_PIECES = buildSOCPieces();
@@ -129,7 +129,7 @@ function renderSOCBuilder() {
       const pieceId = e.dataTransfer.getData('text/plain');
       const piece = SOC_PIECES.find(p => p.id === pieceId);
       if (!piece || piece.category !== zone.id) {
-        // Wrong zone — shake
+        // Wrong zone - shake
         zoneEl.style.borderColor = 'var(--danger)';
         setTimeout(() => zoneEl.style.borderColor = '', 600);
         return;
@@ -226,7 +226,7 @@ function renderIncidentResponse() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'Reagowanie na incydent to nie chaotyczne gaszenie pożaru, lecz ustrukturyzowany proces siedmiu faz — ' +
+    'Reagowanie na incydent to nie chaotyczne gaszenie pożaru, lecz ustrukturyzowany proces siedmiu faz - ' +
     'od przygotowania jeszcze przed atakiem, przez powstrzymanie i odtworzenie, aż po wnioski. ' +
     'Każda faza ma swoje działania i wymogi regulacyjne (NIS2/KSC, DORA). Rozwiń fazę, by poznać szczegóły.'
   ));
@@ -252,7 +252,7 @@ function renderGovernance() {
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
     'Frameworki ładu (governance) to sprawdzone ramy, które porządkują zarządzanie bezpieczeństwem i pomagają spełnić wymagania NIS2/KSC i DORA. ' +
-    'Nie wykluczają się — często łączy się je razem. Rozwiń, by poznać zastosowanie i relację do regulacji.'
+    'Nie wykluczają się - często łączy się je razem. Rozwiń, by poznać zastosowanie i relację do regulacji.'
   ));
 
   const accordion = el('div', {});
@@ -275,7 +275,7 @@ function renderProcesses() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'Bezpieczeństwo opiera się na powtarzalnych, udokumentowanych procesach — to one zamieniają narzędzia i ludzi w realną zdolność obronną. Rozwiń, by poznać szczegóły.'
+    'Bezpieczeństwo opiera się na powtarzalnych, udokumentowanych procesach - to one zamieniają narzędzia i ludzi w realną zdolność obronną. Rozwiń, by poznać szczegóły.'
   ));
 
   const accordion = el('div', {});
@@ -295,7 +295,7 @@ export function renderOrganizacja() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Organizacja Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Organizacja to kto i jak to robi — role, zespoły (np. SOC), procesy reagowania na incydenty.'),
+    el('p', { class: 'subtitle' }, 'Organizacja to kto i jak to robi - role, zespoły (np. SOC), procesy reagowania na incydenty.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~20 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 3')
@@ -323,7 +323,7 @@ export function renderOrganizacja() {
       if (!bannerShown) {
         bannerShown = true;
         wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-          el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Organizacja" odblokowana!`
+          el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka „Organizacja” odblokowana!`
         ));
       }
     }

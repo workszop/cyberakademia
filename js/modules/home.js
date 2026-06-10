@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/home.js
+// CyberAkademia - modules/home.js
 // Landing page / dashboard
 // ============================================================
 
@@ -14,7 +14,7 @@ const MODULES = [
     hash: '#/fundamenty',
     iconName: 'shield',
     title: 'Fundamenty',
-    desc: 'Triada CIA, zarządzanie ryzykiem i krajobraz zagrożeń — fundament całej reszty.',
+    desc: 'Triada CIA, zarządzanie ryzykiem i krajobraz zagrożeń - fundament całej reszty.',
     badge: 'Moduł 1',
     time: '~25 min',
   },
@@ -23,7 +23,7 @@ const MODULES = [
     hash: '#/regulacje',
     iconName: 'clipboard-list',
     title: 'Regulacje',
-    desc: 'NIS2/KSC, DORA, RODO — co trzeba zrobić i kto za to odpowiada.',
+    desc: 'NIS2/KSC, DORA, RODO - co trzeba zrobić i kto za to odpowiada.',
     badge: 'Moduł 2',
     time: '~20 min',
   },
@@ -32,7 +32,7 @@ const MODULES = [
     hash: '#/organizacja',
     iconName: 'building-2',
     title: 'Organizacja',
-    desc: 'Role, SOC, CSIRT — kto i jak realizuje obowiązki wynikające z regulacji.',
+    desc: 'Role, SOC, CSIRT - kto i jak realizuje obowiązki wynikające z regulacji.',
     badge: 'Moduł 3',
     time: '~20 min',
   },
@@ -41,7 +41,7 @@ const MODULES = [
     hash: '#/technologia',
     iconName: 'cpu',
     title: 'Technologia',
-    desc: 'Narzędzia, które wykrywają i blokują ataki — SIEM, EDR, firewall, MFA i inne.',
+    desc: 'Narzędzia, które wykrywają i blokują ataki - SIEM, EDR, firewall, MFA i inne.',
     badge: 'Moduł 4',
     time: '~30 min',
   },
@@ -49,8 +49,8 @@ const MODULES = [
     id: 'spiecie',
     hash: '#/spiecie',
     iconName: 'layers',
-    title: 'Spięcie',
-    desc: 'Jak regulacja, organizacja i technologia łączą się w jeden spójny system — tabela spięcia z dokumentu.',
+    title: 'Integracja',
+    desc: 'Jak regulacja, organizacja i technologia łączą się w jeden spójny system - tabela spięcia z dokumentu.',
     badge: 'Moduł 5',
     time: '~25 min',
   },
@@ -59,7 +59,7 @@ const MODULES = [
     hash: '#/slownik',
     iconName: 'book-open',
     title: 'Słownik',
-    desc: 'Wszystkie akronimy i pojęcia — fiszki Leitner do nauki spaced repetition.',
+    desc: 'Wszystkie akronimy i pojęcia - fiszki Leitner do nauki spaced repetition.',
     badge: 'Słownik',
     time: 'Zawsze',
   },
@@ -68,7 +68,7 @@ const MODULES = [
     hash: '#/sciezka',
     iconName: 'map',
     title: 'Ścieżka',
-    desc: 'Twój plan nauki i zdobyte odznaki — wizualizacja postępu.',
+    desc: 'Twój plan nauki i zdobyte odznaki - wizualizacja postępu.',
     badge: 'Ścieżka',
     time: 'Zawsze',
   },
@@ -182,15 +182,15 @@ export function renderHome() {
     el('div', { class: 'card-grid' },
       el('div', { class: 'card' },
         el('div', { class: 'card-title' }, 'Logika jest jednokierunkowa'),
-        el('div', { class: 'card-body' }, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Prawo nie mówi "kup SIEM" — mówi "musisz wykrywać i zgłaszać incydenty".')
+        el('div', { class: 'card-body' }, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Prawo nie mówi „kup SIEM” - mówi „musisz wykrywać i zgłaszać incydenty”.')
       ),
       el('div', { class: 'card' },
         el('div', { class: 'card-title' }, 'Akronimy z tooltipami'),
-        el('div', { class: 'card-body' }, 'Skróty (CIA, SIEM, MFA, DORA…) są podkreślone — najedź myszką, by zobaczyć definicję. W Słowniku znajdziesz fiszki z całym słownikiem pojęć.')
+        el('div', { class: 'card-body' }, 'Skróty (CIA, SIEM, MFA, DORA…) są podkreślone - najedź myszką, by zobaczyć definicję. W Słowniku znajdziesz fiszki z całym słownikiem pojęć.')
       ),
       el('div', { class: 'card' },
         el('div', { class: 'card-title' }, 'Ćwicz, nie tylko czytaj'),
-        el('div', { class: 'card-body' }, 'Każdy moduł ma interakcję — sortowanie scenariuszy, łączenie pojęć, quizy. Wiedza zostaje, gdy się jej użyje.')
+        el('div', { class: 'card-body' }, 'Każdy moduł ma interakcję - sortowanie scenariuszy, łączenie pojęć, quizy. Wiedza zostaje, gdy się jej użyje.')
       ),
     )
   );

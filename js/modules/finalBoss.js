@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/finalBoss.js
+// CyberAkademia - modules/finalBoss.js
 // Final comprehensive exam across all modules
 // ============================================================
 
@@ -16,19 +16,19 @@ const ALL_QUESTIONS = [
     question: 'Atak DDoS powoduje niedostępność serwisu. Którą właściwość CIA narusza?',
     options: ['Poufność (C)', 'Integralność (I)', 'Dostępność (A)', 'Wszystkie trzy'],
     correct: 2,
-    explanation: 'DDoS narusza przede wszystkim Dostępność (A) — system jest niedostępny dla uprawnionych użytkowników.'
+    explanation: 'DDoS narusza przede wszystkim Dostępność (A) - system jest niedostępny dla uprawnionych użytkowników.'
   },
   {
     question: 'Pracownik sprzedał dane klientów konkurencji. Które CIA jest naruszone PRZEDE WSZYSTKIM?',
     options: ['Dostępność (A)', 'Poufność (C)', 'Integralność (I)', 'Żadne'],
     correct: 1,
-    explanation: 'Sprzedaż danych klientów to klasyczne naruszenie Poufności (C) — dane trafiły do nieuprawnionych podmiotów.'
+    explanation: 'Sprzedaż danych klientów to klasyczne naruszenie Poufności (C) - dane trafiły do nieuprawnionych podmiotów.'
   },
   {
     question: 'Firma wdraża MFA zamiast polegać tylko na hasłach. To jest przykład jakiej odpowiedzi na ryzyko?',
     options: ['Unikaj (Avoid)', 'Akceptuj (Accept)', 'Obniżaj (Mitigate)', 'Przenoś (Transfer)'],
     correct: 2,
-    explanation: 'Wdrożenie kontroli (MFA) bezpośrednio redukuje ryzyko przejęcia kont — to klasyczna mitygacja ryzyka.'
+    explanation: 'Wdrożenie kontroli (MFA) bezpośrednio redukuje ryzyko przejęcia kont - to klasyczna mitygacja ryzyka.'
   },
   // Regulacje
   {
@@ -45,9 +45,9 @@ const ALL_QUESTIONS = [
   },
   {
     question: 'Czym jest DPO w kontekście RODO?',
-    options: ['Chief Information Security Officer', 'Inspektor Ochrony Danych — funkcja doradcza ds. zgodności z RODO', 'Dyrektor IT', 'Audytor zewnętrzny'],
+    options: ['Chief Information Security Officer', 'Inspektor Ochrony Danych - funkcja doradcza ds. zgodności z RODO', 'Dyrektor IT', 'Audytor zewnętrzny'],
     correct: 1,
-    explanation: 'DPO (Data Protection Officer / IOD) to niezależna funkcja doradcza wymagana przez RODO. Różni się od CISO — DPO skupia się wyłącznie na ochronie danych osobowych.'
+    explanation: 'DPO (Data Protection Officer / IOD) to niezależna funkcja doradcza wymagana przez RODO. Różni się od CISO - DPO skupia się wyłącznie na ochronie danych osobowych.'
   },
   // Organizacja
   {
@@ -64,24 +64,24 @@ const ALL_QUESTIONS = [
   },
   // Technologia
   {
-    question: 'Co oznacza zasada "3-2-1" w strategii backupu?',
+    question: 'Co oznacza zasada „3-2-1” w strategii backupu?',
     options: ['3 serwery, 2 lokalizacje, 1 admin', '3 kopie danych, 2 różne nośniki, 1 kopia poza siedzibą', '3 backupy dziennie, 2 tygodniowo, 1 miesięcznie', '3 wersje, 2 formaty, 1 archiwum'],
     correct: 1,
     explanation: 'Zasada 3-2-1: 3 kopie, 2 nośniki (np. dysk + chmura), 1 offline lub poza lokalizacją. Chroni przed ransomware i katastrofami.'
   },
   {
     question: 'Jaka jest fundamentalna zasada Zero Trust?',
-    options: ['Ufaj sieci wewnętrznej', '"Never trust, always verify" — weryfikuj każdy dostęp', 'Blokuj cały ruch zewnętrzny', 'Używaj tylko VPN'],
+    options: ['Ufaj sieci wewnętrznej', '„Never trust, always verify” - weryfikuj każdy dostęp', 'Blokuj cały ruch zewnętrzny', 'Używaj tylko VPN'],
     correct: 1,
-    explanation: 'Zero Trust: "Never trust, always verify" + Least Privilege + Assume Breach. Zakładaj naruszenie i weryfikuj każdy dostęp.'
+    explanation: 'Zero Trust: „Never trust, always verify” + Least Privilege + Assume Breach. Zakładaj naruszenie i weryfikuj każdy dostęp.'
   },
   {
     question: 'Do czego służy SOAR w SOC?',
     options: ['Do skanowania podatności', 'Automatyzacji reagowania na incydenty', 'Zarządzania certyfikatami', 'Backupu danych'],
     correct: 1,
-    explanation: 'SOAR automatyzuje powtarzalne zadania IR — playbooki reagowania uruchamiane automatycznie po wykryciu zagrożenia przez SIEM.'
+    explanation: 'SOAR automatyzuje powtarzalne zadania IR - playbooki reagowania uruchamiane automatycznie po wykryciu zagrożenia przez SIEM.'
   },
-  // Spięcie
+  // Integracja
   {
     question: 'Która nowa funkcja pojawiła się w NIST CSF 2.0?',
     options: ['DETECT', 'GOVERN', 'RESPOND', 'RECOVER'],
@@ -109,7 +109,7 @@ const ALL_QUESTIONS = [
   },
   {
     question: 'Czym jest APT (Advanced Persistent Threat)?',
-    options: ['Automatyczny test penetracyjny', 'Długotrwały, ukryty atak celowany — często sponsorowany przez państwo', 'Rodzaj firewalla', 'Protokół uwierzytelniania'],
+    options: ['Automatyczny test penetracyjny', 'Długotrwały, ukryty atak celowany - często sponsorowany przez państwo', 'Rodzaj firewalla', 'Protokół uwierzytelniania'],
     correct: 1,
     explanation: 'APT to zaawansowany, długotrwały atak celowany. Atakujący przez miesiące ukrywa się w sieci ofiary, eksfiltrując dane lub przygotowując sabotaż.'
   },
@@ -117,13 +117,13 @@ const ALL_QUESTIONS = [
     question: 'Co to jest SIEM?',
     options: ['Rodzaj firewalla', 'System zbierający logi i korelujący zdarzenia bezpieczeństwa z całej infrastruktury', 'Aplikacja do backupu', 'Protokół sieciowy'],
     correct: 1,
-    explanation: 'SIEM (Security Information and Event Management) to mózg SOC — zbiera logi ze wszystkich systemów, koreluje zdarzenia i generuje alerty o zagrożeniach.'
+    explanation: 'SIEM (Security Information and Event Management) to mózg SOC - zbiera logi ze wszystkich systemów, koreluje zdarzenia i generuje alerty o zagrożeniach.'
   },
   {
     question: 'Zasada Least Privilege w Zero Trust oznacza:',
     options: ['Blokowanie wszystkich zewnętrznych połączeń', 'Przyznanie minimalnego dostępu niezbędnego do wykonania zadania', 'Usunięcie wszystkich kont administratorów', 'Szyfrowanie wszystkich danych'],
     correct: 1,
-    explanation: 'Least Privilege: każdy użytkownik i system ma tylko tyle uprawnień ile potrzebuje do swojej pracy. Minimalizuje "promień wybuchu" przy naruszeniu.'
+    explanation: 'Least Privilege: każdy użytkownik i system ma tylko tyle uprawnień ile potrzebuje do swojej pracy. Minimalizuje „promień wybuchu” przy naruszeniu.'
   },
   {
     question: 'Inspektor Ochrony Danych (DPO) jest wymagany przez:',
@@ -147,7 +147,7 @@ export function renderFinalBoss() {
   const alreadyPassed = state.completed?.finalboss;
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Final Boss — Egzamin Końcowy'),
+    el('h1', {}, 'Final Boss - Egzamin Końcowy'),
     el('p', { class: 'subtitle' }, 'Wielki test ze wszystkich modułów CyberAkademii. Wykaż się wiedzą i zdobądź tytuł Mistrza!'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~45 min'),
@@ -212,13 +212,13 @@ export function renderFinalBoss() {
             el('strong', {}, 'BOSS POKONANY! '),
             `Wynik: ${score}/${total} (${Math.round(pct * 100)}%). `,
             el('br'),
-            'Gratulacje — jesteś Mistrzem CyberAkademii! Odznaka "Mistrz" odblokowana.'
+            'Gratulacje - jesteś Mistrzem CyberAkademii! Odznaka „Mistrz” odblokowana.'
           )
         );
       } else {
         wrap.appendChild(
           el('div', { class: 'alert alert-warning', style: { marginTop: '2rem', textAlign: 'center' } },
-            el('strong', {}, `Wynik: ${score}/${total} (${Math.round(pct * 100)}%) — Potrzebujesz 70%. `),
+            el('strong', {}, `Wynik: ${score}/${total} (${Math.round(pct * 100)}%) - Potrzebujesz 70%. `),
             'Powtórz moduły i spróbuj ponownie!'
           )
         );
@@ -232,9 +232,9 @@ export function renderFinalBoss() {
     const tipsCard = el('div', { class: 'card', style: { marginTop: '1.5rem' } },
       el('h3', { style: { marginBottom: '1rem' } }, 'Wskazówki przed egzaminem'),
       el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', lineHeight: '1.9', fontSize: '0.9rem' } },
-        el('li', {}, 'Pytania obejmują wszystkie 5 modułów: Fundamenty, Regulacje, Organizacja, Technologia, Spięcie'),
+        el('li', {}, 'Pytania obejmują wszystkie 5 modułów: Fundamenty, Regulacje, Organizacja, Technologia, Integracja'),
         el('li', {}, 'Potrzebujesz 70% (14/20) poprawnych odpowiedzi'),
-        el('li', {}, 'Możesz próbować wielokrotnie — nie ma limitu podejść'),
+        el('li', {}, 'Możesz próbować wielokrotnie - nie ma limitu podejść'),
         el('li', {}, 'Zapoznaj się ze Słownikiem jeśli masz wątpliwości co do skrótów'),
       )
     );

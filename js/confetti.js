@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — confetti.js
+// CyberAkademia - confetti.js
 // Canvas-based confetti burst animations
 // ============================================================
 
@@ -106,7 +106,7 @@ function loop() {
   if (particles.length > 0) {
     animationId = requestAnimationFrame(loop);
   } else {
-    // All done — clear canvas and reset
+    // All done - clear canvas and reset
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     animationId = null;
   }

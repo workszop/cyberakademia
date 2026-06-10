@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — router.js
+// CyberAkademia - router.js
 // Simple hash-based client-side router
 // ============================================================
 
@@ -18,7 +18,7 @@ export function register(hash, renderFn) {
 }
 
 /**
- * Initialise the router — binds hashchange and handles the initial URL.
+ * Initialise the router - binds hashchange and handles the initial URL.
  */
 export function init() {
   function handle() {

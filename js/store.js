@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — store.js
+// CyberAkademia - store.js
 // localStorage-backed state store with pub/sub
 // ============================================================
 
@@ -33,7 +33,7 @@ function loadState() {
 let state = loadState();
 
 // Modules that can actually be "completed" (call completeModule).
-// Słownik and Ścieżka are reference views, not completable — so they
+// Słownik and Ścieżka are reference views, not completable - so they
 // must NOT count toward the progress denominator.
 export const COMPLETABLE_MODULES = [
   'fundamenty', 'regulacje', 'organizacja', 'technologia', 'spiecie', 'finalboss',

@@ -1,6 +1,6 @@
 // ============================================================
-// CyberAkademia — main.js
-// Application entry point — routes, nav, init
+// CyberAkademia - main.js
+// Application entry point - routes, nav, init
 // ============================================================
 
 import { init as initRouter, register } from './router.js';

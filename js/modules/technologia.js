@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/technologia.js
+// CyberAkademia - modules/technologia.js
 // Module 4: SIEM, EDR, MFA, Zero Trust, technology layers
 // ============================================================
 
@@ -114,7 +114,7 @@ function renderMFASim() {
         ),
         el('div', { class: 'alert alert-info', style: { textAlign: 'left', marginTop: '1rem' } },
           el('strong', {}, 'Dlaczego MFA działa? '),
-          'Atakujący może ukraść Twoje hasło (phishing, data breach), ale bez drugiego czynnika — telefonu z TOTP lub klucza U2F — nie zaloguje się. MFA eliminuje 99% ataków na konta.'
+          'Atakujący może ukraść Twoje hasło (phishing, data breach), ale bez drugiego czynnika - telefonu z TOTP lub klucza U2F - nie zaloguje się. MFA eliminuje 99% ataków na konta.'
         ),
         el('button', {
           class: 'btn btn-secondary',
@@ -138,9 +138,9 @@ function renderBackup321() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Kopie zapasowe i ich regularne testowanie odtwarzania — najlepsza obrona przed ransomware. ' +
+    'Kopie zapasowe i ich regularne testowanie odtwarzania - najlepsza obrona przed ransomware. ' +
     'Zasada 3-2-1: 3 kopie, 2 nośniki, 1 poza siedzibą. ' +
-    'Z backupem firma wstaje po ataku. Bez backupu — płaci okup.'
+    'Z backupem firma wstaje po ataku. Bez backupu - płaci okup.'
   ));
 
   const viz = el('div', { class: 'backup-321' },
@@ -168,7 +168,7 @@ function renderBackup321() {
   ));
 
   section.appendChild(el('div', { class: 'alert alert-info', style: { marginTop: '0.5rem' } },
-    el('strong', {}, 'Rozszerzenie — 3-2-1-1-0: '),
+    el('strong', {}, 'Rozszerzenie - 3-2-1-1-0: '),
     '3 kopie, 2 nośniki, 1 poza siedzibą, 1 offline/immutable (niezmienialny), 0 błędów przy testach odtwarzania.'
   ));
 
@@ -179,13 +179,13 @@ function renderBackup321() {
 
 function renderZeroTrust() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Zero Trust — podejście, nie produkt')
+    el('div', { class: 'section-title' }, 'Zero Trust - podejście, nie produkt')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Nie „filozofia produktu", tylko podejście: „nigdy nie ufaj, zawsze weryfikuj". ' +
+    'Nie „filozofia produktu”, tylko podejście: „nigdy nie ufaj, zawsze weryfikuj”. ' +
     'Zakłada, że żaden użytkownik ani urządzenie nie jest zaufane domyślnie, nawet wewnątrz sieci. ' +
-    'Stopniowo zastępuje stary model „twardej skorupy, miękkiego środka" — w którym po przebiciu perimetru atakujący ma swobodę wewnątrz.'
+    'Stopniowo zastępuje stary model „twardej skorupy, miękkiego środka” - w którym po przebiciu perimetru atakujący ma swobodę wewnątrz.'
   ));
 
   const viz = el('div', { class: 'zero-trust-viz' },
@@ -194,7 +194,7 @@ function renderZeroTrust() {
       el('div', { class: 'zt-icon-scene' },
         el('div', { style: { fontSize: '0.9rem', color: 'var(--text-muted)', textAlign: 'center', padding: '0.5rem' } }, 'Twardy perimeter, miękkie centrum')
       ),
-      el('div', { class: 'zt-description' }, 'Zaufaj wszystkiemu w sieci wewnętrznej. Duży, twardy "perimeter" (firewall). Gdy napastnik przejdzie przez bramę — ma dostęp do wszystkiego.')
+      el('div', { class: 'zt-description' }, 'Zaufaj wszystkiemu w sieci wewnętrznej. Duży, twardy „perimeter” (firewall). Gdy napastnik przejdzie przez bramę - ma dostęp do wszystkiego.')
     ),
     el('div', { class: 'zt-model new-model' },
       el('div', { class: 'zt-model-title' }, 'Zero Trust'),
@@ -238,7 +238,7 @@ function renderToolFamily(title, intro, tools, buildDetail) {
   }
 
   const items = tools.map(t => ({
-    title: t.full ? `${t.name} — ${t.full}` : t.name,
+    title: t.full ? `${t.name} - ${t.full}` : t.name,
     summary: t.description || '',
     detail: buildDetail(t),
   }));
@@ -257,10 +257,10 @@ function joinDetail(parts) {
 function renderSocTools() {
   return renderToolFamily(
     'Centrum operacji bezpieczeństwa (SOC)',
-    'Narzędzia SOC wykrywają i obsługują incydenty. Sercem jest SIEM — centrala monitoringu, ' +
+    'Narzędzia SOC wykrywają i obsługują incydenty. Sercem jest SIEM - centrala monitoringu, ' +
     'do której spływają logi i zdarzenia z całej infrastruktury, jak obrazy z wszystkich kamer i czujników w budynku, ' +
     'a SOAR automatyzuje reagowanie. Warstwy detekcji różnią się zasięgiem: EDR widzi endpoint, ' +
-    'NDR — ruch w sieci, XDR łączy oba obrazy, a MDR oddaje całość w ręce zewnętrznego zespołu.',
+    'NDR - ruch w sieci, XDR łączy oba obrazy, a MDR oddaje całość w ręce zewnętrznego zespołu.',
     SOC_TOOLS,
     (t) => joinDetail([
       t.analogy && `Analogia: ${t.analogy}`,
@@ -275,7 +275,7 @@ function renderSocTools() {
 function renderNetworkTools() {
   return renderToolFamily(
     'Narzędzia sieciowe',
-    'Kontrolują ruch wchodzący, wychodzący i przemieszczający się wewnątrz sieci — od bramy (NGFW) ' +
+    'Kontrolują ruch wchodzący, wychodzący i przemieszczający się wewnątrz sieci - od bramy (NGFW) ' +
     'przez wykrywanie i blokowanie włamań (IDS/IPS), po ochronę aplikacji webowych (WAF) i bezpieczny dostęp zdalny (VPN/ZTNA).',
     NETWORK_TOOLS,
     (t) => joinDetail([
@@ -290,7 +290,7 @@ function renderIdentityTools() {
   return renderToolFamily(
     'Tożsamość i dostęp',
     'W modelu Zero Trust granicą bezpieczeństwa nie jest już sieć, lecz tożsamość. ' +
-    'IAM porządkuje „kto, do czego, kiedy i jak", MFA dokłada drugi czynnik, a PAM pilnuje kont uprzywilejowanych — „kluczy do królestwa".',
+    'IAM porządkuje „kto, do czego, kiedy i jak”, MFA dokłada drugi czynnik, a PAM pilnuje kont uprzywilejowanych - „kluczy do królestwa”.',
     IDENTITY_TOOLS,
     (t) => joinDetail([
       t.detail,
@@ -315,7 +315,7 @@ function renderDataProtectionTools() {
         });
       }
       if (Array.isArray(t.rules)) {
-        parts.push(t.rules.map(r => `${r.rule} — ${r.explanation}`).join(' '));
+        parts.push(t.rules.map(r => `${r.rule} - ${r.explanation}`).join(' '));
       }
       if (Array.isArray(t.extensions)) {
         parts.push(t.extensions.map(e => `${e.name}: ${e.description}`).join(' '));
@@ -378,9 +378,9 @@ function renderDefenseInDepth() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Nie ma magicznego pudełka — jest wiele warstw, z których każda łapie to, co przepuści poprzednia. ' +
+    'Nie ma magicznego pudełka - jest wiele warstw, z których każda łapie to, co przepuści poprzednia. ' +
     'Żadna pojedyncza kontrola nie zatrzyma każdego ataku, ale ułożone jedna za drugą znacząco podnoszą koszt i ryzyko dla atakującego. ' +
-    'Każda warstwa coś blokuje — i czegoś nie blokuje, dlatego dopiero razem tworzą głęboką obronę.'
+    'Każda warstwa coś blokuje - i czegoś nie blokuje, dlatego dopiero razem tworzą głęboką obronę.'
   ));
 
   const list = el('div', { class: 'card-grid', style: { gridTemplateColumns: '1fr' } });
@@ -426,7 +426,7 @@ function renderDefenseInDepth() {
 
   section.appendChild(el('div', { class: 'alert alert-info', style: { marginTop: '1rem' } },
     el('strong', {}, 'Zasada porządkująca: '),
-    'Trzymanie obrony warstwowej w głowie chroni przed kupowaniem narzędzi „bo modne" — każda warstwa ' +
+    'Trzymanie obrony warstwowej w głowie chroni przed kupowaniem narzędzi „bo modne” - każda warstwa ' +
     'powinna odpowiadać konkretnemu ryzyku i obowiązkowi, a luki jednej warstwy domyka kolejna.'
   ));
 
@@ -438,7 +438,7 @@ export function renderTechnologia() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Technologia Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Technologia to czym się to robi — narzędzia (SIEM, EDR, firewalle), które wykrywają i blokują ataki.'),
+    el('p', { class: 'subtitle' }, 'Technologia to czym się to robi - narzędzia (SIEM, EDR, firewalle), które wykrywają i blokują ataki.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~30 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 4')
@@ -466,7 +466,7 @@ export function renderTechnologia() {
       earnBadge('technologia');
       fullBurst();
       wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Technologia" odblokowana!`
+        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka „Technologia” odblokowana!`
       ));
     }
   });

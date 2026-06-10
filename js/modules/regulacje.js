@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/regulacje.js
+// CyberAkademia - modules/regulacje.js
 // Module 2: RODO/GDPR, NIS2, KSC, DORA
 // ============================================================
 
@@ -25,18 +25,18 @@ function renderRegTable() {
   );
 
   const intro = el('p', { style: { marginBottom: '0.75rem' } },
-    'W Europie nie ma „jednej ustawy o cyberbezpieczeństwie". Jest zestaw aktów, które dotyczą różnych grup podmiotów. Najważniejsze rozróżnienie:'
+    'W Europie nie ma „jednej ustawy o cyberbezpieczeństwie”. Jest zestaw aktów, które dotyczą różnych grup podmiotów. Najważniejsze rozróżnienie:'
   );
   section.appendChild(intro);
 
   const diffNote = el('div', { class: 'alert alert-info', style: { marginBottom: '1.5rem' } },
     el('strong', {}, 'Kluczowa różnica prawna: '),
-    'dyrektywa (NIS2) wymaga „przepisania" do prawa krajowego — stąd polska ustawa o KSC. ',
+    'dyrektywa (NIS2) wymaga „przepisania” do prawa krajowego - stąd polska ustawa o KSC. ',
     el('strong', {}, 'Rozporządzenie '),
     '(DORA, RODO) obowiązuje bezpośrednio, identycznie w całej UE, bez ustawy krajowej. ',
     el('br', {}),
     el('em', {}, 'Czy mój podmiot może podlegać kilku naraz? '),
-    'Tak. Bank podlega DORA i RODO. Szpital podlega NIS2/KSC i RODO. Regulacje się uzupełniają, nie wykluczają. Tam gdzie DORA i NIS2 mogłyby kolidować — DORA jest przepisem szczególnym (lex specialis).'
+    'Tak. Bank podlega DORA i RODO. Szpital podlega NIS2/KSC i RODO. Regulacje się uzupełniają, nie wykluczają. Tam gdzie DORA i NIS2 mogłyby kolidować - DORA jest przepisem szczególnym (lex specialis).'
   );
   section.appendChild(diffNote);
 
@@ -91,7 +91,7 @@ function renderTimeline() {
 
 function renderNIS2Obligations() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'NIS2 / KSC — kluczowe obowiązki')
+    el('div', { class: 'section-title' }, 'NIS2 / KSC - kluczowe obowiązki')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -113,7 +113,7 @@ function renderNIS2Obligations() {
 
 function renderDORAPillars() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'DORA — 5 filarów')
+    el('div', { class: 'section-title' }, 'DORA - 5 filarów')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -135,7 +135,7 @@ function renderDORAPillars() {
 
 function renderMatchGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra — Połącz regulację z obowiązkiem')
+    el('div', { class: 'section-title' }, 'Gra - Połącz regulację z obowiązkiem')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -237,7 +237,7 @@ function renderMatchGame() {
 
 function renderDPOvsCISO() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'DPO vs CISO — różne role')
+    el('div', { class: 'section-title' }, 'DPO vs CISO - różne role')
   );
 
   const grid = el('div', { class: 'card-grid' },
@@ -258,7 +258,7 @@ function renderDPOvsCISO() {
       el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: '1.9' } },
         el('li', {}, 'Doradza w kwestii zgodności z RODO'),
         el('li', {}, 'Punkt kontaktowy z UODO'),
-        el('li', {}, 'Niezależny — nie może być zdymisjonowany za swoją pracę'),
+        el('li', {}, 'Niezależny - nie może być zdymisjonowany za swoją pracę'),
         el('li', {}, 'Wymagany przez RODO dla wielu organizacji'),
         el('li', {}, 'Zakres: TYLKO ochrona danych osobowych'),
       )
@@ -279,7 +279,7 @@ export function renderRegulacje() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Regulacje Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Regulacje mówią, co trzeba zrobić i kto za to odpowiada — NIS2/KSC, DORA, RODO, normy ISO.'),
+    el('p', { class: 'subtitle' }, 'Regulacje mówią, co trzeba zrobić i kto za to odpowiada - NIS2/KSC, DORA, RODO, normy ISO.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~20 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 2')
@@ -305,7 +305,7 @@ export function renderRegulacje() {
       earnBadge('regulacje');
       fullBurst();
       wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Regulacje" odblokowana!`
+        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka „Regulacje” odblokowana!`
       ));
     }
   });

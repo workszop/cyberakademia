@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/fundamenty.js
+// CyberAkademia - modules/fundamenty.js
 // Module 1: CIA triad, risk management, intro concepts
 // ============================================================
 
@@ -21,8 +21,8 @@ function renderCIATriangle() {
   );
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
-    'Bezpieczeństwo informacji sprowadza się do ochrony trzech właściwości (stąd „triada CIA"). ' +
-    'Każdy atak i każdy mechanizm obrony da się przypisać do jednej z trzech kategorii — to uniwersalny „układ współrzędnych" całej dziedziny.'
+    'Bezpieczeństwo informacji sprowadza się do ochrony trzech właściwości (stąd „triada CIA”). ' +
+    'Każdy atak i każdy mechanizm obrony da się przypisać do jednej z trzech kategorii - to uniwersalny „układ współrzędnych” całej dziedziny.'
   );
   section.appendChild(intro);
 
@@ -36,7 +36,7 @@ function renderCIATriangle() {
     iconEl.appendChild(icon(CIA_ICON_MAP[entry.id] || 'shield', 24));
     const card = el('div', { class: 'card' },
       iconEl,
-      el('h3', {}, `${entry.id} — ${entry.namePL}`),
+      el('h3', {}, `${entry.id} - ${entry.namePL}`),
       el('p', { style: { fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' } }, entry.name),
       el('p', { style: { marginTop: '0.5rem', fontSize: '1rem', lineHeight: '1.5' } }, entry.description),
       el('p', { style: { marginTop: '0.6rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic' } }, entry.violationExample),
@@ -58,11 +58,11 @@ function renderCIATriangle() {
 
 function renderCIASortingGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra — Przyporządkuj incydent')
+    el('div', { class: 'section-title' }, 'Gra - Przyporządkuj incydent')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Przeczytaj opis incydentu i wrzuć go do właściwego koszyka — które z właściwości CIA zostało naruszone? ' +
+    'Przeczytaj opis incydentu i wrzuć go do właściwego koszyka - które z właściwości CIA zostało naruszone? ' +
     'Przeciągnij element do kategorii Poufność, Integralność lub Dostępność, albo kliknij element i wybierz kategorię.'
   );
   section.appendChild(desc);
@@ -83,7 +83,7 @@ function renderCIASortingGame() {
     explanation: scenario.explanation,
   }));
 
-  // Practice exercise — result does not gate module completion.
+  // Practice exercise - result does not gate module completion.
   initSortIntoBuckets(gameEl, { buckets, items });
 
   return section;
@@ -125,15 +125,15 @@ function renderThreatLandscape() {
 
 function renderRiskResponses() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Ryzyko zamiast "czy jesteśmy bezpieczni"')
+    el('div', { class: 'section-title' }, 'Ryzyko zamiast „czy jesteśmy bezpieczni”')
   );
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
-    'Dojrzałe podejście nie pyta „czy jesteśmy bezpieczni" (odpowiedź zawsze brzmi „nie w 100%"), tylko ' +
+    'Dojrzałe podejście nie pyta „czy jesteśmy bezpieczni” (odpowiedź zawsze brzmi „nie w 100%”), tylko ' +
     'zarządza ryzykiem: ryzyko = prawdopodobieństwo zdarzenia × jego skutek. ' +
     'Nie da się wyeliminować ryzyka, można je tylko ' +
     'obniżać, przenosić (ubezpieczenie), akceptować albo unikać. ' +
-    'To dlatego wszystkie nowoczesne regulacje mówią o „zarządzaniu ryzykiem", a nie o konkretnej liście produktów.'
+    'To dlatego wszystkie nowoczesne regulacje mówią o „zarządzaniu ryzykiem”, a nie o konkretnej liście produktów.'
   );
   section.appendChild(intro);
 
@@ -161,7 +161,7 @@ function renderRiskResponses() {
 
 function renderRiskGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra — Dobierz odpowiedź na ryzyko')
+    el('div', { class: 'section-title' }, 'Gra - Dobierz odpowiedź na ryzyko')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -237,7 +237,7 @@ function renderRiskGame() {
 
 const QUIZ_QUESTIONS = [
   {
-    question: 'Co narusza "Poufność" (C) w triadzie CIA?',
+    question: 'Co narusza „Poufność” (C) w triadzie CIA?',
     options: ['Atak DDoS uniemożliwiający dostęp do serwisu', 'Haker wykradł bazę danych klientów', 'Zmiana danych w systemie przez hakera', 'Awaria serwera powodująca przestój'],
     correct: 1,
     explanation: 'Poufność (Confidentiality) jest naruszona gdy nieautoryzowana osoba uzyskuje dostęp do danych. Wykradzenie bazy danych to klasyczne naruszenie C.'
@@ -246,25 +246,25 @@ const QUIZ_QUESTIONS = [
     question: 'Która odpowiedź na ryzyko polega na przeniesieniu finansowych skutków na ubezpieczyciela?',
     options: ['Obniżaj (Mitigate)', 'Przenoś (Transfer)', 'Akceptuj (Accept)', 'Unikaj (Avoid)'],
     correct: 1,
-    explanation: 'Transfer ryzyka przenosi finansowe konsekwencje na zewnętrzny podmiot — najczęściej przez ubezpieczenie cybernetyczne lub klauzule umowne.'
+    explanation: 'Transfer ryzyka przenosi finansowe konsekwencje na zewnętrzny podmiot - najczęściej przez ubezpieczenie cybernetyczne lub klauzule umowne.'
   },
   {
     question: 'Atak ransomware szyfruje dane i uniemożliwia pracę. Które właściwości CIA narusza PRZEDE WSZYSTKIM?',
     options: ['Tylko Poufność (C)', 'Poufność i Integralność (C+I)', 'Przede wszystkim Dostępność (A)', 'Tylko Integralność (I)'],
     correct: 2,
-    explanation: 'Ransomware narusza przede wszystkim Dostępność (A) — dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (double extortion) narusza też C przez wcześniejszą eksfiltrację, ale pierwszorzędnie to A.'
+    explanation: 'Ransomware narusza przede wszystkim Dostępność (A) - dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (double extortion) narusza też C przez wcześniejszą eksfiltrację, ale pierwszorzędnie to A.'
   },
   {
     question: 'Firma akceptuje ryzyko przestarzałego systemu legacy. Co jest WYMAGANE przy akceptacji ryzyka?',
-    options: ['Natychmiastowe wyłączenie systemu', 'Świadoma decyzja zarządu i dokumentacja', 'Przeniesienie systemu do chmury', 'Żadnych działań — ignorujemy problem'],
+    options: ['Natychmiastowe wyłączenie systemu', 'Świadoma decyzja zarządu i dokumentacja', 'Przeniesienie systemu do chmury', 'Żadnych działań - ignorujemy problem'],
     correct: 1,
-    explanation: 'Akceptacja ryzyka ≠ ignorowanie. Wymaga formalnej, świadomej decyzji zarządu z dokumentacją. "Nie wiedzieliśmy" to brak zarządzania ryzykiem, nie akceptacja.'
+    explanation: 'Akceptacja ryzyka ≠ ignorowanie. Wymaga formalnej, świadomej decyzji zarządu z dokumentacją. „Nie wiedzieliśmy” to brak zarządzania ryzykiem, nie akceptacja.'
   },
   {
     question: 'Pracownik przypadkowo usunął produkcyjną bazę danych. Które właściwości CIA są naruszone?',
-    options: ['Tylko Poufność (C)', 'Integralność i Dostępność (I+A)', 'Tylko Dostępność (A)', 'Żadne — to był błąd, nie atak'],
+    options: ['Tylko Poufność (C)', 'Integralność i Dostępność (I+A)', 'Tylko Dostępność (A)', 'Żadne - to był błąd, nie atak'],
     correct: 1,
-    explanation: 'Naruszono Dostępność (A) — danych nie ma, i Integralność (I) — dane bezpowrotnie utracone. CIA nie dotyczy tylko ataków — obejmuje wszystkie incydenty, w tym błędy ludzkie.'
+    explanation: 'Naruszono Dostępność (A) - danych nie ma, i Integralność (I) - dane bezpowrotnie utracone. CIA nie dotyczy tylko ataków - obejmuje wszystkie incydenty, w tym błędy ludzkie.'
   },
 ];
 
@@ -295,7 +295,7 @@ export function renderFundamenty() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Fundamenty Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Zanim przejdziemy do skrótów — trzy pojęcia, które są fundamentem całej reszty.'),
+    el('p', { class: 'subtitle' }, 'Zanim przejdziemy do skrótów - trzy pojęcia, które są fundamentem całej reszty.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~25 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 1')
@@ -314,7 +314,7 @@ export function renderFundamenty() {
       passed = true;
       const banner = el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
         el('strong', {}, 'Moduł zaliczony! '),
-        `Wynik: ${score}/${total}. Odznaka "Fundamenty" odblokowana!`
+        `Wynik: ${score}/${total}. Odznaka „Fundamenty” odblokowana!`
       );
       wrap.appendChild(banner);
     }

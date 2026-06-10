@@ -1,6 +1,6 @@
 /* ============================================================
-   CyberAkademia — modules.css
-   Quantica Lab design system — full light mode
+   CyberAkademia - modules.css
+   Quantica Lab design system - full light mode
    Game mechanics and module-specific styles.
    Cards and buttons inherit from components.css.
    ============================================================ */
@@ -23,7 +23,7 @@
   box-shadow: var(--shadow-xs);
 }
 
-/* Attacker — red pill badge, animated left-to-right */
+/* Attacker - red pill badge, animated left-to-right */
 .attacker {
   width: 64px;
   height: 32px;
@@ -56,7 +56,7 @@
   background: rgba(220, 38, 38, 0.06);
 }
 
-/* Data crown — pink circle at right */
+/* Data crown - pink circle at right */
 .crown-jewel {
   position: absolute;
   right: var(--space-5);
@@ -74,7 +74,7 @@
   box-shadow: var(--shadow-pink-soft);
 }
 
-/* Defense path — flex row of layer slots */
+/* Defense path - flex row of layer slots */
 .layer-slots {
   display: flex;
   flex-wrap: nowrap;
@@ -180,7 +180,7 @@
 }
 
 /* ── NIST wheel (6 segments, 3x2 grid) ───────────────────── */
-/* Main styles in components.css — extra overrides here */
+/* Main styles in components.css - extra overrides here */
 .nist-detail-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-brand);
@@ -329,7 +329,7 @@
   margin-bottom: var(--space-3);
 }
 
-/* Boss HP bar — pink fill on --border-1 bg, pill radius */
+/* Boss HP bar - pink fill on --border-1 bg, pill radius */
 .boss-health-bar,
 .boss-hp-bar {
   margin: var(--space-3) auto;
@@ -473,7 +473,7 @@
   border-color: var(--border-brand);
 }
 
-/* ── Mobile overrides — all game layouts ──────────────────── */
+/* ── Mobile overrides - all game layouts ──────────────────── */
 @media (max-width: 768px) {
   .cia-cards {
     flex-direction: column;

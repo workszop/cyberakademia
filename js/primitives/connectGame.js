@@ -1,5 +1,5 @@
 /**
- * ConnectGame — link regulation→organization→technology triples
+ * ConnectGame - link regulation→organization→technology triples
  * data: { connections: [{id, regulatory, organizational, technology}] }
  * onResult(correct, total)
  *
@@ -43,7 +43,7 @@ export function initConnectGame(container, data, onResult) {
   const instructions = document.createElement('p');
   instructions.className = 'connect-instructions text-muted';
   instructions.textContent =
-    'Wybierz po jednej karcie z każdej kolumny, które tworzą pasujący zestaw, a następnie kliknij "Połącz".';
+    'Wybierz po jednej karcie z każdej kolumny, które tworzą pasujący zestaw, a następnie kliknij „Połącz”.';
   container.appendChild(instructions);
 
   // ── Columns grid ─────────────────────────────────────────

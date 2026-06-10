@@ -1,5 +1,5 @@
 /**
- * SVG progress ring — factory function
+ * SVG progress ring - factory function
  * Returns a DOM element (not init(container) pattern)
  *
  * pct:   0-100
@@ -22,7 +22,7 @@ export function createProgressRing(pct, label, size = 80) {
   wrapper.setAttribute('role', 'img');
   wrapper.setAttribute(
     'aria-label',
-    `Postęp: ${Math.round(clampedPct)}%${label ? ` — ${label}` : ''}`
+    `Postęp: ${Math.round(clampedPct)}%${label ? ` - ${label}` : ''}`
   );
 
   // ── SVG ───────────────────────────────────────────────────
@@ -118,13 +118,13 @@ export function createProgressRing(pct, label, size = 80) {
     setTimeout(animate, 50);
   }
 
-  // ── Public API — allow external update ───────────────────
+  // ── Public API - allow external update ───────────────────
   wrapper.update = (newPct) => {
     const p = Math.max(0, Math.min(100, Number(newPct) || 0));
     const newOffset = circumference - (p / 100) * circumference;
     fill.style.strokeDashoffset = `${newOffset}`;
     pctText.textContent = `${Math.round(p)}%`;
-    wrapper.setAttribute('aria-label', `Postęp: ${Math.round(p)}%${label ? ` — ${label}` : ''}`);
+    wrapper.setAttribute('aria-label', `Postęp: ${Math.round(p)}%${label ? ` - ${label}` : ''}`);
   };
 
   return wrapper;

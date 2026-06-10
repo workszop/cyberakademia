@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/spiecie.js
+// CyberAkademia - modules/spiecie.js
 // Module 5: Incident response, NIST CSF, putting it all together
 // ============================================================
 
@@ -91,7 +91,7 @@ function renderNISTWheel() {
         detailEl.appendChild(
           el('div', { class: 'card', style: { borderColor: seg.color, animation: 'fadeIn 0.25s ease' } },
             el('div', { style: { marginBottom: '0.75rem' } },
-              el('h3', { style: { color: seg.color } }, `${seg.label} — ${seg.name}`),
+              el('h3', { style: { color: seg.color } }, `${seg.label} - ${seg.name}`),
             ),
             el('p', { style: { marginBottom: '0.75rem' } }, seg.desc),
             el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '0.4rem' } },
@@ -123,7 +123,7 @@ function renderConnectGame() {
     'Sednem dojrzałego bezpieczeństwa jest spięcie trzech warstw. Każdy wiersz łączy wymóg regulacyjny (co nakazuje prawo) z tym, co robi organizacja (proces i role) oraz technologią, która ten proces obsługuje.'
   ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Wybierz po jednej karcie z każdej kolumny tak, aby tworzyły spójny zestaw, i kliknij "Połącz". Właściwa kolejność myślenia: zrozum obowiązek i ryzyko → ułóż proces i role → dobierz narzędzie.'
+    'Wybierz po jednej karcie z każdej kolumny tak, aby tworzyły spójny zestaw, i kliknij „Połącz”. Właściwa kolejność myślenia: zrozum obowiązek i ryzyko → ułóż proces i role → dobierz narzędzie.'
   ));
 
   const gameEl = el('div', {});
@@ -159,7 +159,7 @@ function renderIncidentScenario() {
 
   const SCENARIO = [
     {
-      q: 'ALERT: Serwer plików w siedzibie wykazuje masowe odczyty i zapisy. EDR wykrył podejrzany proces "encrypt.exe". Co robisz?',
+      q: 'ALERT: Serwer plików w siedzibie wykazuje masowe odczyty i zapisy. EDR wykrył podejrzany proces „encrypt.exe”. Co robisz?',
       choices: [
         { text: 'Izoluję serwer od sieci natychmiast', outcome: 'Dobra decyzja! Izolacja ogranicza propagację ransomware na inne systemy.', good: true },
         { text: 'Czekam i obserwuję jeszcze 30 minut', outcome: 'Błąd! Każda minuta to kolejne zaszyfrowane pliki. Ransomware rozprzestrzenia się w całej sieci.', good: false },
@@ -169,8 +169,8 @@ function renderIncidentScenario() {
     {
       q: 'Serwer izolowany. Okazuje się, że ransomware zaszyfrował 80% plików. Backup jest na tape (offline). Co jest PRIORYTETEM?',
       choices: [
-        { text: 'Natychmiast płacę okup — szybciej odtworzę dane', outcome: 'Błąd! Płacenie okupu nie gwarantuje odtworzenia danych, finansuje przestępców i narusza regulacje w niektórych jurysdykcjach.', good: false },
-        { text: 'Dokumentuję incydent i sprawdzam zakres przed odtworzeniem', outcome: 'Dobra decyzja! Analiza zakresu jest konieczna — dowiedz się ile systemów jest zainfekowanych zanim zaczniesz odtwarzanie.', good: true },
+        { text: 'Natychmiast płacę okup - szybciej odtworzę dane', outcome: 'Błąd! Płacenie okupu nie gwarantuje odtworzenia danych, finansuje przestępców i narusza regulacje w niektórych jurysdykcjach.', good: false },
+        { text: 'Dokumentuję incydent i sprawdzam zakres przed odtworzeniem', outcome: 'Dobra decyzja! Analiza zakresu jest konieczna - dowiedz się ile systemów jest zainfekowanych zanim zaczniesz odtwarzanie.', good: true },
         { text: 'Od razu odtwarzam z backupu', outcome: 'Ryzykowne! Bez eradykacji złośliwego oprogramowania, odtworzone systemy mogą zostać ponownie zainfekowane.', good: false },
       ]
     },
@@ -179,7 +179,7 @@ function renderIncidentScenario() {
       choices: [
         { text: 'MFA na wszystkich kontach + szkolenie antyphishingowe', outcome: 'Doskonale! MFA i świadomość pracowników to dwie najskuteczniejsze kontrole przeciw phishingowi.', good: true },
         { text: 'Zablokuję internet dla działu HR', outcome: 'Nieproporcjonalne i nieskuteczne. Blokada internetu uniemożliwi pracę i nie rozwiąże problemu braku świadomości.', good: false },
-        { text: 'Wyślę email z przypomnieniem o zasadach bezpieczeństwa', outcome: 'Zbyt słaba odpowiedź! Jeden email nie wystarczy — potrzebne są szkolenia praktyczne i testy phishingowe.', good: false },
+        { text: 'Wyślę email z przypomnieniem o zasadach bezpieczeństwa', outcome: 'Zbyt słaba odpowiedź! Jeden email nie wystarczy - potrzebne są szkolenia praktyczne i testy phishingowe.', good: false },
       ]
     },
   ];
@@ -265,7 +265,7 @@ const QUIZ_QUESTIONS = [
     question: 'Jaka jest kolejność faz reagowania na incydent (IR) według przewodnika?',
     options: ['Usunięcie → Wykrycie → Powstrzymanie → Odtworzenie', 'Przygotowanie → Wykrycie i zgłoszenie → Analiza → Powstrzymanie → Usunięcie → Odtworzenie → Wnioski', 'Wykrycie → Powstrzymanie → Wnioski → Usunięcie', 'Odtworzenie → Usunięcie → Przygotowanie → Analiza'],
     correct: 1,
-    explanation: 'Pełny cykl IR ma 7 faz: Przygotowanie (zanim nastąpi), Wykrycie i zgłoszenie, Analiza, Powstrzymanie (containment), Usunięcie zagrożenia (eradication), Odtworzenie (recovery), Wnioski (lessons learned). Szczegóły poszczególnych faz omawia moduł "Organizacja".'
+    explanation: 'Pełny cykl IR ma 7 faz: Przygotowanie (zanim nastąpi), Wykrycie i zgłoszenie, Analiza, Powstrzymanie (containment), Usunięcie zagrożenia (eradication), Odtworzenie (recovery), Wnioski (lessons learned). Szczegóły poszczególnych faz omawia moduł „Organizacja”.'
   },
   {
     question: 'Co NALEŻY zrobić PRZED odtworzeniem systemów po ataku ransomware?',
@@ -277,7 +277,7 @@ const QUIZ_QUESTIONS = [
     question: 'Co oznacza IDENTIFY w NIST CSF?',
     options: ['Identyfikacja osób odpowiedzialnych za incydent', 'Zrozumienie aktywów, ryzyk i luk w ochronie', 'Identyfikacja i blokowanie atakujących', 'Nagrywanie sesji administratorów'],
     correct: 1,
-    explanation: 'IDENTIFY = zrozum co chronisz. Inwentaryzacja aktywów, ocena ryzyka, mapowanie zależności. "Nie możesz chronić tego, czego nie widzisz."'
+    explanation: 'IDENTIFY = zrozum co chronisz. Inwentaryzacja aktywów, ocena ryzyka, mapowanie zależności. „Nie możesz chronić tego, czego nie widzisz.”'
   },
   {
     question: 'Jakie narzędzie w SOC odpowiada głównie za funkcję DETECT (Wykrywaj)?',
@@ -291,8 +291,8 @@ export function renderSpiecie() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Spięcie — Integracja Obrony'),
-    el('p', { class: 'subtitle' }, 'Jak regulacja, organizacja i technologia łączą się w jedno — wymóg regulacyjny → co robi organizacja → czym (technologia). Czytelny morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
+    el('h1', {}, 'Integracja obrony'),
+    el('p', { class: 'subtitle' }, 'Jak regulacja, organizacja i technologia łączą się w jedno - wymóg regulacyjny → co robi organizacja → czym (technologia). Czytelny morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~25 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 5')
@@ -314,7 +314,7 @@ export function renderSpiecie() {
       earnBadge('spiecie');
       fullBurst();
       wrap.appendChild(el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka "Spięcie" odblokowana!`
+        el('strong', {}, 'Moduł zaliczony! '), `Wynik: ${score}/${total}. Odznaka „Integracja” odblokowana!`
       ));
     }
   });

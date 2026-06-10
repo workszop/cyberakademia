@@ -1,5 +1,5 @@
 /**
- * Timeline — vertical timeline of events
+ * Timeline - vertical timeline of events
  * data: { events: [{date, label, description, regulation, important}] }
  * Clicking an event expands its description
  */

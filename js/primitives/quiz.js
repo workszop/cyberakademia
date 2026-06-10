@@ -1,5 +1,5 @@
 /**
- * Quiz — multiple choice questions with score tracking
+ * Quiz - multiple choice questions with score tracking
  * data: { questions: [{question, options: [], correct: 0|1|2|3, explanation}] }
  * onResult(correct, total)
  */

@@ -1,6 +1,6 @@
 // ============================================================
-// CyberAkademia — dom.js
-// Tiny DOM helpers — no framework
+// CyberAkademia - dom.js
+// Tiny DOM helpers - no framework
 // ============================================================
 
 /**
@@ -35,7 +35,7 @@ export function el(tag, props = {}, ...children) {
       continue;
     }
 
-    // innerHTML (escape hatch — use sparingly)
+    // innerHTML (escape hatch - use sparingly)
     if (key === 'html') {
       node.innerHTML = val;
       continue;

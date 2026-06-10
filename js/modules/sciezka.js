@@ -1,6 +1,6 @@
 // ============================================================
-// CyberAkademia — modules/sciezka.js
-// Learning path — visual progress and earned badges
+// CyberAkademia - modules/sciezka.js
+// Learning path - visual progress and earned badges
 // ============================================================
 
 import { el } from '../dom.js';
@@ -50,9 +50,9 @@ const PATH_STEPS = [
     id: 'spiecie',
     hash: '#/spiecie',
     icon: 'layers',
-    title: 'Spięcie',
+    title: 'Integracja',
     desc: 'NIST CSF i reagowanie na incydenty',
-    badge: 'Spięcie',
+    badge: 'Integracja',
     order: 5,
   },
   {
@@ -60,7 +60,7 @@ const PATH_STEPS = [
     hash: '#/slownik',
     icon: 'book-open',
     title: 'Słownik',
-    desc: 'Fiszki Leitner — mistrzowskie opanowanie terminologii',
+    desc: 'Fiszki Leitner - mistrzowskie opanowanie terminologii',
     badge: 'Słownik',
     order: 6,
   },
@@ -69,7 +69,7 @@ const PATH_STEPS = [
     hash: '#/finalboss',
     icon: 'target',
     title: 'Final Boss',
-    desc: 'Egzamin końcowy — potwierdź swoją wiedzę',
+    desc: 'Egzamin końcowy - potwierdź swoją wiedzę',
     badge: 'Mistrz CyberAkademii',
     order: 7,
   },
@@ -226,12 +226,12 @@ export function renderSciezka() {
     wrap.appendChild(scoreSection);
   }
 
-  // ── Ścieżka wdrożenia — od czego zacząć ───────────────
+  // ── Ścieżka wdrożenia - od czego zacząć ───────────────
 
   const wdrozenieSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Ścieżka wdrożenia — od czego zacząć'),
+    el('div', { class: 'section-title' }, 'Ścieżka wdrożenia - od czego zacząć'),
     el('p', { style: { color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem' } },
-      'Praktyczny załącznik z przewodnika: jak organizacja powinna wdrażać cyberbezpieczeństwo krok po kroku, we właściwej kolejności — od diagnozy regulacyjnej po ciągłe doskonalenie.'
+      'Praktyczny załącznik z przewodnika: jak organizacja powinna wdrażać cyberbezpieczeństwo krok po kroku, we właściwej kolejności - od diagnozy regulacyjnej po ciągłe doskonalenie.'
     )
   );
 

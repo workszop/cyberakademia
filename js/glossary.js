@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — glossary.js
+// CyberAkademia - glossary.js
 // Global hover tooltips for data-term elements + text enrichment
 // ============================================================
 
@@ -25,7 +25,7 @@ export function initGlossary() {
     if (!entry) return;
 
     activeTarget = target;
-    tip.innerHTML = `<strong>${term}</strong> — ${entry.short}`;
+    tip.innerHTML = `<strong>${term}</strong> - ${entry.short}`;
     tip.setAttribute('aria-hidden', 'false');
     tip.classList.add('visible');
     positionTip(e);

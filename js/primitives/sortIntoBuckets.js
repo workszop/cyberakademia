@@ -1,5 +1,5 @@
 /**
- * SortIntoBuckets — drag-and-drop (with click fallback) categorization game
+ * SortIntoBuckets - drag-and-drop (with click fallback) categorization game
  * data: { buckets: [{id, label, color}], items: [{id, text, answer, explanation}] }
  * onResult(correct, total) called when all items placed
  */

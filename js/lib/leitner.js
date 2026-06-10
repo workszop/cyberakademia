@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — lib/leitner.js
+// CyberAkademia - lib/leitner.js
 // Leitner spaced-repetition system (5 boxes)
 //
 // Box 1 = new / hard    → review every session

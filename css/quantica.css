@@ -1,5 +1,5 @@
 /* ==========================================================================
-   QUANTICA LAB — Color & Type Foundations
+   QUANTICA LAB - Color & Type Foundations
    Source of truth for tokens used across the brand.
    ========================================================================== */
 
@@ -15,7 +15,7 @@
 
 :root {
   /* ====================================================================== */
-  /*  COLOR — PRIMARY PALETTE                                               */
+  /*  COLOR - PRIMARY PALETTE                                               */
   /*  These are the foundation colors. Quantica Pink is the hero.           */
   /* ====================================================================== */
   --quantica-pink:    #C41E54;   /* Foundation. Buttons, headlines, brand. */
@@ -25,7 +25,7 @@
   --white:            #FFFFFF;   /* Atmosphere. Light surfaces.            */
 
   /* ====================================================================== */
-  /*  COLOR — SECONDARY PALETTE (atmosphere / neutrals tinted toward brand) */
+  /*  COLOR - SECONDARY PALETTE (atmosphere / neutrals tinted toward brand) */
   /* ====================================================================== */
   --magenta-tint:     #FFE6F1;   /* Soft background wash, badges.         */
   --soft-lilac:       #F3E8FF;   /* Neutral with cool tint.               */
@@ -34,22 +34,22 @@
   --silver:           #D1D5DB;   /* Disabled, placeholder.                */
 
   /* ====================================================================== */
-  /*  COLOR — VIOLET PAIR (Magenta + Violet direction — adopted)            */
+  /*  COLOR - VIOLET PAIR (Magenta + Violet direction - adopted)            */
   /*  Replaces earlier teal pair. Use violet alongside magenta for          */
   /*  secondary accents, callouts, and supporting structure.                */
   /* ====================================================================== */
   --violet-primary:   #7030A0;   /* Emphasis (was --teal) */
   --violet-deep:      #4F1F75;   /* Foundation depth (was --deep-teal) */
   --ink:              #0A1F2C;   /* Cool dark grounding */
-  --mist:             #F4EEFA;   /* Cool atmosphere — violet-tinted */
+  --mist:             #F4EEFA;   /* Cool atmosphere - violet-tinted */
 
-  /* Legacy aliases — kept so existing references don't break.              */
+  /* Legacy aliases - kept so existing references don't break.              */
   /* New work should use --violet-primary / --violet-deep.                  */
   --teal:             #7030A0;
   --deep-teal:        #4F1F75;
 
   /* ====================================================================== */
-  /*  COLOR — ACCENT PALETTE (data viz, status, emphasis)                   */
+  /*  COLOR - ACCENT PALETTE (data viz, status, emphasis)                   */
   /* ====================================================================== */
   --electric-pink:    #FF20A1;
   --violet:           #7861FF;
@@ -57,7 +57,7 @@
   --amber:            #FFC107;
 
   /* ====================================================================== */
-  /*  COLOR — SEMANTIC                                                      */
+  /*  COLOR - SEMANTIC                                                      */
   /* ====================================================================== */
   /* Foreground */
   --fg-1:             #111111;   /* Primary text */
@@ -86,21 +86,21 @@
   --status-error:     #DC2626;
   --status-info:      #4F46E5;
 
-  /* Gradients — pulled directly from the brand board */
+  /* Gradients - pulled directly from the brand board */
   --grad-hot-pink:    linear-gradient(90deg, #C41E54 0%, #FF20A1 50%, #FFC0DB 100%);
   --grad-magenta:     linear-gradient(90deg, #C41E54 0%, #FF20A1 50%, #7030A0 100%);
   --grad-violet:      linear-gradient(90deg, #4F1F75 0%, #7030A0 50%, #C41E54 100%);
   --grad-spectrum:    linear-gradient(90deg, #C41E54 0%, #FF20A1 30%, #FFC107 65%, #7030A0 100%);
 
   /* ====================================================================== */
-  /*  TYPOGRAPHY — FAMILIES                                                 */
+  /*  TYPOGRAPHY - FAMILIES                                                 */
   /* ====================================================================== */
   --font-display:     "Satoshi", "Inter", system-ui, -apple-system, sans-serif;
   --font-sans:        "Satoshi", "Inter", system-ui, -apple-system, sans-serif;
   --font-mono:        "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* ====================================================================== */
-  /*  TYPOGRAPHY — SCALE                                                    */
+  /*  TYPOGRAPHY - SCALE                                                    */
   /*  Hierarchy from brand board: H1 56/64, H2 28/36, H3 20/28, body 14/24, */
   /*  caption 12/20. Negative tracking on display (-1% to -2%).             */
   /* ====================================================================== */
@@ -133,7 +133,7 @@
   --fw-black:         900;
 
   /* ====================================================================== */
-  /*  SPACING — 8px base, with 4px halfsteps                                */
+  /*  SPACING - 8px base, with 4px halfsteps                                */
   /* ====================================================================== */
   --space-0:          0;
   --space-1:          4px;
@@ -159,7 +159,7 @@
   --radius-pill:      999px;
 
   /* ====================================================================== */
-  /*  SHADOWS — soft, never heavy. Pink-tinted at brand-adjacent layers.    */
+  /*  SHADOWS - soft, never heavy. Pink-tinted at brand-adjacent layers.    */
   /* ====================================================================== */
   --shadow-xs:        0 1px 2px rgba(17, 17, 17, 0.04);
   --shadow-sm:        0 2px 6px rgba(17, 17, 17, 0.06);

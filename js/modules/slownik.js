@@ -1,5 +1,5 @@
 // ============================================================
-// CyberAkademia — modules/slownik.js
+// CyberAkademia - modules/slownik.js
 // Glossary module with Leitner flashcard system
 // ============================================================
 
@@ -22,11 +22,11 @@ function shuffle(arr) {
 
 function renderFlashcards() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Fiszki Leitner — nauka przez powtarzanie')
+    el('div', { class: 'section-title' }, 'Fiszki Leitner - nauka przez powtarzanie')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'System Leitner (spaced repetition): poprawna odpowiedź przesuwa kartę do wyższego koszyka (rzadziej pyta), błędna cofa do koszyka 1. Dotrzyj do koszyka 5 — Mistrz!'
+    'System Leitner (spaced repetition): poprawna odpowiedź przesuwa kartę do wyższego koszyka (rzadziej pyta), błędna cofa do koszyka 1. Dotrzyj do koszyka 5 - Mistrz!'
   ));
 
   const allTerms = getAllTerms();
@@ -116,7 +116,7 @@ function renderFlashcards() {
 
   function loadCard() {
     if (idx >= queue.length) {
-      // Session done — overlay with a working restart
+      // Session done - overlay with a working restart
       scene.innerHTML = '';
       scene.appendChild(
         el('div', { class: 'result-overlay' },
@@ -207,7 +207,7 @@ function renderTermList() {
       const trigger = el('button', { class: 'expandable-trigger', onclick: () => {
         item.classList.toggle('open');
       }},
-        el('span', {}, `${t.term}${t.full ? ` — ${t.full}` : ''}`),
+        el('span', {}, `${t.term}${t.full ? ` - ${t.full}` : ''}`),
         el('span', { class: 'chevron' })
       );
       const content = el('div', { class: 'expandable-content' },

@@ -100,7 +100,7 @@ export function initExpandable(container, items) {
 
     const detailEl = document.createElement('div');
     detailEl.className = 'expandable-detail';
-    // Support HTML or plain text — plain text only for security
+    // Support HTML or plain text - plain text only for security
     detailEl.textContent = item.detail || '';
     content.appendChild(detailEl);
 

@@ -1,4 +1,4 @@
-// icons.js — Lucide icon factory for CyberAkademia
+// icons.js - Lucide icon factory for CyberAkademia
 // Lucide loaded via CDN as window.lucide (UMD build)
 // Usage: icon('shield', 20) → SVG element with stroke style
 
