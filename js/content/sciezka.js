@@ -103,7 +103,7 @@ export const STEPS = [
     keyQuestions: [
       'Kto z dostawców ma dostęp do naszych krytycznych systemów lub danych?',
       'Czy wiemy jakie jest bezpieczeństwo naszego dostawcy ERP/chmury?',
-      'Co robimy gdy kluczowy dostawca przestanie działać (exit plan)?',
+      'Co robimy, gdy kluczowy dostawca przestanie działać (plan wyjścia)?',
       'Czy umowy z dostawcami ICT zawierają klauzule bezpieczeństwa?'
     ],
     output: 'Rejestr dostawców z klasyfikacją ryzyka, wymagania bezpieczeństwa w umowach kluczowych dostawców, procedura oceny nowych dostawców.',

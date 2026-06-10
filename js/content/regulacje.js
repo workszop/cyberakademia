@@ -183,7 +183,7 @@ export const DORA_PILLARS = [
     name: 'Ryzyko dostawców ICT',
     icon: '🔗',
     description: 'Zarządzanie ryzykiem zewnętrznych dostawców ICT, szczególnie dostawców chmury.',
-    detail: 'Instytucje muszą utrzymywać rejestr umów z dostawcami ICT, regularnie oceniać ryzyko koncentracji (zbyt duże uzależnienie od jednego dostawcy), negocjować wymagane klauzule umowne (prawo do audytu, SLA, plany wyjścia) i przygotować plany wyjścia. Kluczowi dostawcy ICT (np. wielkie firmy chmurowe obsługujące wiele banków) podlegają bezpośredniemu nadzorowi ESA (EBA, ESMA, EIOPA).'
+    detail: 'Instytucje muszą utrzymywać rejestr umów z dostawcami ICT, regularnie oceniać ryzyko koncentracji (zbyt duże uzależnienie od jednego dostawcy), negocjować wymagane klauzule umowne (prawo do audytu, SLA, plany wyjścia) i przygotować plany wyjścia. Plan wyjścia to procedura zakończenia korzystania z dostawcy ICT i przeniesienia usługi do innego dostawcy albo do rozwiązania wewnętrznego – bez zakłócenia działania funkcji krytycznych lub ważnych. Innymi słowy: nie jest to plan awaryjny na wypadek incydentu, lecz z góry przygotowana ścieżka migracji, gdyby dostawca przestał spełniać wymagania lub zakończył działalność. Kluczowi dostawcy ICT (np. wielkie firmy chmurowe obsługujące wiele banków) podlegają bezpośredniemu nadzorowi ESA (EBA, ESMA, EIOPA).'
   },
   {
     id: 'information-sharing',
