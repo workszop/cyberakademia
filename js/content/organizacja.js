@@ -233,14 +233,14 @@ export const IR_PHASES = [
     name: 'Wykrycie i zgłoszenie',
     description: 'Identyfikacja potencjalnego incydentu przez SIEM, EDR, użytkownika lub zewnętrzne zgłoszenie.',
     detail: 'Incydent może zostać wykryty przez: alert SIEM/EDR, zgłoszenie pracownika, kontakt z CSIRT, artykuł w mediach, komunikat dostawcy. Liczy się czas wykrycia (MTTD – Mean Time to Detect). Po wykryciu następuje wstępna ocena: czy to prawdziwy incydent, czy false positive? Im szybsze wykrycie, tym mniejsze szkody. Przy APT od kompromitacji do wykrycia wciąż mijają zwykle tygodnie lub miesiące.',
-    regulatoryLink: 'NIS2/KSC: wczesne ostrzeżenie do CSIRT w 24h od wykrycia poważnego incydentu. DORA: powiadomienie regulatora w 4h.'
+    regulatoryLink: 'NIS2/KSC: wczesne ostrzeżenie do CSIRT w 24 h od wykrycia poważnego incydentu. DORA: wstępne powiadomienie KNF w 4 h od uznania incydentu za poważny, najpóźniej 24 h od wykrycia.'
   },
   {
     id: 'analysis',
     name: 'Analiza',
     description: 'Pogłębiona analiza: zakres, wektor ataku, dotknięte systemy, typ zagrożenia, priorytetyzacja.',
     detail: 'Analityk L2/L3 prowadzi szczegółowe dochodzenie: ustala wektor wejścia (jak się dostali?), mapuje zakres (ile systemów dotkniętych?), wskazuje naruszone dane i systemy, ocenia powagę incydentu. Najważniejsze pytania: czy atakujący wciąż ma dostęp? Czy doszło do eksfiltracji danych? Analizę wspierają threat intelligence i framework MITRE ATT&CK.',
-    regulatoryLink: 'Dokumentacja analizy jest wymagana w raporcie końcowym do CSIRT (termin 30 dni). Przydaje się też w ewentualnych postępowaniach prawnych.'
+    regulatoryLink: 'Dokumentacja analizy jest wymagana w sprawozdaniu końcowym do CSIRT (w ciągu miesiąca od zgłoszenia incydentu). Przydaje się też w ewentualnych postępowaniach prawnych.'
   },
   {
     id: 'containment',

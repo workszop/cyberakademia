@@ -22,11 +22,11 @@ export const CONNECTIONS = [
   {
     id: 'c2',
     label: 'Zgłaszanie incydentów',
-    regulatory: 'Zgłaszaj poważne incydenty w terminie (NIS2: 24h/72h; DORA: 4h/24h/30 dni)',
+    regulatory: 'Zgłaszaj poważne incydenty w terminie (NIS2/KSC: 24 h / 72 h / miesiąc; DORA: 4 h / 72 h / miesiąc)',
     organizational: 'Udokumentowany proces Incident Response, playbooki IR, przypisane role, kontakty CSIRT/KNF',
     technology: 'SOAR (automatyzacja reagowania), system ticketowy (dokumentacja), alerty SIEM, komunikacja',
     example: 'Bez procesu IR i jasnych ról firma nie zdąży zgłosić incydentu w 24h. Narzędzia mogą działać bez zarzutu, a i tak nikt nie będzie wiedział, co robić.',
-    regulatoryDetail: 'NIS2/KSC: wczesne ostrzeżenie do CSIRT w 24h, pełne zgłoszenie w 72h, raport końcowy w 30 dni. DORA: powiadomienie regulatora (KNF) w 4h dla poważnych incydentów ICT.',
+    regulatoryDetail: 'NIS2/KSC: wczesne ostrzeżenie w 24 h, zgłoszenie incydentu w 72 h, sprawozdanie końcowe w ciągu miesiąca od zgłoszenia (do CSIRT). DORA: wstępne powiadomienie w 4 h od uznania incydentu za poważny (najpóźniej 24 h od jego wykrycia), sprawozdanie śródokresowe w 72 h, sprawozdanie końcowe w ciągu miesiąca (do KNF).',
     wrongApproach: 'SOAR bez playbooka IR to jak samochód bez kierowcy. SOAR wykonuje kroki z playbooka, więc playbook musi powstać wcześniej.'
   },
   {
@@ -35,8 +35,8 @@ export const CONNECTIONS = [
     regulatory: 'Zarządzaj ryzykiem łańcucha dostaw (NIS2 Art. 21d, DORA Art. 28-44)',
     organizational: 'Ocena bezpieczeństwa dostawców ICT, wymogi bezpieczeństwa w umowach, nadzór nad realizacją, plany wyjścia',
     technology: 'Rejestr dostawców z oceną ryzyka, platformy GRC, klauzule bezpieczeństwa w umowach, audyty dostawców',
-    example: 'SolarWinds (2020): 18 000 organizacji skompromitowanych przez jedną zainfekowaną aktualizację zaufanego dostawcy. Bez oceny ryzyka dostawcy organizacja nie ma przed tym ochrony.',
-    regulatoryDetail: 'NIS2 wprost wskazuje na atak SolarWinds jako motywację wprowadzenia wymagań dotyczących łańcucha dostaw. DORA dla sektora finansowego: kluczowi dostawcy ICT (np. chmury) pod bezpośrednim nadzorem ESA.',
+    example: 'SolarWinds (2020): zainfekowaną aktualizację zaufanego dostawcy pobrało ok. 18 000 organizacji. Bez oceny ryzyka dostawcy organizacja nie ma przed tym ochrony.',
+    regulatoryDetail: 'NIS2 wymaga, by zarządzanie ryzykiem obejmowało bezpieczeństwo łańcucha dostaw, w tym relacje z bezpośrednimi dostawcami (art. 21 ust. 2 lit. d). DORA dla sektora finansowego: kluczowi dostawcy ICT (np. chmury) pod bezpośrednim nadzorem ESA.',
     wrongApproach: 'Samo posiadanie rejestru dostawców bez faktycznej oceny ich bezpieczeństwa to „compliance theatre”, czyli spełnianie litery prawa bez jego ducha.'
   },
   {

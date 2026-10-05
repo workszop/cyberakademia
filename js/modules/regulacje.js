@@ -143,7 +143,7 @@ function secDoraPillars(s) {
       roof: 'DORA – operacyjna odporność cyfrowa',
       roofSub: 'Rozporządzenie UE 2022/2554 · sektor finansowy i jego kluczowi dostawcy ICT',
       pillars: DORA_PILLARS.map(p => ({ title: p.name, text: p.description, detail: p.detail })),
-      base: 'Stosowane od 17 stycznia 2025 roku, bez okresu przejściowego',
+      base: 'Stosowane od 17 stycznia 2025 roku',
     }),
   );
 }

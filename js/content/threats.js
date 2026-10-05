@@ -19,7 +19,7 @@ export const THREATS = [
     name: 'Phishing / inżynieria społeczna',
     front: 'Manipulowanie ludźmi, by wyłudzić dane dostępowe albo skłonić ich do szkodliwego działania.',
     entryPoint: 'Fałszywy e-mail udający bank/szefa/IT, SMS (smishing), telefon (vishing), fałszywa strona logowania, spreparowany link lub załącznik.',
-    effect: 'Wykradzenie haseł i danych logowania, przejęcie kont (Account Takeover), instalacja złośliwego oprogramowania, autoryzacja fałszywego przelewu (Business Email Compromise, BEC). Phishing jest wektorem wejścia dla ok. 90% ataków ransomware.',
+    effect: 'Wykradzenie haseł i danych logowania, przejęcie kont (Account Takeover), instalacja złośliwego oprogramowania, autoryzacja fałszywego przelewu (Business Email Compromise, BEC).',
     cia: 'Poufność (C) – wykradzione dane logowania; Integralność (I) – nieautoryzowane transakcje; Dostępność (A) – przejęte konta blokują dostęp prawowitemu użytkownikowi.',
     defense: 'MFA (mocno ogranicza ataki z użyciem wykradzionych haseł), szkolenia pracowników z rozpoznawania phishingu, filtrowanie poczty (SPF, DKIM, DMARC), symulacje phishingu, weryfikacja tożsamości dla przelewów.',
     example: 'CEO fraud (BEC): pracownik działu finansowego otrzymał e-mail „od prezesa” z pilną prośbą o przelew 2 mln PLN na nowe konto. E-mail wyglądał autentycznie: domena różniła się tylko jedną literą. Przelew wykonano, zanim ktoś zadzwonił do prezesa.'

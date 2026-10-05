@@ -102,7 +102,7 @@ export const GLOSSARY = {
   KSC: {
     full: 'Krajowy System Cyberbezpieczeństwa',
     short: 'Polski system wdrażający dyrektywę NIS2, który określa obowiązki podmiotów kluczowych i ważnych.',
-    long: 'KSC (Krajowy System Cyberbezpieczeństwa) to polska ustawa implementująca dyrektywę NIS2. Nowelizacja KSC 2.0 wchodzi w życie 3 kwietnia 2026 roku. Ustawa dzieli podmioty na kluczowe i ważne, nakłada obowiązki wdrożenia SZBI, szacowania ryzyka, zgłaszania incydentów do CSIRT oraz regularnych audytów. Za naruszenia grożą kary do 10 mln EUR lub 2% światowego obrotu.'
+    long: 'KSC (Krajowy System Cyberbezpieczeństwa) to polska ustawa implementująca dyrektywę NIS2. Nowelizacja KSC 2.0 weszła w życie 3 kwietnia 2026 roku. Ustawa dzieli podmioty na kluczowe i ważne, nakłada obowiązki wdrożenia SZBI, szacowania ryzyka, zgłaszania incydentów do CSIRT oraz audytów (podmioty kluczowe co najmniej raz na 3 lata). Za naruszenia grożą kary do 10 mln EUR lub 2% przychodów (podmioty kluczowe) i do 7 mln EUR lub 1,4% przychodów (podmioty ważne).'
   },
   MFA: {
     full: 'Multi-Factor Authentication',
@@ -117,7 +117,7 @@ export const GLOSSARY = {
   NIS2: {
     full: 'Network and Information Security Directive 2',
     short: 'Unijna dyrektywa o bezpieczeństwie sieci i systemów informacyjnych, która zastąpiła NIS z 2016 r.',
-    long: 'NIS2 (Dyrektywa 2022/2555) to unijna dyrektywa, która znacznie poszerzyła obowiązki z zakresu cyberbezpieczeństwa w porównaniu z pierwotną NIS. Objęła nowe sektory (produkcja, poczta, wodociągi), rozszerzyła kategorie podmiotów i zaostrzyła wymogi: wdrożenie SZBI, szacowanie ryzyka, zgłaszanie incydentów w 24h/72h, zarządzanie ryzykiem dostawców. Polska implementuje ją przez nowelizację KSC (termin: 3.04.2026).'
+    long: 'NIS2 (Dyrektywa 2022/2555) to unijna dyrektywa, która znacznie poszerzyła obowiązki z zakresu cyberbezpieczeństwa w porównaniu z pierwotną NIS. Objęła nowe sektory (produkcja, poczta, wodociągi), rozszerzyła kategorie podmiotów i zaostrzyła wymogi: wdrożenie SZBI, szacowanie ryzyka, zgłaszanie incydentów w 24h/72h, zarządzanie ryzykiem dostawców. Polska wdrożyła ją nowelizacją KSC, która weszła w życie 3.04.2026.'
   },
   NIST: {
     full: 'National Institute of Standards and Technology',

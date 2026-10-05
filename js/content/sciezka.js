@@ -11,7 +11,7 @@ export const STEPS = [
     n: 1,
     name: 'Zdiagnozuj status regulacyjny',
     description: 'Czy podlegamy NIS2/KSC i/lub DORA? Sprawdź sektor (kody PKD), wielkość podmiotu, wyjątki.',
-    detail: 'Decydują: sektor (kody PKD, np. energia: 35.1x, transport: 49-52, zdrowie: 86-87, IT: 62-63), wielkość (podmioty kluczowe: 250+ pracowników lub 50+ mln EUR obrotu; podmioty ważne: 50+ pracowników lub 10+ mln EUR; wyjątki np. MSSP/rejestry domen od 10 pracowników / 2 mln EUR) i specjalne wykluczenia (organy bezpieczeństwa narodowego, organy ścigania). Ostateczna kwalifikacja wymaga analizy ustawy lub porady prawnej. Istnieją bezpłatne testery weryfikacji po numerze NIP.',
+    detail: 'Decydują: sektor (kody PKD, np. energia: 35.1x, transport: 49-52, zdrowie: 86-87, IT: 62-63), wielkość (podmioty kluczowe: duże, czyli co najmniej 250 pracowników albo ponad 50 mln EUR obrotu i 43 mln EUR sumy bilansowej; podmioty ważne: od średniej wielkości, czyli co najmniej 50 pracowników albo ponad 10 mln EUR obrotu i 10 mln EUR sumy bilansowej; bez względu na wielkość m.in. dostawcy DNS, rejestry domen najwyższego poziomu, kwalifikowani dostawcy usług zaufania) i specjalne wykluczenia (organy bezpieczeństwa narodowego, organy ścigania). Ostateczna kwalifikacja wymaga analizy ustawy lub porady prawnej. Istnieją bezpłatne testery weryfikacji po numerze NIP.',
     tools: ['Tester NIP (strona UKNF/CERT Polska)', 'Analiza ustawy o KSC', 'Analiza DORA dla sektora finansowego', 'Porada prawna dla skomplikowanych przypadków'],
     keyQuestions: [
       'W jakich sektorach PKD działa firma?',
@@ -35,7 +35,7 @@ export const STEPS = [
       'Co jest największym ryzykiem dla naszej działalności?'
     ],
     output: 'Raport gap analysis: lista luk z priorytetami, macierz ryzyk (prawdopodobieństwo × skutek), rekomendacje działań.',
-    regulatoryLink: 'NIS2/KSC wymaga regularnego (min. co 2 lata) szacowania ryzyka. Gap analysis to punkt startowy dla wdrożenia SZBI.'
+    regulatoryLink: 'NIS2/KSC wymaga systematycznego szacowania ryzyka. Gap analysis to punkt startowy dla wdrożenia SZBI.'
   },
   {
     n: 3,
@@ -71,7 +71,7 @@ export const STEPS = [
     n: 5,
     name: 'Uruchom monitoring i reagowanie na incydenty',
     description: 'SOC lub MSSP/MDR, playbooki IR, procesy zgłaszania incydentów do CSIRT/KNF.',
-    detail: 'Bez monitoringu organizacja nie widzi ataków, a bez procesu IR nie spełni wymagań regulacyjnych (zgłoszenie w 24h/72h/4h). Kroki: (1) Wybór modelu SOC: własny (duże organizacje), MSSP/MDR (MŚP, szybki start), hybrydowy (przejściowo). (2) Konfiguracja SIEM (lub zapewnienie przez MSSP). (3) Wdrożenie SOAR dla automatyzacji podstawowych odpowiedzi. (4) Opracowanie playbooków IR dla minimum: ransomware, phishing/BEC, kradzież danych, atak DDoS. (5) Procedury zgłaszania incydentów do CSIRT (NIS2) lub KNF (DORA) z przypisanymi rolami i wzorami zgłoszeń. (6) Kontakt z właściwym CSIRT: warto go nawiązać przed incydentem, a nie w jego trakcie.',
+    detail: 'Bez monitoringu organizacja nie widzi ataków, a bez procesu IR nie spełni wymagań regulacyjnych (NIS2/KSC: 24 h i 72 h, DORA: 4 h). Kroki: (1) Wybór modelu SOC: własny (duże organizacje), MSSP/MDR (MŚP, szybki start), hybrydowy (przejściowo). (2) Konfiguracja SIEM (lub zapewnienie przez MSSP). (3) Wdrożenie SOAR dla automatyzacji podstawowych odpowiedzi. (4) Opracowanie playbooków IR dla minimum: ransomware, phishing/BEC, kradzież danych, atak DDoS. (5) Procedury zgłaszania incydentów do CSIRT (NIS2) lub KNF (DORA) z przypisanymi rolami i wzorami zgłoszeń. (6) Kontakt z właściwym CSIRT: warto go nawiązać przed incydentem, a nie w jego trakcie.',
     tools: ['SIEM (Microsoft Sentinel, Splunk lub przez MSSP)', 'SOAR (opcjonalnie na początku)', 'Playbooki IR (szablony ENISA, CERT Polska)', 'Wzory zgłoszeń incydentów do CSIRT NASK/GOV', 'Retainer z firmą Incident Response (na wypadek poważnego ataku)'],
     keyQuestions: [
       'Kto monitoruje alerty bezpieczeństwa poza godzinami pracy?',
@@ -80,13 +80,13 @@ export const STEPS = [
       'Czy mamy playbook dla ransomware, który mówi, co robić krok po kroku?'
     ],
     output: 'Działający monitoring 24/7 (własny lub MSSP), playbooki IR dla kluczowych scenariuszy, procedury zgłaszania incydentów z przypisanymi rolami.',
-    regulatoryLink: 'NIS2/KSC: wczesne ostrzeżenie do CSIRT w 24h, pełne zgłoszenie w 72h. DORA: powiadomienie regulatora (KNF) w 4h dla poważnych incydentów ICT.'
+    regulatoryLink: 'NIS2/KSC: wczesne ostrzeżenie w 24 h, zgłoszenie incydentu w 72 h, sprawozdanie końcowe w ciągu miesiąca od zgłoszenia (do CSIRT). DORA: wstępne powiadomienie w 4 h od uznania incydentu za poważny (najpóźniej 24 h od jego wykrycia), sprawozdanie śródokresowe w 72 h, sprawozdanie końcowe w ciągu miesiąca (do KNF).'
   },
   {
     n: 6,
     name: 'Zarządzaj ryzykiem dostawców i łańcuchem dostaw',
     description: 'Ocena bezpieczeństwa kluczowych dostawców ICT, wymogi w umowach, nadzór, plany wyjścia.',
-    detail: 'NIS2 i DORA wprost wymagają zarządzania ryzykiem dostawców; inspiracją był atak SolarWinds (2020). Kroki: (1) Inwentaryzacja dostawców ICT: kto ma dostęp do systemów lub danych? (2) Klasyfikacja wg krytyczności: kluczowi (np. dostawca ERP, chmura) i standardowi. (3) Ocena bezpieczeństwa kluczowych dostawców: kwestionariusz, certyfikaty (ISO 27001), wyniki audytów. (4) Wymogi bezpieczeństwa w umowach – klauzule: prawo do audytu, SLA bezpieczeństwa, obowiązek informowania o incydentach, plany wyjścia (exit plan). (5) Monitoring ciągły: regularne przeglądy, powiadomienia o incydentach u dostawcy. (6) Dla sektora finansowego (DORA): szczególna uwaga na koncentrację ryzyka (zbyt wiele zależności od jednego dostawcy chmury).',
+    detail: 'NIS2 (art. 21) i DORA wprost wymagają zarządzania ryzykiem dostawców. Kroki: (1) Inwentaryzacja dostawców ICT: kto ma dostęp do systemów lub danych? (2) Klasyfikacja wg krytyczności: kluczowi (np. dostawca ERP, chmura) i standardowi. (3) Ocena bezpieczeństwa kluczowych dostawców: kwestionariusz, certyfikaty (ISO 27001), wyniki audytów. (4) Wymogi bezpieczeństwa w umowach – klauzule: prawo do audytu, SLA bezpieczeństwa, obowiązek informowania o incydentach, plany wyjścia (exit plan). (5) Monitoring ciągły: regularne przeglądy, powiadomienia o incydentach u dostawcy. (6) Dla sektora finansowego (DORA): szczególna uwaga na koncentrację ryzyka (zbyt wiele zależności od jednego dostawcy chmury).',
     tools: ['Rejestr dostawców z oceną ryzyka (Excel/GRC)', 'Kwestionariusz bezpieczeństwa dostawców', 'Standardowe klauzule bezpieczeństwa w umowach ICT', 'Platforma GRC (opcjonalnie), np. ServiceNow, OneTrust'],
     keyQuestions: [
       'Kto z dostawców ma dostęp do naszych krytycznych systemów lub danych?',
@@ -110,7 +110,7 @@ export const STEPS = [
       'Jak długo trwałoby przywrócenie naszego systemu ERP po awarii?'
     ],
     output: 'Raporty z testów penetracyjnych z udokumentowanymi wnioskami, certyfikacja ISO 27001 (opcjonalnie), wyniki ćwiczeń tabletop, zaktualizowane plany i playbooki.',
-    regulatoryLink: 'KSC 2.0: audyt obowiązkowy 24 miesiące od wejścia w życie (do 3.04.2028), następnie co 2 lata. DORA: TLPT co 3 lata dla instytucji istotnych. NIS2: regularne przeglądy i testy skuteczności środków.'
+    regulatoryLink: 'KSC 2.0: pierwszy audyt podmiotu kluczowego w ciągu 24 miesięcy od wejścia ustawy w życie (do 3.04.2028), potem co najmniej raz na 3 lata. DORA: TLPT co 3 lata dla instytucji wskazanych przez organ nadzoru. NIS2: regularne przeglądy i testy skuteczności środków.'
   },
 ];
 
