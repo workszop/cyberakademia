@@ -34,12 +34,12 @@ const ROLE_ICONS = {
 
 function renderRoles() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Kluczowe role w cyberbezpieczeństwie')
+    el('div', { class: 'section-title' }, 'Role w cyberbezpieczeństwie')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'Cyberbezpieczeństwo to nie zadanie jednej osoby - to podział ról i odpowiedzialności od zarządu po analityków SOC. ' +
-    'Kto raportuje do kogo i kto za co odpowiada decyduje o tym, czy organizacja reaguje sprawnie, czy w chaosie.'
+    'Za cyberbezpieczeństwo odpowiada wiele osób, od zarządu po analityków SOC. ' +
+    'To, kto komu raportuje i kto za co odpowiada, decyduje, czy organizacja reaguje sprawnie, czy w chaosie.'
   ));
 
   const grid = el('div', { class: 'card-grid' });
@@ -94,13 +94,13 @@ function renderSOCBuilder() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '0.75rem' } },
-    'SOC to centrum operacji bezpieczeństwa - zespół (i jego narzędzia oraz procesy), którego zadaniem jest ' +
-    'całodobowe monitorowanie, wykrywanie, analiza i reagowanie na zagrożenia. ' +
-    'Najprostsza analogia: to „centrum monitoringu lub dyspozytornia 112” dla infrastruktury cyfrowej firmy - ' +
-    'ktoś patrzy na ekrany 24/7, a gdy zapali się alarm, uruchamia procedurę.'
+    'SOC (centrum operacji bezpieczeństwa) to zespół wraz z narzędziami i procesami, który przez całą dobę ' +
+    'monitoruje i analizuje zagrożenia, wykrywa je i na nie reaguje. ' +
+    'Najprostsza analogia: „centrum monitoringu albo dyspozytornia 112” dla infrastruktury cyfrowej firmy. ' +
+    'Ktoś patrzy na ekrany 24/7, a gdy zapali się alarm, uruchamia procedurę.'
   ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'SOC nie jest produktem, który się kupuje - to zestawienie trzech filarów: Ludzie, Procesy i Technologia. Przeciągnij elementy do właściwych stref.'
+    'SOC składa się z trzech filarów: ludzi, procesów i technologii. Nie da się go po prostu kupić. Przeciągnij elementy do właściwych stref.'
   ));
 
   const SOC_PIECES = buildSOCPieces();
@@ -226,7 +226,7 @@ function renderIncidentResponse() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'Reagowanie na incydent to nie chaotyczne gaszenie pożaru, lecz ustrukturyzowany proces siedmiu faz - ' +
+    'Reagowanie na incydent to uporządkowany proces w siedmiu fazach: ' +
     'od przygotowania jeszcze przed atakiem, przez powstrzymanie i odtworzenie, aż po wnioski. ' +
     'Każda faza ma swoje działania i wymogi regulacyjne (NIS2/KSC, DORA). Rozwiń fazę, by poznać szczegóły.'
   ));
@@ -252,7 +252,7 @@ function renderGovernance() {
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
     'Frameworki ładu (governance) to sprawdzone ramy, które porządkują zarządzanie bezpieczeństwem i pomagają spełnić wymagania NIS2/KSC i DORA. ' +
-    'Nie wykluczają się - często łączy się je razem. Rozwiń, by poznać zastosowanie i relację do regulacji.'
+    'Nie wykluczają się i często stosuje się je razem. Rozwiń, by poznać zastosowanie i relację do regulacji.'
   ));
 
   const accordion = el('div', {});
@@ -271,11 +271,11 @@ function renderGovernance() {
 
 function renderProcesses() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Kluczowe procesy bezpieczeństwa')
+    el('div', { class: 'section-title' }, 'Procesy bezpieczeństwa')
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' } },
-    'Bezpieczeństwo opiera się na powtarzalnych, udokumentowanych procesach - to one zamieniają narzędzia i ludzi w realną zdolność obronną. Rozwiń, by poznać szczegóły.'
+    'Bezpieczeństwo opiera się na powtarzalnych, udokumentowanych procesach. Dopiero one sprawiają, że narzędzia i ludzie tworzą sprawną obronę. Rozwiń, by poznać szczegóły.'
   ));
 
   const accordion = el('div', {});
@@ -294,8 +294,8 @@ export function renderOrganizacja() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Organizacja Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Organizacja to kto i jak to robi - role, zespoły (np. SOC), procesy reagowania na incydenty.'),
+    el('h1', {}, 'Organizacja cyberbezpieczeństwa'),
+    el('p', { class: 'subtitle' }, 'Organizacja określa, kto i jak to robi: role, zespoły (np. SOC) i procesy reagowania na incydenty.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~20 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 3')

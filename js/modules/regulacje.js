@@ -30,7 +30,7 @@ function renderRegTable() {
   section.appendChild(intro);
 
   const diffNote = el('div', { class: 'alert alert-info', style: { marginBottom: '1.5rem' } },
-    el('strong', {}, 'Kluczowa różnica prawna: '),
+    el('strong', {}, 'Najważniejsza różnica prawna: '),
     'dyrektywa, taka jak NIS2, wymaga implementacji do prawa krajowego – stąd polska ustawa o KSC. ',
     el('strong', {}, 'Rozporządzenia, takie jak DORA i RODO, '),
     'obowiązują bezpośrednio, identycznie w całej UE, bez ustawy krajowej. ',
@@ -113,7 +113,7 @@ function renderNIS2Obligations() {
 
 function renderDORAPillars() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'DORA - 5 filarów')
+    el('div', { class: 'section-title' }, 'DORA – 5 filarów')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -135,7 +135,7 @@ function renderDORAPillars() {
 
 function renderMatchGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra - Połącz regulację z obowiązkiem')
+    el('div', { class: 'section-title' }, 'Gra: połącz regulację z obowiązkiem')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -237,7 +237,7 @@ function renderMatchGame() {
 
 function renderDPOvsCISO() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'DPO vs CISO - różne role')
+    el('div', { class: 'section-title' }, 'DPO vs CISO – różne role')
   );
 
   const grid = el('div', { class: 'card-grid' },
@@ -248,7 +248,7 @@ function renderDPOvsCISO() {
         el('li', {}, 'Odpowiada za całą strategię cyberbezpieczeństwa IT'),
         el('li', {}, 'Zarządza zespołem SOC, narzędziami, architekturą'),
         el('li', {}, 'Raportuje do zarządu / CEO'),
-        el('li', {}, 'Nie jest wymagany przez RODO (ale przez dobrą praktykę)'),
+        el('li', {}, 'RODO go nie wymaga, ale zaleca go dobra praktyka'),
         el('li', {}, 'Zakres: CAŁY świat IT i cyberbezpieczeństwa'),
       )
     ),
@@ -258,7 +258,7 @@ function renderDPOvsCISO() {
       el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: '1.9' } },
         el('li', {}, 'Doradza w kwestii zgodności z RODO'),
         el('li', {}, 'Punkt kontaktowy z UODO'),
-        el('li', {}, 'Niezależny - nie może być zdymisjonowany za swoją pracę'),
+        el('li', {}, 'Niezależny: nie można go odwołać za wykonywanie zadań'),
         el('li', {}, 'Wymagany przez RODO dla wielu organizacji'),
         el('li', {}, 'Zakres: TYLKO ochrona danych osobowych'),
       )
@@ -278,8 +278,8 @@ export function renderRegulacje() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Regulacje Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Regulacje mówią, co trzeba zrobić i kto za to odpowiada - NIS2/KSC, DORA, RODO, normy ISO.'),
+    el('h1', {}, 'Regulacje cyberbezpieczeństwa'),
+    el('p', { class: 'subtitle' }, 'Regulacje mówią, co trzeba zrobić i kto za to odpowiada: NIS2/KSC, DORA, RODO, normy ISO.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~20 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 2')

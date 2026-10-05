@@ -8,6 +8,17 @@ import { getAllTerms } from '../glossary.js';
 import { getState, updateFlashcard } from '../store.js';
 import { getBox, onCorrect, onWrong, getMasteryPct, getDueTerms } from '../lib/leitner.js';
 
+// ── Polish plurals ───────────────────────────────────────
+
+// pluralPl(5, ['fiszka', 'fiszki', 'fiszek']) → '5 fiszek'
+function pluralPl(n, [one, few, many]) {
+  const mod10 = n % 10, mod100 = n % 100;
+  const form = n === 1 ? one
+    : (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) ? few
+    : many;
+  return `${n} ${form}`;
+}
+
 // ── Flashcard viewer ─────────────────────────────────────
 
 // Fisher–Yates shuffle (uniform, unlike sort(() => Math.random() - 0.5))
@@ -26,7 +37,7 @@ function renderFlashcards() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'System Leitnera (powtórki rozłożone w czasie): poprawna odpowiedź przesuwa kartę do wyższego koszyka (rzadziej pyta), błędna cofa do koszyka 1. Dotrzyj do koszyka 5 – Mistrz!'
+    'System Leitnera (powtórki rozłożone w czasie): poprawna odpowiedź przesuwa kartę do wyższego koszyka (rzadsze powtórki), błędna cofa do koszyka 1. Dotrzyj do koszyka 5 – Mistrz!'
   ));
 
   const allTerms = getAllTerms();
@@ -47,7 +58,7 @@ function renderFlashcards() {
 
   function refreshStats() {
     const due = getDueTerms(allTermIds, flashcardState);
-    dueBadge.textContent = `${due.length} fiszek do przejrzenia`;
+    dueBadge.textContent = `${pluralPl(due.length, ['fiszka', 'fiszki', 'fiszek'])} do przejrzenia`;
     masteryBadge.textContent = `Opanowanie: ${getMasteryPct(flashcardState, allTermIds)}%`;
   }
 
@@ -239,10 +250,10 @@ export function renderSlownik() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Słownik Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Wszystkie akronimy i pojęcia w jednym miejscu. Fiszki Leitnera do efektywnej nauki.'),
+    el('h1', {}, 'Słownik cyberbezpieczeństwa'),
+    el('p', { class: 'subtitle' }, 'Wszystkie akronimy i pojęcia w jednym miejscu, a do nauki fiszki Leitnera.'),
     el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, `${getAllTerms().length} terminów`),
+      el('span', { class: 'badge' }, pluralPl(getAllTerms().length, ['termin', 'terminy', 'terminów'])),
       el('span', { class: 'badge badge-accent' }, 'Powtórki rozłożone w czasie')
     )
   ));

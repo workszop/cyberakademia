@@ -54,7 +54,7 @@ export function initSortIntoBuckets(container, data, onResult) {
     el.setAttribute('data-id', item.id);
     el.setAttribute('tabindex', '0');
     el.setAttribute('role', 'button');
-    el.setAttribute('aria-label', `Element: ${item.text}. Przeciągnij lub kliknij aby wybrać.`);
+    el.setAttribute('aria-label', `Element: ${item.text}. Przeciągnij lub kliknij, aby wybrać.`);
 
     // Drag start
     el.addEventListener('dragstart', (e) => {

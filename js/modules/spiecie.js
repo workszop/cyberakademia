@@ -18,7 +18,7 @@ const NIST_SEGMENTS = [
     label: 'GOVERN',
     name: 'Zarządzaj',
     icon: null,
-    desc: 'Nowa funkcja w CSF 2.0. Ustanowienie kontekstu, priorytetów i zarządzanie ryzykiem cyberbezpieczeństwa na poziomie organizacyjnym. Zaangażowanie zarządu.',
+    desc: 'Nowa funkcja w CSF 2.0. Obejmuje kontekst i priorytety organizacji, zarządzanie ryzykiem cyberbezpieczeństwa w skali całej organizacji i zaangażowanie zarządu.',
     color: '#7861FF',
     examples: ['Polityka bezpieczeństwa', 'Strategia zarządzania ryzykiem', 'Role i odpowiedzialności', 'Nadzór zarządu'],
   },
@@ -91,7 +91,7 @@ function renderNISTWheel() {
         detailEl.appendChild(
           el('div', { class: 'card', style: { borderColor: seg.color, animation: 'fadeIn 0.25s ease' } },
             el('div', { style: { marginBottom: '0.75rem' } },
-              el('h3', { style: { color: seg.color } }, `${seg.label} - ${seg.name}`),
+              el('h3', { style: { color: seg.color } }, `${seg.label} – ${seg.name}`),
             ),
             el('p', { style: { marginBottom: '0.75rem' } }, seg.desc),
             el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '0.4rem' } },
@@ -120,10 +120,10 @@ function renderConnectGame() {
   );
 
   section.appendChild(el('p', { style: { marginBottom: '0.75rem' } },
-    'Sednem dojrzałego bezpieczeństwa jest integracja trzech warstw. Każdy wiersz łączy wymóg regulacyjny (co nakazuje prawo) z tym, co robi organizacja (proces i role) oraz technologią, która ten proces obsługuje.'
+    'Dojrzałe bezpieczeństwo wymaga połączenia trzech warstw. Każdy wiersz łączy wymóg regulacyjny (co nakazuje prawo) z tym, co robi organizacja (proces i role) oraz technologią, która ten proces obsługuje.'
   ));
   section.appendChild(el('p', { style: { marginBottom: '1.5rem' } },
-    'Wybierz po jednej karcie z każdej kolumny tak, aby tworzyły spójny zestaw, i kliknij „Połącz”. Właściwa kolejność myślenia: zrozum obowiązek i ryzyko → ułóż proces i role → dobierz narzędzie.'
+    'Wybierz po jednej karcie z każdej kolumny tak, aby do siebie pasowały, i kliknij „Połącz”. Właściwa kolejność myślenia: zrozum obowiązek i ryzyko → ułóż proces i role → dobierz narzędzie.'
   ));
 
   const gameEl = el('div', {});
@@ -161,25 +161,25 @@ function renderIncidentScenario() {
     {
       q: 'ALERT: Serwer plików w siedzibie wykazuje masowe odczyty i zapisy. EDR wykrył podejrzany proces „encrypt.exe”. Co robisz?',
       choices: [
-        { text: 'Izoluję serwer od sieci natychmiast', outcome: 'Dobra decyzja! Izolacja ogranicza propagację ransomware na inne systemy.', good: true },
+        { text: 'Natychmiast izoluję serwer od sieci', outcome: 'Dobra decyzja! Izolacja ogranicza propagację ransomware na inne systemy.', good: true },
         { text: 'Czekam i obserwuję jeszcze 30 minut', outcome: 'Błąd! Każda minuta to kolejne zaszyfrowane pliki. Ransomware rozprzestrzenia się w całej sieci.', good: false },
-        { text: 'Restartuję serwer', outcome: 'Błąd! Restart może utrudnić analizę śledczą. Należy izolować, nie restartować.', good: false },
+        { text: 'Restartuję serwer', outcome: 'Błąd! Restart może utrudnić analizę śledczą. Serwer trzeba odizolować, a nie restartować.', good: false },
       ]
     },
     {
-      q: 'Serwer izolowany. Okazuje się, że ransomware zaszyfrował 80% plików. Backup jest na tape (offline). Co jest PRIORYTETEM?',
+      q: 'Serwer izolowany. Okazuje się, że ransomware zaszyfrował 80% plików. Backup jest na taśmie (offline). Co jest PRIORYTETEM?',
       choices: [
-        { text: 'Natychmiast płacę okup - szybciej odtworzę dane', outcome: 'Błąd! Płacenie okupu nie gwarantuje odtworzenia danych, finansuje przestępców i narusza regulacje w niektórych jurysdykcjach.', good: false },
-        { text: 'Dokumentuję incydent i sprawdzam zakres przed odtworzeniem', outcome: 'Dobra decyzja! Analiza zakresu jest konieczna - dowiedz się ile systemów jest zainfekowanych zanim zaczniesz odtwarzanie.', good: true },
-        { text: 'Od razu odtwarzam z backupu', outcome: 'Ryzykowne! Bez eradykacji złośliwego oprogramowania, odtworzone systemy mogą zostać ponownie zainfekowane.', good: false },
+        { text: 'Natychmiast płacę okup, żeby szybciej odtworzyć dane', outcome: 'Błąd! Płacenie okupu nie gwarantuje odtworzenia danych, finansuje przestępców i narusza regulacje w niektórych jurysdykcjach.', good: false },
+        { text: 'Dokumentuję incydent i sprawdzam zakres przed odtworzeniem', outcome: 'Dobra decyzja! Analiza zakresu jest konieczna: najpierw ustal, ile systemów jest zainfekowanych, a dopiero potem zacznij odtwarzanie.', good: true },
+        { text: 'Od razu odtwarzam z backupu', outcome: 'Ryzykowne! Bez eradykacji złośliwego oprogramowania odtworzone systemy mogą zostać ponownie zainfekowane.', good: false },
       ]
     },
     {
-      q: 'Analiza pokazuje, że ransomware dostał się przez email phishingowy do pracownika HR. Jakie działania prewencyjne teraz wdrożysz?',
+      q: 'Analiza pokazuje, że ransomware dostał się przez phishingowy e-mail do pracownika HR. Jakie działania prewencyjne teraz wdrożysz?',
       choices: [
         { text: 'MFA na wszystkich kontach + szkolenie antyphishingowe', outcome: 'Doskonale! MFA i świadomość pracowników to dwie najskuteczniejsze kontrole przeciw phishingowi.', good: true },
         { text: 'Zablokuję internet dla działu HR', outcome: 'Nieproporcjonalne i nieskuteczne. Blokada internetu uniemożliwi pracę i nie rozwiąże problemu braku świadomości.', good: false },
-        { text: 'Wyślę email z przypomnieniem o zasadach bezpieczeństwa', outcome: 'Zbyt słaba odpowiedź! Jeden email nie wystarczy - potrzebne są szkolenia praktyczne i testy phishingowe.', good: false },
+        { text: 'Wyślę e-mail z przypomnieniem o zasadach bezpieczeństwa', outcome: 'Zbyt słaba odpowiedź! Jeden e-mail nie wystarczy. Potrzebne są szkolenia praktyczne i testy phishingowe.', good: false },
       ]
     },
   ];
@@ -198,9 +198,9 @@ function renderIncidentScenario() {
           el('div', { class: 'result-title' }, `${goodChoices}/3 decyzji było optymalnych`),
           el('p', { style: { color: 'var(--text-muted)', marginBottom: '1.5rem' } },
             goodChoices >= 3
-              ? 'Doskonałe reagowanie! Byłeś skuteczny na każdym etapie.'
+              ? 'Doskonała reakcja! Każda decyzja była trafna.'
               : goodChoices >= 2
-              ? 'Niezłe! Kilka decyzji wymagało lepszego rozważenia.'
+              ? 'Nieźle! Kilka decyzji warto było lepiej przemyśleć.'
               : 'Warto powtórzyć cykl IR. Każda błędna decyzja kosztuje organizację czas i dane.'
           ),
           el('button', {
@@ -259,7 +259,7 @@ const QUIZ_QUESTIONS = [
     question: 'Która nowa funkcja pojawiła się w NIST CSF 2.0 (nieobecna w wersji 1.1)?',
     options: ['DETECT', 'GOVERN', 'RESPOND', 'RECOVER'],
     correct: 1,
-    explanation: 'NIST CSF 2.0 dodał funkcję GOVERN (Zarządzaj) skupioną na zaangażowaniu zarządu i ustanowieniu kontekstu organizacyjnego. Poprzednie 5 funkcji pozostało bez zmian.'
+    explanation: 'NIST CSF 2.0 dodał funkcję GOVERN (Zarządzaj), która dotyczy zaangażowania zarządu i kontekstu organizacji. Poprzednie 5 funkcji pozostało bez zmian.'
   },
   {
     question: 'Jaka jest kolejność faz reagowania na incydent (IR) według przewodnika?',
@@ -271,17 +271,17 @@ const QUIZ_QUESTIONS = [
     question: 'Co NALEŻY zrobić PRZED odtworzeniem systemów po ataku ransomware?',
     options: ['Zapłacić okup dla pewności', 'Eradykować złośliwe oprogramowanie i potwierdzić czystość środowiska', 'Natychmiast przywrócić backup bez analizy', 'Poinformować media'],
     correct: 1,
-    explanation: 'Bez eradykacji malware, odtworzone systemy zostaną ponownie zainfekowane. Najpierw zawieranie i eradykacja, potem odtworzenie z zweryfikowanych backupów.'
+    explanation: 'Bez eradykacji malware odtworzone systemy zostaną ponownie zainfekowane. Najpierw powstrzymanie i eradykacja, potem odtworzenie ze zweryfikowanych backupów.'
   },
   {
     question: 'Co oznacza IDENTIFY w NIST CSF?',
     options: ['Identyfikacja osób odpowiedzialnych za incydent', 'Zrozumienie aktywów, ryzyk i luk w ochronie', 'Identyfikacja i blokowanie atakujących', 'Nagrywanie sesji administratorów'],
     correct: 1,
-    explanation: 'IDENTIFY = zrozum co chronisz. Inwentaryzacja aktywów, ocena ryzyka, mapowanie zależności. „Nie możesz chronić tego, czego nie widzisz.”'
+    explanation: 'IDENTIFY: zrozum, co chronisz. Inwentaryzacja aktywów, ocena ryzyka, mapowanie zależności. „Nie możesz chronić tego, czego nie widzisz.”'
   },
   {
     question: 'Jakie narzędzie w SOC odpowiada głównie za funkcję DETECT (Wykrywaj)?',
-    options: ['Backup system', 'SIEM z korelacją alertów i EDR', 'System zarządzania dokumentami', 'Firewall zewnętrzny'],
+    options: ['System backupu', 'SIEM z korelacją alertów i EDR', 'System zarządzania dokumentami', 'Firewall zewnętrzny'],
     correct: 1,
     explanation: 'SIEM koreluje zdarzenia z całej infrastruktury i generuje alerty. EDR wykrywa zagrożenia na urządzeniach. Razem realizują funkcję DETECT w NIST CSF.'
   },
@@ -292,7 +292,7 @@ export function renderSpiecie() {
 
   wrap.appendChild(el('div', { class: 'module-header' },
     el('h1', {}, 'Integracja obrony'),
-    el('p', { class: 'subtitle' }, 'Jak regulacje, organizacja i technologia łączą się w jedno – wymóg regulacyjny → co robi organizacja → czym (technologia). Czytelny morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
+    el('p', { class: 'subtitle' }, 'Jak regulacje, organizacja i technologia łączą się w całość: wymóg regulacyjny → co robi organizacja → czym to robi (technologia). Morał: technologia bez procesów to wydatek, a nie bezpieczeństwo.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~25 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 5')

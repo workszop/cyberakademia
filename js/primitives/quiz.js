@@ -162,7 +162,7 @@ export function initQuiz(container, data, onResult) {
       gradeText = 'Dobrze';
       gradeClass = 'quiz-grade--ok';
     } else if (pct >= 40) {
-      gradeText = 'Wymagasz powtórki';
+      gradeText = 'Warto powtórzyć materiał';
       gradeClass = 'quiz-grade--review';
     } else {
       gradeText = 'Trzeba więcej ćwiczyć';

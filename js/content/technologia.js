@@ -8,51 +8,51 @@
 export const DEFENSE_LAYERS = [
   {
     id: 'mfa',
-    name: 'MFA - Uwierzytelnianie wieloskładnikowe',
+    name: 'MFA – uwierzytelnianie wieloskładnikowe',
     icon: '🔑',
     category: 'tożsamość',
-    description: 'Wymaga co najmniej dwóch czynników uwierzytelniania – samo hasło nie wystarcza. Znacząco ogranicza skuteczność ataków wykorzystujących skradzione hasła.',
-    detail: 'MFA (Multi-Factor Authentication) jest jedną z najtańszych i najskuteczniejszych kontroli bezpieczeństwa. Nawet jeśli atakujący zna hasło (phishing, wyciek bazy), bez drugiego czynnika (kod SMS, aplikacja uwierzytelniająca albo klucz sprzętowy FIDO2) nie uzyska dostępu. Wymagane przez NIS2, DORA i większość standardów branżowych.',
+    description: 'Wymaga co najmniej dwóch czynników uwierzytelniania, więc samo hasło nie wystarcza. Mocno ogranicza skuteczność ataków ze skradzionymi hasłami.',
+    detail: 'MFA (Multi-Factor Authentication) to jedna z najtańszych i najskuteczniejszych kontroli bezpieczeństwa. Nawet jeśli atakujący zna hasło (phishing, wyciek bazy), bez drugiego czynnika (kod SMS, aplikacja uwierzytelniająca albo klucz sprzętowy FIDO2) nie uzyska dostępu. Wymagają go NIS2, DORA i większość standardów branżowych.',
     blocks: ['phishing', 'brute-force', 'credential-stuffing', 'ransomware'],
-    doesNotBlock: ['Ataki na sam drugi czynnik (SIM swapping, phishing w czasie rzeczywistym na kod OTP)']
+    doesNotBlock: ['Ataków na sam drugi czynnik (SIM swapping, phishing w czasie rzeczywistym na kod OTP)']
   },
   {
     id: 'backup',
     name: 'Backup 3-2-1',
     icon: '💾',
     category: 'ciągłość',
-    description: '3 kopie danych, 2 różne nośniki, 1 kopia offline/poza siedzibą. Jedyna skuteczna ochrona przed ransomware.',
-    detail: 'Zasada 3-2-1: 3 kopie danych (produkcja + 2 backupy), na 2 różnych typach nośników (np. dysk + taśma lub chmura), 1 kopia offline lub immutable (niezmienialna - ransomware nie może jej zaszyfrować). Kluczowe: regularne testowanie odtwarzania. Backup który nie był testowany = backup który nie działa. Definicja RPO (Recovery Point Objective) określa jak stara kopia jest akceptowalna.',
+    description: '3 kopie danych, 2 różne nośniki, 1 kopia offline/poza siedzibą. Najlepsza obrona przed skutkami ransomware.',
+    detail: 'Zasada 3-2-1: 3 kopie danych (produkcja + 2 backupy) na 2 różnych typach nośników (np. dysk + taśma lub chmura), w tym 1 kopia offline lub immutable (niezmienialna, ransomware nie może jej zaszyfrować). Najważniejsze jest regularne testowanie odtwarzania: backup, którego nie testowano, to backup, który nie działa. RPO (Recovery Point Objective) określa, jak stara kopia jest akceptowalna.',
     blocks: ['ransomware', 'accidental-deletion', 'hardware-failure', 'insider'],
     doesNotBlock: ['Wycieku danych (backup chroni dostępność, nie poufność)']
   },
   {
     id: 'edr',
-    name: 'EDR - Ochrona stacji roboczych',
+    name: 'EDR – ochrona stacji roboczych',
     icon: '🛡️',
     category: 'endpointy',
-    description: 'Zaawansowana ochrona urządzeń końcowych - wykrywa złośliwe zachowania (nie tylko sygnatury), umożliwia izolację i forensics.',
-    detail: 'EDR (Endpoint Detection and Response) zastąpił klasyczny antywirus. Monitoruje zachowanie procesów w czasie rzeczywistym: co uruchamia, co zapisuje, z czym się łączy. Wykrywa ataki fileless (bez pliku), living-off-the-land (używanie legalnych narzędzi systemowych), szyfrowanie charakterystyczne dla ransomware. Kluczowe funkcje: izolacja hosta (odcięcie od sieci jednym kliknięciem), zbieranie dowodów forensycznych, rollback zmian.',
+    description: 'Zaawansowana ochrona urządzeń końcowych: wykrywa złośliwe zachowania (nie tylko sygnatury), pozwala izolować urządzenie i zbierać dowody (forensics).',
+    detail: 'EDR (Endpoint Detection and Response) zastąpił klasyczny antywirus. Monitoruje zachowanie procesów w czasie rzeczywistym: co uruchamiają, co zapisują, z czym się łączą. Wykrywa ataki fileless (bez pliku), living-off-the-land (z użyciem legalnych narzędzi systemowych) i szyfrowanie typowe dla ransomware. Najważniejsze funkcje: izolacja hosta (odcięcie od sieci jednym kliknięciem), zbieranie dowodów forensycznych, wycofanie zmian (rollback).',
     blocks: ['ransomware', 'malware', 'apt', 'fileless-attacks', 'supply-chain'],
     doesNotBlock: ['Ataków sieciowych omijających urządzenia końcowe (tu potrzebny NDR)']
   },
   {
     id: 'ngfw',
-    name: 'NGFW - Zapora sieciowa nowej generacji',
+    name: 'NGFW – zapora sieciowa nowej generacji',
     icon: '🔥',
     category: 'sieć',
     description: 'Kontroluje ruch sieciowy z pełną inspekcją: IPS, identyfikacja aplikacji, odszyfrowywanie SSL, filtrowanie URL.',
-    detail: 'NGFW (Next-Generation Firewall) łączy klasyczny firewall (filtracja pakietów, stateful inspection) z: Deep Packet Inspection, Intrusion Prevention System (IPS), identyfikacją aplikacji (nie tylko portów), odszyfrowywaniem SSL/TLS, filtrowaniem URL i kategorii, sandboxingiem plików. NGFW jest „bramą” sieci - kontroluje co wchodzi i wychodzi.',
+    detail: 'NGFW (Next-Generation Firewall) łączy klasyczny firewall (filtracja pakietów, stateful inspection) z Deep Packet Inspection, systemem IPS (Intrusion Prevention System), identyfikacją aplikacji (a nie tylko portów), odszyfrowywaniem SSL/TLS, filtrowaniem URL i kategorii oraz sandboxingiem plików. NGFW jest „bramą” sieci: kontroluje, co wchodzi i wychodzi.',
     blocks: ['external-attacks', 'malware-download', 'c2-communication', 'ddos'],
-    doesNotBlock: ['Zagrożeń wewnętrznych, ataków z zaszyfrowanym C2 jeśli nie odszyfrowuje SSL']
+    doesNotBlock: ['Zagrożeń wewnętrznych; ataków z zaszyfrowanym C2, jeśli nie odszyfrowuje SSL']
   },
   {
     id: 'waf',
-    name: 'WAF - Zapora aplikacji webowych',
+    name: 'WAF – zapora aplikacji webowych',
     icon: '🕸️',
     category: 'aplikacje',
-    description: 'Chroni aplikacje webowe przed atakami SQL injection, XSS, CSRF i innymi na poziomie HTTP.',
-    detail: 'WAF (Web Application Firewall) stoi przed aplikacją webową i analizuje każde żądanie HTTP/HTTPS. Blokuje: SQL injection, Cross-Site Scripting (XSS), Cross-Site Request Forgery (CSRF), command injection, file inclusion, ataki na API. Może działać w trybie detekcji (loguje) lub prewencji (blokuje). Wymaga strojenia dla konkretnej aplikacji - zbyt agresywny blokuje legalnych użytkowników.',
+    description: 'Chroni aplikacje webowe przed SQL injection, XSS, CSRF i innymi atakami w warstwie HTTP.',
+    detail: 'WAF (Web Application Firewall) stoi przed aplikacją webową i analizuje każde żądanie HTTP/HTTPS. Blokuje: SQL injection, Cross-Site Scripting (XSS), Cross-Site Request Forgery (CSRF), command injection, file inclusion, ataki na API. Może działać w trybie detekcji (loguje) lub prewencji (blokuje). Wymaga strojenia pod konkretną aplikację: zbyt agresywny blokuje legalnych użytkowników.',
     blocks: ['sql-injection', 'xss', 'csrf', 'api-attacks', 'web-scraping'],
     doesNotBlock: ['Zagrożeń z wewnątrz sieci, ataków na inne protokoły niż HTTP']
   },
@@ -61,60 +61,60 @@ export const DEFENSE_LAYERS = [
     name: 'IAM / Zero Trust',
     icon: '🔐',
     category: 'tożsamość',
-    description: 'Zarządzanie dostępem oparte na tożsamości i kontekście - zasada „nigdy nie ufaj, zawsze weryfikuj”.',
-    detail: 'IAM (Identity and Access Management) w modelu Zero Trust zakłada, że każde żądanie dostępu musi być zweryfikowane niezależnie od źródła (wewnątrz czy z zewnątrz sieci). Weryfikacja opiera się na: tożsamości użytkownika (MFA), kondycji urządzenia (compliance), lokalizacji, czasie i kontekście zachowania. Zasada minimalnych uprawnień: dostęp tylko do niezbędnych zasobów.',
+    description: 'Zarządzanie dostępem na podstawie tożsamości i kontekstu, zgodnie z zasadą „nigdy nie ufaj, zawsze weryfikuj”.',
+    detail: 'IAM (Identity and Access Management) w modelu Zero Trust zakłada, że każde żądanie dostępu trzeba zweryfikować niezależnie od źródła (z wewnątrz czy z zewnątrz sieci). Weryfikacja uwzględnia tożsamość użytkownika (MFA), kondycję urządzenia (compliance), lokalizację, czas i kontekst zachowania. Zasada minimalnych uprawnień: dostęp tylko do niezbędnych zasobów.',
     blocks: ['lateral-movement', 'insider', 'stolen-credentials', 'ransomware'],
     doesNotBlock: ['Exploitów na aplikacje (tu WAF), ataków sieciowych (NGFW)']
   },
   {
     id: 'pam-layer',
-    name: 'PAM - Zarządzanie dostępem uprzywilejowanym',
+    name: 'PAM – zarządzanie dostępem uprzywilejowanym',
     icon: '👑',
     category: 'tożsamość',
-    description: 'Specjalna kontrola kont administratorów - sejf haseł, rotacja, nagrywanie sesji.',
-    detail: 'PAM (Privileged Access Management) chroni konta z podwyższonymi uprawnieniami: administratorów systemów, baz danych, sieci, service accounts. Funkcje: vault haseł (centralne przechowywanie i rotacja), just-in-time access (dostęp uprzywilejowany tylko gdy potrzebny), nagrywanie sesji (video zapis co admin robił), MFA dla wszystkich kont uprzywilejowanych. Konta admin to priorytetowy cel ataków - PAM minimalizuje ryzyko ich kompromitacji.',
+    description: 'Osobna kontrola kont administratorów: sejf haseł, rotacja, nagrywanie sesji.',
+    detail: 'PAM (Privileged Access Management) chroni konta z podwyższonymi uprawnieniami: administratorów systemów, baz danych i sieci oraz konta serwisowe (service accounts). Funkcje: vault haseł (centralne przechowywanie i rotacja), just-in-time access (uprawnienia tylko wtedy, gdy są potrzebne), nagrywanie sesji (zapis wideo tego, co robił administrator), MFA dla wszystkich kont uprzywilejowanych. Konta administratorów to priorytetowy cel ataków, a PAM ogranicza ryzyko ich przejęcia.',
     blocks: ['insider', 'lateral-movement', 'apt', 'privilege-escalation'],
-    doesNotBlock: ['Ataków niekorzystających z kont uprzywilejowanych']
+    doesNotBlock: ['Ataków, które nie korzystają z kont uprzywilejowanych']
   },
   {
     id: 'siem-layer',
-    name: 'SIEM - Wykrywanie i monitoring',
+    name: 'SIEM – wykrywanie i monitoring',
     icon: '🖥️',
     category: 'wykrywanie',
-    description: 'Centralna platforma zbierania logów i korelacji zdarzeń - mózg SOC. Wykrywa wzorce ataków w całej infrastrukturze.',
-    detail: 'SIEM zbiera logi ze wszystkich źródeł (serwery, sieć, aplikacje, chmura), normalizuje je do wspólnego formatu, koreluje zdarzenia w czasie i generuje alerty gdy wzorzec wskazuje na zagrożenie. Kluczowe: reguły korelacji muszą być regularnie aktualizowane. SIEM nie zastąpi analityka - to narzędzie wspomagające, nie autonomiczne. Przykłady: Splunk, Microsoft Sentinel, IBM QRadar.',
+    description: 'Centralna platforma do zbierania logów i korelacji zdarzeń, „mózg” SOC. Wykrywa wzorce ataków w całej infrastrukturze.',
+    detail: 'SIEM zbiera logi ze wszystkich źródeł (serwery, sieć, aplikacje, chmura), normalizuje je do wspólnego formatu, koreluje zdarzenia w czasie i generuje alerty, gdy wzorzec wskazuje na zagrożenie. Reguły korelacji trzeba regularnie aktualizować. SIEM nie zastąpi analityka: wspiera go, ale nie działa samodzielnie. Przykłady: Splunk, Microsoft Sentinel, IBM QRadar.',
     blocks: ['apt', 'insider', 'data-exfiltration', 'anomalies'],
     doesNotBlock: ['Zagrożeń, dla których nie ma reguł korelacji (zero-day, nieznane TTP)']
   },
   {
     id: 'dlp-layer',
-    name: 'DLP - Zapobieganie wyciekom danych',
+    name: 'DLP – zapobieganie wyciekom danych',
     icon: '🚫',
     category: 'dane',
-    description: 'Monitoruje i blokuje nieautoryzowany transfer wrażliwych danych - e-mail, USB, chmura.',
-    detail: 'DLP (Data Loss Prevention) chroni dane przed wyciekiem przez: monitoring poczty e-mail (blokuje wysyłanie pliku z numerami kart kredytowych), kontrolę urządzeń USB, monitoring chmury (OneDrive, Dropbox), inspekcję wydruków. Wymaga wcześniejszej klasyfikacji danych - DLP musi wiedzieć co jest wrażliwe. Szczególnie ważne dla RODO (ochrona danych osobowych) i własności intelektualnej.',
+    description: 'Monitoruje i blokuje nieautoryzowany transfer wrażliwych danych: e-mail, USB, chmura.',
+    detail: 'DLP (Data Loss Prevention) chroni dane przed wyciekiem przez monitoring poczty (np. blokuje wysłanie pliku z numerami kart kredytowych), kontrolę urządzeń USB, monitoring chmury (OneDrive, Dropbox) i inspekcję wydruków. Wymaga wcześniejszej klasyfikacji danych, bo DLP musi wiedzieć, co jest wrażliwe. Szczególnie ważne dla RODO (ochrona danych osobowych) i własności intelektualnej.',
     blocks: ['insider', 'data-exfiltration', 'accidental-leak'],
-    doesNotBlock: ['Wycieku danych przez skompromitowane konto (jeśli DLP nie rozróżnia autoryzowanego/nieautoryzowanego)']
+    doesNotBlock: ['Wycieku danych przez przejęte konto (jeśli DLP nie odróżnia transferu autoryzowanego od nieautoryzowanego)']
   },
   {
     id: 'segmentation',
     name: 'Segmentacja sieci',
     icon: '🏗️',
     category: 'sieć',
-    description: 'Podział sieci na izolowane strefy - ogranicza możliwość przemieszczania się atakującego (lateral movement).',
-    detail: 'Segmentacja sieci dzieli infrastrukturę na strefy z kontrolowanym przepływem ruchu: sieć serwerów, sieć użytkowników, sieć OT/IoT, DMZ. Mikrosegmentacja (Zero Trust Network) idzie dalej - każdy workload jest izolowany. Gdy atakujący wejdzie do jednej strefy, nie może łatwo przemieścić się do kolejnej. Analogia: szczelne drzwi przeciwpożarowe - jeden pożar nie pali całego budynku.',
+    description: 'Podział sieci na izolowane strefy ogranicza przemieszczanie się atakującego (lateral movement).',
+    detail: 'Segmentacja dzieli infrastrukturę na strefy z kontrolowanym przepływem ruchu: sieć serwerów, sieć użytkowników, sieć OT/IoT, DMZ. Mikrosegmentacja (Zero Trust Network) idzie dalej i izoluje każdy workload. Atakujący, który wejdzie do jednej strefy, nie przejdzie łatwo do kolejnej. Analogia: drzwi przeciwpożarowe sprawiają, że pożar w jednej części nie obejmuje całego budynku.',
     blocks: ['lateral-movement', 'ransomware', 'apt', 'insider'],
     doesNotBlock: ['Ataków w obrębie tej samej strefy sieci']
   },
   {
     id: 'vuln-mgmt-layer',
-    name: 'Zarządzanie podatnościami / Patching',
+    name: 'Zarządzanie podatnościami / patching',
     icon: '🔧',
     category: 'hardening',
-    description: 'Systematyczne identyfikowanie i usuwanie podatności przed ich exploitacją przez atakujących.',
-    detail: 'Większość skutecznych ataków exploituje znane podatności z dostępnym patchem - atakujący liczą na to, że organizacje nie aktualizują oprogramowania na czas. Cykl: skanowanie (co jest podatne?) → priorytetyzacja (CVSS + ekspozycja) → patch w terminie (krytyczne: 24-72h, wysokie: 7 dni, średnie: 30 dni) → weryfikacja. Zarządzanie podatnościami redukuje powierzchnię ataku systematycznie i mierzalnie.',
+    description: 'Systematyczne wyszukiwanie i usuwanie podatności, zanim wykorzystają je atakujący.',
+    detail: 'Większość skutecznych ataków wykorzystuje znane podatności, na które jest już patch: atakujący liczą na to, że organizacje nie aktualizują oprogramowania na czas. Cykl: skanowanie (co jest podatne?) → priorytetyzacja (CVSS + ekspozycja) → patch w terminie (krytyczne: 24-72h, wysokie: 7 dni, średnie: 30 dni) → weryfikacja. Zarządzanie podatnościami zmniejsza powierzchnię ataku systematycznie i mierzalnie.',
     blocks: ['supply-chain', 'ransomware', 'apt', 'external-attacks'],
-    doesNotBlock: ['Podatności zero-day (nieznanych jeszcze), błędów konfiguracji niewynikających z podatności']
+    doesNotBlock: ['Podatności zero-day (jeszcze nieznanych), błędów konfiguracji, które nie wynikają z podatności']
   },
 ];
 
@@ -125,17 +125,17 @@ export const ATTACK_SCENARIOS = [
     id: 'ransomware-attack',
     name: 'Atak ransomware',
     icon: '🔒',
-    description: 'Pracownik kliknął w phishingowy link. Malware szyfruje pliki na stacji roboczej i rozprzestrzenia się przez sieć. Żądanie okupu 500 000 PLN.',
+    description: 'Pracownik kliknął link w e-mailu phishingowym. Malware szyfruje pliki na stacji roboczej i rozprzestrzenia się po sieci. Żądanie okupu: 500 000 PLN.',
     attackChain: [
-      'Phishing e-mail z linkiem do malware',
-      'Malware pobiera payload z C2 server',
+      'E-mail phishingowy z linkiem do malware',
+      'Malware pobiera payload z serwera C2',
       'Payload szyfruje pliki lokalnie i na udziałach sieciowych',
       'Ransomware próbuje wyłączyć backup',
       'Żądanie okupu'
     ],
     blockedBy: ['mfa', 'backup', 'edr', 'segmentation', 'ngfw'],
     bestLayer: 'backup',
-    explanation: 'MFA nie zatrzyma kliknięcia w link, ale utrudni kompromitację konta. EDR może wykryć i zatrzymać szyfrowanie. Segmentacja ograniczy zasięg. Backup 3-2-1 (offline) to ostatnia linia - bez względu na to czy ransomware zaszyfruje dane, mamy kopię nietkniętą.'
+    explanation: 'MFA nie zatrzyma kliknięcia w link, ale utrudni przejęcie konta. EDR może wykryć i zatrzymać szyfrowanie. Segmentacja ograniczy zasięg. Backup 3-2-1 (offline) to ostatnia linia obrony: nawet jeśli ransomware zaszyfruje dane, zostaje nietknięta kopia.'
   },
   {
     id: 'phishing-bec',
@@ -150,7 +150,7 @@ export const ATTACK_SCENARIOS = [
     ],
     blockedBy: ['mfa', 'iam-layer', 'siem-layer'],
     bestLayer: 'mfa',
-    explanation: 'Podstawowa ochrona: SPF/DKIM/DMARC blokuje podszywanie się pod domenę firmy. MFA zabezpiecza konto nawet jeśli e-mail przechwycono. Procedury weryfikacji telefonicznej dla dużych przelewów to kluczowa kontrola procesowa - technologia sama nie wystarczy.'
+    explanation: 'Podstawowa ochrona: SPF/DKIM/DMARC blokuje podszywanie się pod domenę firmy. MFA zabezpiecza konto, nawet jeśli e-mail przechwycono. Weryfikacja telefoniczna dużych przelewów to najważniejsza kontrola procesowa, bo sama technologia nie wystarczy.'
   },
   {
     id: 'apt-intrusion',
@@ -158,31 +158,31 @@ export const ATTACK_SCENARIOS = [
     icon: '🕵️',
     description: 'Zaawansowana grupa APT uzyskała przyczółek w sieci przez podatność VPN. Przez 3 miesiące zbiera dane wywiadowcze i szuka drogi do systemów krytycznych.',
     attackChain: [
-      'Eksploitacja podatności w bramie VPN',
+      'Wykorzystanie podatności w bramie VPN',
       'Instalacja backdoora (persistent access)',
-      'Lateral movement - przemieszczenie przez sieć',
-      'Privilege escalation - przejęcie kont admin',
+      'Lateral movement – przemieszczanie się po sieci',
+      'Privilege escalation – przejęcie kont administratorów',
       'Eksfiltracja danych przez zaszyfrowany kanał'
     ],
     blockedBy: ['ngfw', 'pam-layer', 'segmentation', 'siem-layer', 'edr', 'vuln-mgmt-layer'],
     bestLayer: 'segmentation',
-    explanation: 'Żadna warstwa nie zatrzyma APT w 100%. Patching (brak podatności VPN) jest kluczowy. Segmentacja ogranicza lateral movement. EDR wykrywa anomalie behawioralne. SIEM koreluje zdarzenia z wielu źródeł. PAM chroni konta admin. Ochrona przed APT to głęboka obrona - wiele warstw razem.'
+    explanation: 'Żadna warstwa nie zatrzyma APT w 100%. Podstawą jest patching (brak podatności VPN). Segmentacja ogranicza lateral movement. EDR wykrywa anomalie behawioralne. SIEM koreluje zdarzenia z wielu źródeł. PAM chroni konta administratorów. Ochrona przed APT to obrona w głąb: wiele warstw działających razem.'
   },
   {
     id: 'supply-chain-scenario',
     name: 'Atak na łańcuch dostaw',
     icon: '🔗',
-    description: 'Zaufane oprogramowanie dostawcy zarządzanego przez MSSP zawiera zainfekowaną aktualizację. Malware instaluje się na setkach stacji roboczych jednocześnie.',
+    description: 'Zaufane oprogramowanie dostawcy zarządzanego przez MSSP zawiera zainfekowaną aktualizację. Malware instaluje się jednocześnie na setkach stacji roboczych.',
     attackChain: [
       'Kompromitacja środowiska budowania oprogramowania u dostawcy',
       'Złośliwy kod wstrzyknięty do legalnej aktualizacji',
-      'Aktualizacja dystrybuowana automatycznie do klientów',
+      'Aktualizacja trafia automatycznie do klientów',
       'Malware uruchamia się z podpisanym certyfikatem dostawcy',
       'Masowa kompromitacja klientów'
     ],
     blockedBy: ['edr', 'siem-layer', 'segmentation', 'ngfw'],
     bestLayer: 'edr',
-    explanation: 'Supply chain attack omija tradycyjne zabezpieczenia (malware ma podpis zaufanego dostawcy). EDR z wykrywaniem behawioralnym może wykryć anomalne zachowanie nawet podpisanego oprogramowania. SIEM koreluje masowe anomalie. Segmentacja ogranicza skutki. Kluczowa jest też ocena bezpieczeństwa dostawców (wymagana przez NIS2/DORA).'
+    explanation: 'Atak na łańcuch dostaw (supply chain attack) omija tradycyjne zabezpieczenia, bo malware ma podpis zaufanego dostawcy. EDR z wykrywaniem behawioralnym może wychwycić nietypowe zachowanie nawet podpisanego oprogramowania. SIEM koreluje masowe anomalie. Segmentacja ogranicza skutki. Liczy się też ocena bezpieczeństwa dostawców (wymagana przez NIS2/DORA).'
   },
 ];
 
@@ -195,8 +195,8 @@ export const SOC_TOOLS = [
     full: 'Security Information and Event Management',
     icon: '🖥️',
     description: 'Centralny system zbierania logów, korelacji zdarzeń i generowania alertów bezpieczeństwa.',
-    analogy: 'Centrala monitoringu z kamerami i czujnikami z całego budynku. Wszystko spływa do jednego miejsca - operator widzi cały obraz i otrzymuje alarm gdy coś nie pasuje do wzorca.',
-    howItWorks: 'Zbiera logi ze wszystkich źródeł (agenty lub syslog), normalizuje do wspólnego formatu, stosuje reguły korelacji (np. „5 nieudanych logowań z jednego IP w 60 sekund → alert brute-force”), generuje incydenty dla analityków. Use cases: wykrywanie ataków brute-force, lateral movement, exfiltracji danych, anomalii behawioralnych.',
+    analogy: 'Centrala monitoringu z kamerami i czujnikami z całego budynku. Wszystko spływa w jedno miejsce: operator widzi cały obraz i dostaje alarm, gdy coś nie pasuje do wzorca.',
+    howItWorks: 'Zbiera logi ze wszystkich źródeł (agenty lub syslog), normalizuje je do wspólnego formatu, stosuje reguły korelacji (np. „5 nieudanych logowań z jednego IP w 60 sekund → alert brute-force”) i tworzy incydenty dla analityków. Typowe zastosowania (use cases): wykrywanie ataków brute-force, lateral movement, eksfiltracji danych, anomalii behawioralnych.',
     examples: ['Splunk Enterprise Security', 'Microsoft Sentinel', 'IBM QRadar', 'Elastic SIEM', 'LogRhythm'],
     pros: ['Pełna widoczność infrastruktury', 'Korelacja zdarzeń z wielu źródeł', 'Zgodność z regulacjami (retencja logów)'],
     cons: ['Wymaga strojenia reguł', 'Wysokie koszty licencji', 'Alert fatigue bez SOAR', 'Wymaga doświadczonych analityków']
@@ -206,11 +206,11 @@ export const SOC_TOOLS = [
     name: 'SOAR',
     full: 'Security Orchestration, Automation and Response',
     icon: '⚡',
-    description: 'Platforma automatyzacji powtarzalnych zadań reagowania na incydenty i integracji narzędzi bezpieczeństwa.',
-    analogy: 'Pilot automatyczny dla SOC - gdy SIEM „widzi” zagrożenie, SOAR automatycznie wykonuje procedurę bez udziału człowieka: blokuje IP, wysyła e-mail, tworzy ticket, powiadamia analityka.',
-    howItWorks: 'Playbooki (workflows) definiują sekwencję działań dla różnych typów incydentów. Wyzwalane przez SIEM lub ręcznie przez analityka. Integruje się z setkami narzędzi przez API: SIEM, EDR, firewall, ticketing, e-mail, threat intel. Redukuje MTTR (Mean Time to Respond) z godzin do minut.',
+    description: 'Platforma, która automatyzuje powtarzalne zadania reagowania na incydenty i integruje narzędzia bezpieczeństwa.',
+    analogy: 'Autopilot dla SOC. Gdy SIEM „widzi” zagrożenie, SOAR sam wykonuje procedurę bez udziału człowieka: blokuje IP, wysyła e-mail, tworzy ticket, powiadamia analityka.',
+    howItWorks: 'Playbooki (workflows) definiują sekwencję działań dla różnych typów incydentów. Uruchamia je SIEM albo ręcznie analityk. SOAR integruje się przez API z setkami narzędzi: SIEM, EDR, firewall, ticketing, e-mail, threat intel. Skraca MTTR (Mean Time to Respond) z godzin do minut.',
     examples: ['Palo Alto XSOAR (Cortex)', 'Splunk SOAR', 'Microsoft Sentinel Playbooks', 'IBM Security SOAR', 'Swimlane'],
-    pros: ['Drastyczne skrócenie MTTR', 'Redukcja alert fatigue', 'Standaryzacja reagowania', 'Odciążenie analityków L1'],
+    pros: ['Drastyczne skrócenie MTTR', 'Mniej alert fatigue', 'Standaryzacja reagowania', 'Odciążenie analityków L1'],
     cons: ['Wymaga inwestycji w konfigurację', 'Złe playbooki mogą wyrządzić szkody', 'Uzależnienie od integracji API']
   },
   {
@@ -218,33 +218,33 @@ export const SOC_TOOLS = [
     name: 'EDR',
     full: 'Endpoint Detection and Response',
     icon: '💻',
-    description: 'Zaawansowana ochrona stacji roboczych i serwerów - wykrywa złośliwe zachowania, umożliwia reakcję i forensics.',
-    analogy: 'Kamera bezpieczeństwa wewnątrz każdego komputera - nagrywa wszystko co się dzieje (procesy, pliki, sieć), wykrywa podejrzane zachowania i pozwala „cofnąć czas” po incydencie.',
-    howItWorks: 'Agent EDR zainstalowany na każdym urządzeniu monitoruje w czasie rzeczywistym: uruchamiane procesy, modyfikacje plików i rejestru, połączenia sieciowe, wykonywany kod. Wykrywa anomalie behawioralne (nie tylko sygnatury). Funkcje IR: izolacja hosta, memory dump, timeline aktywności, usuwanie malware.',
+    description: 'Zaawansowana ochrona stacji roboczych i serwerów: wykrywa złośliwe zachowania, pozwala reagować i zbierać dowody (forensics).',
+    analogy: 'Kamera bezpieczeństwa w każdym komputerze: nagrywa wszystko, co się dzieje (procesy, pliki, sieć), wykrywa podejrzane zachowania i pozwala „cofnąć czas” po incydencie.',
+    howItWorks: 'Agent EDR zainstalowany na każdym urządzeniu monitoruje w czasie rzeczywistym uruchamiane procesy, zmiany plików i rejestru, połączenia sieciowe i wykonywany kod. Wykrywa anomalie behawioralne (nie tylko sygnatury). Funkcje IR: izolacja hosta, memory dump, oś czasu aktywności (timeline), usuwanie malware.',
     examples: ['CrowdStrike Falcon', 'Microsoft Defender for Endpoint', 'SentinelOne', 'Palo Alto Cortex XDR', 'Carbon Black'],
-    pros: ['Wykrywanie behawioralne (zero-day)', 'Izolacja urządzenia jednym kliknięciem', 'Forensics zdalnie', 'Zastąpił AV jako standard'],
-    cons: ['Koszt agentów na każde urządzenie', 'Wpływ na wydajność systemu', 'False positive przy agresywnym strojeniu']
+    pros: ['Wykrywanie behawioralne (zero-day)', 'Izolacja urządzenia jednym kliknięciem', 'Zdalne forensics', 'Zastąpił AV jako standard'],
+    cons: ['Koszt agenta na każdym urządzeniu', 'Wpływ na wydajność systemu', 'False positives przy agresywnym strojeniu']
   },
   {
     id: 'xdr-tool',
     name: 'XDR',
     full: 'Extended Detection and Response',
     icon: '🌐',
-    description: 'Rozszerzone wykrywanie i reagowanie - integruje dane z endpointów, sieci, chmury i poczty w jeden obraz.',
-    analogy: 'EDR widzi wnętrze jednego pokoju, XDR widzi cały budynek - endpointy, sieć, e-mail, chmurę, serwery - jednocześnie. Koreluje zdarzenia z różnych warstw, które z osobna wyglądają normalnie.',
-    howItWorks: 'XDR łączy dane z EDR (endpointy), NDR (sieć), e-mail security, CASB (chmura) i innych źródeł w ujednoliconą platformę analizy. Korelacja cross-source wykrywa zagrożenia niewidoczne w izolowanych narzędziach. Daje analitykowi jeden ekran zamiast przełączania między kilkoma konsolami.',
+    description: 'Rozszerzone wykrywanie i reagowanie: łączy dane z endpointów, sieci, chmury i poczty w jeden obraz.',
+    analogy: 'EDR widzi wnętrze jednego pokoju, XDR cały budynek naraz: endpointy, sieć, e-mail, chmurę, serwery. Koreluje zdarzenia z różnych warstw, które osobno wyglądają normalnie.',
+    howItWorks: 'XDR łączy dane z EDR (endpointy), NDR (sieć), e-mail security, CASB (chmura) i innych źródeł w jedną platformę analizy. Korelacja między źródłami (cross-source) wykrywa zagrożenia niewidoczne w pojedynczych narzędziach. Analityk ma jeden ekran zamiast kilku konsol.',
     examples: ['Microsoft Defender XDR', 'Palo Alto Cortex XDR', 'CrowdStrike Falcon XDR', 'Trend Micro Vision One', 'Cisco XDR'],
-    pros: ['Holistyczny obraz zagrożeń', 'Redukcja złożoności (mniej narzędzi)', 'Lepsza detekcja zaawansowanych ataków', 'Szybszy czas reakcji'],
-    cons: ['Uzależnienie od jednego dostawcy (vendor lock-in)', 'Wysoki koszt', 'Integracja z legacy systemami']
+    pros: ['Pełny obraz zagrożeń', 'Mniejsza złożoność (mniej narzędzi)', 'Lepsza detekcja zaawansowanych ataków', 'Szybsza reakcja'],
+    cons: ['Uzależnienie od jednego dostawcy (vendor lock-in)', 'Wysoki koszt', 'Integracja ze starszymi systemami (legacy)']
   },
   {
     id: 'ndr-tool',
     name: 'NDR',
     full: 'Network Detection and Response',
     icon: '📡',
-    description: 'Wykrywanie zagrożeń w ruchu sieciowym - widzi to czego EDR nie widzi (ruch między serwerami, IoT, OT).',
-    analogy: 'Kamera obserwująca korytarze między pokojami. EDR widzi co dzieje się w każdym pokoju (urządzeniu), NDR widzi co przepływa przez korytarze (sieć) - ruch lateralny, komunikację C2, exfiltrację.',
-    howItWorks: 'Pasywnie analizuje ruch sieciowy (mirror port lub TAP) lub metadane przepływów (NetFlow). Buduje baseline normalnego zachowania i wykrywa anomalie. Wykrywa: ruch lateralny, komunikację z C2 serwerami, skanowanie portów, exfiltrację danych przez DNS/ICMP.',
+    description: 'Wykrywanie zagrożeń w ruchu sieciowym. Widzi to, czego nie widzi EDR (ruch między serwerami, IoT, OT).',
+    analogy: 'Kamera obserwująca korytarze między pokojami. EDR widzi, co dzieje się w każdym pokoju (urządzeniu), a NDR to, co przepływa korytarzami (siecią): ruch lateralny, komunikację C2, eksfiltrację.',
+    howItWorks: 'Pasywnie analizuje ruch sieciowy (mirror port lub TAP) albo metadane przepływów (NetFlow). Buduje baseline normalnego zachowania i wychwytuje odchylenia od niego. Wykrywa ruch lateralny, komunikację z serwerami C2, skanowanie portów i eksfiltrację danych przez DNS/ICMP.',
     examples: ['Darktrace', 'ExtraHop Reveal(x)', 'Vectra AI', 'Corelight', 'Cisco Stealthwatch'],
     pros: ['Widoczność urządzeń bez agenta (IoT, OT, legacy)', 'Wykrywa ruch lateralny', 'Bez wpływu na urządzenia końcowe'],
     cons: ['Nie widzi zawartości zaszyfrowanego ruchu (bez deszyfrowania)', 'Wymaga dużej przepustowości do analizy', 'Baseline wymaga czasu nauki']
@@ -254,12 +254,12 @@ export const SOC_TOOLS = [
     name: 'MDR',
     full: 'Managed Detection and Response',
     icon: '🤝',
-    description: 'Zarządzane wykrywanie i reagowanie - zewnętrzny dostawca przejmuje operacyjne funkcje SOC jako usługa.',
-    analogy: 'Zamiast budować własną wartownię (SOC), wynajmujesz profesjonalną firmę ochroniarską (MDR provider), która monitoruje Twój obiekt 24/7 i reaguje na zagrożenia.',
-    howItWorks: 'MDR provider dostarcza zarówno technologię (SIEM, EDR, XDR) jak i zespół analityków (L1/L2/L3) obsługujących klienta. Zwykle obejmuje: 24/7 monitoring, triaging alertów, reagowanie na incydenty (z różnym zakresem - notify only vs. aktywna reakcja), miesięczne raportowanie. Kluczowy element: SLA czas reakcji.',
-    examples: ['Arctic Wolf', 'Rapid7 MDR', 'Sophos MDR', 'CrowdStrike Falcon Complete', 'Polish local MSSPs'],
-    pros: ['Szybkie uruchomienie', 'Bez budowania własnego SOC', 'Dostęp do ekspertów klasy enterprise', '24/7 coverage'],
-    cons: ['Dane organizacji w zewnętrznym SOC', 'SLA może być niewystarczające', 'Mniejsza znajomość specyfiki', 'Uzależnienie od dostawcy']
+    description: 'Zarządzane wykrywanie i reagowanie: zewnętrzny dostawca przejmuje operacyjne funkcje SOC w formie usługi.',
+    analogy: 'Zamiast budować własną wartownię (SOC), wynajmujesz profesjonalną firmę ochroniarską (dostawcę MDR), która pilnuje Twojego obiektu 24/7 i reaguje na zagrożenia.',
+    howItWorks: 'Dostawca MDR zapewnia zarówno technologię (SIEM, EDR, XDR), jak i zespół analityków (L1/L2/L3), który obsługuje klienta. Usługa zwykle obejmuje monitoring 24/7, triaż alertów, reagowanie na incydenty (w różnym zakresie: od samego powiadomienia, czyli notify only, po aktywną reakcję) i miesięczne raporty. Najważniejszy zapis umowy: czas reakcji w SLA.',
+    examples: ['Arctic Wolf', 'Rapid7 MDR', 'Sophos MDR', 'CrowdStrike Falcon Complete', 'Polscy dostawcy MSSP'],
+    pros: ['Szybkie uruchomienie', 'Bez budowania własnego SOC', 'Dostęp do ekspertów klasy enterprise', 'Ochrona 24/7'],
+    cons: ['Dane organizacji w zewnętrznym SOC', 'SLA może być niewystarczające', 'Słabsza znajomość specyfiki firmy', 'Uzależnienie od dostawcy']
   },
 ];
 
@@ -271,8 +271,8 @@ export const NETWORK_TOOLS = [
     name: 'Firewall / NGFW',
     full: 'Next-Generation Firewall',
     icon: '🔥',
-    description: 'Zapora sieciowa kontrolująca ruch na podstawie reguł i inspekcji głębokiej pakietów.',
-    detail: 'Firewall to „brama” sieci - decyduje co wchodzi i wychodzi. Tradycyjny firewall: filtracja na podstawie IP i portów. NGFW (Next-Generation Firewall): Deep Packet Inspection, IPS/IDS, identyfikacja aplikacji (Layer 7 - widzi że to Facebook, nie tylko port 443), deszyfrowanie SSL/TLS, filtrowanie URL, ochrona przed exploit. Kluczowe umiejscowienie: perimeter (brzeg sieci), między segmentami sieci, przed serwerami.',
+    description: 'Zapora sieciowa, która kontroluje ruch na podstawie reguł i głębokiej inspekcji pakietów.',
+    detail: 'Firewall to „brama” sieci: decyduje, co wchodzi i wychodzi. Tradycyjny firewall filtruje ruch po adresach IP i portach. NGFW (Next-Generation Firewall) dodaje Deep Packet Inspection, IPS/IDS, identyfikację aplikacji (Layer 7: widzi, że to Facebook, a nie tylko port 443), deszyfrowanie SSL/TLS, filtrowanie URL i ochronę przed exploitami. Typowe miejsca: perimeter (brzeg sieci), styk segmentów sieci, wejście do serwerów.',
     examples: ['Palo Alto Networks PA-Series', 'Fortinet FortiGate', 'Cisco Firepower', 'Check Point', 'Sophos XGS'],
     useCases: ['Ochrona granicy sieci (north-south traffic)', 'Segmentacja wewnętrzna', 'Inspekcja ruchu zaszyfrowanego', 'Blokowanie złośliwych domen/IP']
   },
@@ -281,8 +281,8 @@ export const NETWORK_TOOLS = [
     name: 'IDS',
     full: 'Intrusion Detection System',
     icon: '👁️',
-    description: 'System pasywny wykrywający włamania - monitoruje ruch i generuje alerty, ale nie blokuje.',
-    detail: 'IDS (Intrusion Detection System) analizuje ruch sieciowy lub logi systemowe w poszukiwaniu wzorców ataków (sygnatury) lub anomalii (behawioralnie). Typ NIDS (Network) monitoruje sieć, HIDS (Host) - konkretny serwer. Pasywny - tylko wykrywa i alarmuje, nie blokuje. Stosowany gdy blokowanie jest zbyt ryzykowne (np. przemysłowe systemy sterowania) lub jako uzupełnienie IPS dla szerszej widoczności bez ryzyka false positive blokowania.',
+    description: 'Pasywny system wykrywania włamań: monitoruje ruch i generuje alerty, ale niczego nie blokuje.',
+    detail: 'IDS (Intrusion Detection System) analizuje ruch sieciowy lub logi systemowe i szuka wzorców ataków (sygnatury) albo anomalii (analiza behawioralna). NIDS (Network) monitoruje sieć, HIDS (Host) konkretny serwer. IDS jest pasywny: tylko wykrywa i alarmuje. Stosuje się go tam, gdzie blokowanie jest zbyt ryzykowne (np. przemysłowe systemy sterowania), albo jako uzupełnienie IPS, które daje szerszą widoczność bez ryzyka błędnych blokad (false positives).',
     examples: ['Snort (open source)', 'Suricata (open source)', 'Zeek/Bro', 'OSSEC (HIDS)'],
     useCases: ['Monitoring sieci OT/przemysłowej (gdzie blokowanie = wyłączenie produkcji)', 'Uzupełnienie IPS', 'Compliance monitoring']
   },
@@ -291,8 +291,8 @@ export const NETWORK_TOOLS = [
     name: 'IPS',
     full: 'Intrusion Prevention System',
     icon: '🚧',
-    description: 'System aktywnie blokujący włamania - inline w sieci, blokuje podejrzany ruch w czasie rzeczywistym.',
-    detail: 'IPS (Intrusion Prevention System) to aktywna wersja IDS - siedzi inline w ruchu sieciowym i blokuje zagrożenia w czasie rzeczywistym. Wykrywa exploity znanych podatności, skanowanie portów, brute-force, ataki DDoS warstwy aplikacji. Zazwyczaj wbudowany w NGFW. Wymaga regularnego aktualizowania sygnatur i dokładnego strojenia - zbyt agresywne reguły blokują legalny ruch (false positives).',
+    description: 'System, który aktywnie blokuje włamania: działa inline i zatrzymuje podejrzany ruch w czasie rzeczywistym.',
+    detail: 'IPS (Intrusion Prevention System) to aktywna wersja IDS. Działa inline w ruchu sieciowym i blokuje zagrożenia w czasie rzeczywistym. Wykrywa exploity znanych podatności, skanowanie portów, brute-force i ataki DDoS w warstwie aplikacji. Zwykle jest wbudowany w NGFW. Wymaga regularnej aktualizacji sygnatur i starannego strojenia, bo zbyt agresywne reguły blokują legalny ruch (false positives).',
     examples: ['Najczęściej jako moduł NGFW (Palo Alto, Fortinet)', 'Cisco Firepower IPS', 'Snort inline mode'],
     useCases: ['Ochrona serwerów przed exploitami', 'Blokowanie ataków w czasie rzeczywistym', 'Ochrona perimetru']
   },
@@ -302,17 +302,17 @@ export const NETWORK_TOOLS = [
     full: 'Web Application Firewall',
     icon: '🕸️',
     description: 'Zapora chroniąca aplikacje webowe przed atakami warstwy aplikacji: SQL injection, XSS, CSRF.',
-    detail: 'WAF (Web Application Firewall) analizuje ruch HTTP/HTTPS i blokuje złośliwe żądania zanim dotrą do aplikacji. Chroni przed OWASP Top 10: SQL injection, XSS, CSRF, SSRF, XXE, insecure deserialization i inne. Tryby: detection (loguje), prevention (blokuje). WAF może być: sprzętowy (on-premise), software (reverse proxy), chmurowy (CDN WAF). Wymaga strojenia dla konkretnej aplikacji - zbyt agresywny generuje false positives.',
+    detail: 'WAF (Web Application Firewall) analizuje ruch HTTP/HTTPS i blokuje złośliwe żądania, zanim dotrą do aplikacji. Chroni przed zagrożeniami z listy OWASP Top 10: SQL injection, XSS, CSRF, SSRF, XXE, insecure deserialization i innymi. Tryby: detection (loguje) i prevention (blokuje). WAF może być sprzętowy (on-premise), programowy (reverse proxy) albo chmurowy (CDN WAF). Wymaga strojenia pod konkretną aplikację: zbyt agresywny generuje false positives.',
     examples: ['Cloudflare WAF', 'AWS WAF', 'F5 Advanced WAF', 'ModSecurity (open source)', 'Imperva WAF'],
-    useCases: ['Ochrona aplikacji webowych (sklepy, portale klientów)', 'Ochrona API', 'Wymagany dla PCI DSS, często dla NIS2']
+    useCases: ['Ochrona aplikacji webowych (sklepy, portale klientów)', 'Ochrona API', 'Wymagany przez PCI DSS, często przy NIS2']
   },
   {
     id: 'vpn-tool',
     name: 'VPN / ZTNA',
     full: 'Virtual Private Network / Zero Trust Network Access',
     icon: '🔒',
-    description: 'Bezpieczny zdalny dostęp do zasobów organizacji - VPN daje dostęp do sieci, ZTNA tylko do aplikacji.',
-    detail: 'Tradycyjny VPN tworzy szyfrowany tunel do sieci korporacyjnej - po uwierzytelnieniu użytkownik ma dostęp do całej sieci (ryzyko: jeden skompromitowany endpoint = dostęp do wszystkiego). ZTNA (Zero Trust Network Access) to nowszy model: dostęp do konkretnych aplikacji, nie całej sieci, z weryfikacją kondycji urządzenia i kontekstu. ZTNA implementuje zasady Zero Trust w dostępie zdalnym. Trendem jest migracja z VPN do ZTNA.',
+    description: 'Bezpieczny zdalny dostęp do zasobów organizacji. VPN daje dostęp do sieci, ZTNA tylko do aplikacji.',
+    detail: 'Tradycyjny VPN tworzy szyfrowany tunel do sieci firmowej. Po uwierzytelnieniu użytkownik ma dostęp do całej sieci (ryzyko: jeden skompromitowany endpoint = dostęp do wszystkiego). ZTNA (Zero Trust Network Access) to nowszy model: dostęp do konkretnych aplikacji, a nie całej sieci, z weryfikacją kondycji urządzenia i kontekstu. ZTNA przenosi zasady Zero Trust na dostęp zdalny. Organizacje coraz częściej przechodzą z VPN na ZTNA.',
     examples: ['Cisco AnyConnect (VPN)', 'Palo Alto GlobalProtect', 'Zscaler Private Access (ZTNA)', 'Cloudflare Access (ZTNA)', 'Microsoft Entra Private Access (ZTNA)'],
     useCases: ['Zdalny dostęp pracowników', 'Dostęp dostawców/kontrahentów do systemów', 'Bezpieczny dostęp z niezaufanych sieci']
   },
@@ -326,49 +326,49 @@ export const IDENTITY_TOOLS = [
     name: 'IAM',
     full: 'Identity and Access Management',
     icon: '🆔',
-    description: 'Framework zarządzania tożsamościami cyfrowymi i uprawnieniami dostępu - kto może, do czego, kiedy, jak.',
-    detail: 'IAM obejmuje: zarządzanie cyklem życia kont (tworzenie, modyfikacja, usuwanie), federację tożsamości (SSO - jeden login dla wielu systemów), uwierzytelnianie (hasła, MFA, certyfikaty), autoryzację (role, uprawnienia, polityki dostępu), audyt (kto co kiedy zrobił). Zasada least privilege: użytkownik ma dostęp tylko do tego co potrzebuje do swojej pracy.',
+    description: 'Ramy zarządzania tożsamościami cyfrowymi i uprawnieniami: kto ma dostęp, do czego, kiedy i jak.',
+    detail: 'IAM obejmuje zarządzanie cyklem życia kont (tworzenie, modyfikacja, usuwanie), federację tożsamości (SSO, czyli jeden login do wielu systemów), uwierzytelnianie (hasła, MFA, certyfikaty), autoryzację (role, uprawnienia, polityki dostępu) i audyt (kto, co i kiedy zrobił). Zasada least privilege: użytkownik ma dostęp tylko do tego, czego potrzebuje w pracy.',
     examples: ['Microsoft Entra ID (Azure AD)', 'Okta', 'SailPoint IdentityNow', 'One Identity', 'ForgeRock'],
-    zeroTrustRelation: 'IAM to filar Zero Trust - każde żądanie dostępu weryfikowane przez pryzmat tożsamości użytkownika, niezależnie od lokalizacji.'
+    zeroTrustRelation: 'IAM to filar Zero Trust: każde żądanie dostępu jest weryfikowane na podstawie tożsamości użytkownika, niezależnie od lokalizacji.'
   },
   {
     id: 'mfa-tool',
     name: 'MFA',
     full: 'Multi-Factor Authentication',
     icon: '📱',
-    description: 'Uwierzytelnianie wieloskładnikowe – wymaga co najmniej dwóch różnych czynników potwierdzenia tożsamości.',
-    detail: 'MFA łączy: coś co wiesz (hasło, PIN), coś co masz (telefon z aplikacją uwierzytelniającą, klucz sprzętowy FIDO2/YubiKey, karta OTP), coś czym jesteś (odcisk palca, twarz). Typy: TOTP (kody czasowe – Google/Microsoft Authenticator), powiadomienia push (zatwierdź w aplikacji), SMS (najsłabszy – podatny na SIM swapping), FIDO2/passkeys (najsilniejszy – phishing-resistant). MFA znacząco ogranicza skuteczność ataków na skradzione hasła.',
+    description: 'Uwierzytelnianie wieloskładnikowe: wymaga co najmniej dwóch różnych czynników potwierdzenia tożsamości.',
+    detail: 'MFA łączy: coś, co wiesz (hasło, PIN), coś, co masz (telefon z aplikacją uwierzytelniającą, klucz sprzętowy FIDO2/YubiKey, karta OTP), i coś, czym jesteś (odcisk palca, twarz). Typy: TOTP (kody czasowe, np. Google/Microsoft Authenticator), powiadomienia push (zatwierdzenie w aplikacji), SMS (najsłabszy, podatny na SIM swapping), FIDO2/passkeys (najsilniejszy, odporny na phishing). MFA mocno ogranicza skuteczność ataków ze skradzionymi hasłami.',
     examples: ['Microsoft Authenticator', 'Google Authenticator', 'Duo Security', 'YubiKey (FIDO2)', 'RSA SecurID'],
-    zeroTrustRelation: 'Absolutny minimum Zero Trust - bez MFA nie ma Zero Trust. Phishing-resistant MFA (FIDO2) to gold standard.'
+    zeroTrustRelation: 'Absolutne minimum Zero Trust: bez MFA nie ma Zero Trust. Złotym standardem jest MFA odporne na phishing (phishing-resistant, FIDO2).'
   },
   {
     id: 'pam-tool',
     name: 'PAM',
     full: 'Privileged Access Management',
     icon: '🏛️',
-    description: 'Zarządzanie dostępem uprzywilejowanym - vault haseł, JIT access, nagrywanie sesji administratorów.',
-    detail: 'PAM chroni konta z podwyższonymi uprawnieniami: vault (sejf) haseł administratorów z automatyczną rotacją, just-in-time access (admin ma uprawnienia tylko przez czas wykonywania zadania), session recording (video+keystroke logging sesji uprzywilejowanych), multi-party approval (4-eye principle dla krytycznych operacji), automatyczne discovery kont uprzywilejowanych. Konta admin to „klucze do królestwa” - PAM minimalizuje ryzyko ich kompromitacji.',
+    description: 'Zarządzanie dostępem uprzywilejowanym: vault haseł, dostęp JIT, nagrywanie sesji administratorów.',
+    detail: 'PAM chroni konta z podwyższonymi uprawnieniami. Obejmuje vault (sejf) haseł administratorów z automatyczną rotacją, just-in-time access (administrator ma uprawnienia tylko na czas wykonywania zadania), session recording (zapis wideo i naciśnięć klawiszy w sesjach uprzywilejowanych), multi-party approval (zasada czterech oczu przy krytycznych operacjach) i automatyczne wykrywanie kont uprzywilejowanych (discovery). Konta administratorów to „klucze do królestwa”, a PAM ogranicza ryzyko ich przejęcia.',
     examples: ['CyberArk Privilege Cloud', 'BeyondTrust', 'Delinea (Thycotic)', 'Wallix PAM', 'HashiCorp Vault'],
-    zeroTrustRelation: 'PAM + IAM + MFA = kompletna kontrola dostępu w modelu Zero Trust. PAM szczególnie istotny dla „just-in-time, just-enough access”.'
+    zeroTrustRelation: 'PAM + IAM + MFA = pełna kontrola dostępu w modelu Zero Trust. PAM ma szczególne znaczenie dla zasady „just-in-time, just-enough access”.'
   },
   {
     id: 'zero-trust',
     name: 'Zero Trust',
     full: 'Zero Trust Architecture',
     icon: '🏰',
-    description: 'Model bezpieczeństwa: „nigdy nie ufaj, zawsze weryfikuj” - każde żądanie dostępu weryfikowane niezależnie od lokalizacji.',
-    detail: 'Zero Trust to odejście od modelu „zaufana sieć wewnętrzna / niezaufane zewnętrze”. Zasady: (1) Weryfikuj explicite - zawsze uwierzytelniaj i autoryzuj (tożsamość + urządzenie + lokalizacja + czas + zachowanie); (2) Least privilege - minimalny zakres dostępu; (3) Assume breach - zakładaj że sieć jest już skompromitowana. Sieć przestaje być granicą bezpieczeństwa - granicą jest tożsamość.',
+    description: 'Model bezpieczeństwa oparty na zasadzie „nigdy nie ufaj, zawsze weryfikuj”: każde żądanie dostępu jest weryfikowane niezależnie od lokalizacji.',
+    detail: 'Zero Trust odchodzi od modelu „zaufana sieć wewnętrzna / niezaufane zewnętrze”. Zasady: (1) Weryfikuj explicite: zawsze uwierzytelniaj i autoryzuj (tożsamość + urządzenie + lokalizacja + czas + zachowanie); (2) Least privilege: minimalny zakres dostępu; (3) Assume breach: zakładaj, że sieć jest już skompromitowana. Sieć przestaje być granicą bezpieczeństwa, granicą jest tożsamość.',
     oldModel: {
       name: 'Model castle-and-moat (tradycyjny)',
-      description: 'Zaufana sieć wewnętrzna (LAN), niezaufane zewnętrze (internet). Kto jest w sieci = zaufany. VPN daje pełny dostęp do sieci wewnętrznej.',
+      description: 'Zaufana sieć wewnętrzna (LAN), niezaufane zewnętrze (internet). Kto jest w sieci, ten jest zaufany. VPN daje pełny dostęp do sieci wewnętrznej.',
       weakness: 'Jeden skompromitowany endpoint lub konto VPN = atakujący „wewnątrz zamku” z dostępem do wszystkiego. Lateral movement jest łatwy.'
     },
     newModel: {
       name: 'Model Zero Trust',
-      description: 'Żaden użytkownik, urządzenie ani sieć nie jest z góry zaufana. Każde żądanie dostępu weryfikowane: kto to? Z jakiego urządzenia? Czy urządzenie jest zgodne z polityką? Jaki jest kontekst (czas, lokalizacja, zachowanie)?',
-      benefit: 'Nawet jeśli atakujący skompromituje jedno konto, dostaje dostęp tylko do tego do czego to konto ma uprawnienia - nie do „całego zamku”.'
+      description: 'Żaden użytkownik, urządzenie ani sieć nie jest z góry zaufana. Każde żądanie dostępu przechodzi weryfikację: kto to jest? Z jakiego urządzenia? Czy urządzenie jest zgodne z polityką? Jaki jest kontekst (czas, lokalizacja, zachowanie)?',
+      benefit: 'Nawet jeśli atakujący przejmie jedno konto, dostaje dostęp tylko do tego, do czego to konto ma uprawnienia, a nie do „całego zamku”.'
     },
-    pillars: ['Tożsamość (Identity) - IAM + MFA', 'Urządzenia (Devices) - MDM, compliance check', 'Sieć (Network) - mikrosegmentacja, ZTNA', 'Aplikacje (Apps) - ZTNA, dostęp kontekstowy', 'Dane (Data) - szyfrowanie, DLP, klasyfikacja'],
+    pillars: ['Tożsamość (Identity) – IAM + MFA', 'Urządzenia (Devices) – MDM, compliance check', 'Sieć (Network) – mikrosegmentacja, ZTNA', 'Aplikacje (Apps) – ZTNA, dostęp kontekstowy', 'Dane (Data) – szyfrowanie, DLP, klasyfikacja'],
     examples: ['Microsoft Zero Trust Architecture (Entra ID + Defender)', 'Google BeyondCorp', 'Zscaler Zero Trust Exchange', 'Palo Alto Prisma Access']
   },
 ];
@@ -383,15 +383,15 @@ export const DATA_PROTECTION = [
     types: [
       {
         name: 'Szyfrowanie w spoczynku (at rest)',
-        description: 'Szyfrowanie danych przechowywanych na dyskach, bazach danych, backupach. Chroni przed fizyczną kradzieżą nośnika.',
-        standards: 'AES-256 jako standard. BitLocker (Windows), FileVault (macOS), LUKS (Linux) dla dysków. TDE (Transparent Data Encryption) dla baz danych.',
+        description: 'Szyfrowanie danych przechowywanych na dyskach, w bazach danych i backupach. Chroni przed fizyczną kradzieżą nośnika.',
+        standards: 'Standardem jest AES-256. Dla dysków: BitLocker (Windows), FileVault (macOS), LUKS (Linux). Dla baz danych: TDE (Transparent Data Encryption).',
         regulatoryReq: 'RODO zaleca szyfrowanie jako środek ochrony. NIS2/DORA: wymagane dla danych wrażliwych. ISO 27001: kontrola A.8.24.'
       },
       {
         name: 'Szyfrowanie w tranzycie (in transit)',
-        description: 'Szyfrowanie danych przesyłanych przez sieć. Chroni przed podsłuchaniem (MitM).',
-        standards: 'TLS 1.2/1.3 jako minimum. HTTPS, SFTP, SSH, VPN. Certyfikaty PKI. Deprecjacja starych protokołów: SSL, TLS 1.0/1.1, RC4.',
-        regulatoryReq: 'RODO: obowiązkowe dla przesyłania danych osobowych. PCI DSS: TLS 1.2+ wymagane. Większość regulacji finansowych.'
+        description: 'Szyfrowanie danych przesyłanych przez sieć. Chroni przed podsłuchem (MitM).',
+        standards: 'Minimum to TLS 1.2/1.3. HTTPS, SFTP, SSH, VPN. Certyfikaty PKI. Wycofanie starych protokołów: SSL, TLS 1.0/1.1, RC4.',
+        regulatoryReq: 'RODO: obowiązkowe przy przesyłaniu danych osobowych. PCI DSS: wymagany TLS 1.2+. Wymaga go też większość regulacji finansowych.'
       }
     ]
   },
@@ -399,29 +399,29 @@ export const DATA_PROTECTION = [
     id: 'backup321',
     name: 'Backup 3-2-1 (i rozszerzenia)',
     icon: '💾',
-    description: 'Zasada tworzenia kopii zapasowych zapewniająca odtworzenie danych po każdym scenariuszu awarii.',
+    description: 'Zasada tworzenia kopii zapasowych, która pozwala odtworzyć dane po każdym scenariuszu awarii.',
     rules: [
-      { rule: '3 kopie', explanation: 'Produkcja + co najmniej 2 backupy. Jedna kopia to za mało - może być skompromitowana razem z produkcją.' },
-      { rule: '2 różne nośniki', explanation: 'Np. dysk lokalny + taśma lub chmura. Dywersyfikacja chroni przed awarią jednego typu nośnika.' },
+      { rule: '3 kopie', explanation: 'Produkcja + co najmniej 2 backupy. Jedna kopia to za mało, bo może zostać skompromitowana razem z produkcją.' },
+      { rule: '2 różne nośniki', explanation: 'Np. dysk lokalny + taśma lub chmura. Różne nośniki chronią przed awarią jednego ich typu.' },
       { rule: '1 kopia offline / poza siedzibą', explanation: 'Kopia odizolowana od sieci (air-gapped) lub geograficznie odległa. Ransomware nie dosięgnie kopii offline.' },
     ],
     extensions: [
-      { name: '3-2-1-1-0', description: '1 dodatkowa kopia immutable (niezmienialna) + 0 błędów po weryfikacji odtwarzania. Immutable backup = ransomware nie może go zaszyfrować ani usunąć.' },
-      { name: 'Testowanie odtwarzania', description: 'Backup który nie był testowany = backup który nie działa. Regularne testy odtwarzania (co kwartał dla krytycznych systemów) są kluczowe.' },
+      { name: '3-2-1-1-0', description: '1 dodatkowa kopia immutable (niezmienialna) + 0 błędów po weryfikacji odtwarzania. Kopii immutable ransomware nie może zaszyfrować ani usunąć.' },
+      { name: 'Testowanie odtwarzania', description: 'Backup, którego nie testowano, to backup, który nie działa. Systemy krytyczne wymagają regularnych testów odtwarzania (co kwartał).' },
     ],
     rtoRpo: {
-      rto: 'RTO (Recovery Time Objective) - jak długo system może być niedostępny? Definiuje częstotliwość backupu i architekturę odtwarzania.',
-      rpo: 'RPO (Recovery Point Objective) - ile danych możemy stracić (do kiedy cofamy się przy odtwarzaniu)? Definiuje jak często robić backup.'
+      rto: 'RTO (Recovery Time Objective) – jak długo system może być niedostępny? Wyznacza wymagania dla architektury i procedur odtwarzania.',
+      rpo: 'RPO (Recovery Point Objective) – ile danych możemy stracić (do którego momentu cofamy się przy odtwarzaniu)? Definiuje, jak często robić backup.'
     }
   },
   {
     id: 'dlp-protection',
-    name: 'DLP - Data Loss Prevention',
+    name: 'DLP – Data Loss Prevention',
     icon: '🚫',
-    description: 'Narzędzia i polityki zapobiegające nieautoryzowanemu transferowi wrażliwych danych poza organizację.',
-    channels: ['E-mail - blokuje wysłanie pliku z danymi kart kredytowych, PESEL, danymi osobowymi', 'Urządzenia USB - kontrola podłączanych nośników, szyfrowanie', 'Chmura - monitor i blokuje upload do nieautoryzowanych usług', 'Wydruk - monitorowanie drukowania wrażliwych dokumentów', 'Przesyłanie przez internet - inspekcja HTTP/HTTPS'],
-    prerequisites: 'DLP wymaga wcześniejszej klasyfikacji danych - musi wiedzieć co jest wrażliwe. Bez klasyfikacji DLP jest ślepe.',
-    regulatoryLink: 'RODO: DLP wspiera ochronę danych osobowych i wykrywanie naruszeń. NIS2: element środków zarządzania ryzykiem.'
+    description: 'Narzędzia i polityki, które zapobiegają nieautoryzowanemu przesyłaniu wrażliwych danych poza organizację.',
+    channels: ['E-mail – blokuje wysłanie pliku z danymi kart kredytowych, numerami PESEL, danymi osobowymi', 'Urządzenia USB – kontrola podłączanych nośników, szyfrowanie', 'Chmura – monitoruje i blokuje wysyłanie plików do nieautoryzowanych usług', 'Wydruk – monitorowanie drukowania wrażliwych dokumentów', 'Przesyłanie przez internet – inspekcja HTTP/HTTPS'],
+    prerequisites: 'DLP wymaga wcześniejszej klasyfikacji danych, bo musi wiedzieć, co jest wrażliwe. Bez klasyfikacji DLP jest ślepe.',
+    regulatoryLink: 'RODO: DLP wspiera ochronę danych osobowych i wykrywanie naruszeń. NIS2: jeden ze środków zarządzania ryzykiem.'
   },
 ];
 
@@ -430,44 +430,44 @@ export const DATA_PROTECTION = [
 export const OFFENSIVE_TESTING = [
   {
     id: 'pentest',
-    name: 'Test penetracyjny (Pentest)',
+    name: 'Test penetracyjny (pentest)',
     icon: '🔓',
-    description: 'Symulowany, kontrolowany atak na systemy organizacji w celu identyfikacji podatności i luk bezpieczeństwa.',
+    description: 'Symulowany, kontrolowany atak na systemy organizacji, który ma wykryć podatności i luki bezpieczeństwa.',
     types: [
-      { name: 'Black box', description: 'Tester nie ma żadnej wiedzy o systemach (symuluje atakującego zewnętrznego)' },
-      { name: 'White box', description: 'Tester ma pełną dokumentację - efektywniejszy, szybszy, ale mniej realistyczny' },
-      { name: 'Grey box', description: 'Kompromis - częściowa wiedza (jak wewnętrzny atakujący lub skompromitowane konto)' },
+      { name: 'Black box', description: 'Tester nie ma żadnej wiedzy o systemach (symuluje zewnętrznego atakującego).' },
+      { name: 'White box', description: 'Tester ma pełną dokumentację: test jest wydajniejszy i szybszy, ale mniej realistyczny.' },
+      { name: 'Grey box', description: 'Kompromis: częściowa wiedza (jak u wewnętrznego atakującego lub przy skompromitowanym koncie).' },
     ],
-    scope: 'Może obejmować: aplikacje webowe, infrastrukturę sieciową, sieci bezprzewodowe, inżynierię społeczną (phishing), bezpieczeństwo fizyczne. Zakres dokładnie definiowany w umowie (Rules of Engagement).',
-    regulatoryLink: 'NIS2/KSC: testy penetracyjne zalecane jako element zarządzania ryzykiem. DORA: regularne testowanie dla sektora finansowego, TLPT dla największych.',
-    frequency: 'Minimum raz w roku dla systemów krytycznych, przy każdej istotnej zmianie infrastruktury, po znaczących aktualizacjach.'
+    scope: 'Może obejmować aplikacje webowe, infrastrukturę sieciową, sieci bezprzewodowe, inżynierię społeczną (phishing) i bezpieczeństwo fizyczne. Zakres dokładnie określa umowa (Rules of Engagement).',
+    regulatoryLink: 'NIS2/KSC: testy penetracyjne są zalecane jako część zarządzania ryzykiem. DORA: regularne testowanie w sektorze finansowym, TLPT dla największych instytucji.',
+    frequency: 'Co najmniej raz w roku dla systemów krytycznych, przy każdej istotnej zmianie infrastruktury i po większych aktualizacjach.'
   },
   {
     id: 'red-team',
     name: 'Red Team',
     icon: '🔴',
-    description: 'Zaawansowana, realistyczna symulacja ataku APT - red team próbuje osiągnąć konkretny cel bez wiedzy blue team.',
-    detail: 'Red team exercise jest bardziej realistyczne niż pentest: dłuższy czas trwania (tygodnie/miesiące), pełen zakres wektora ataku (phishing, fizyczny, digital), brak powiadamiania całego zespołu bezpieczeństwa (tylko ograniczony „white cell”), cel: osiągnąć konkretny cel biznesowy (np. „wykraść dane finansowe” lub „wyłączyć system produkcyjny”). Ocenia nie tylko podatności techniczne ale też procesy, ludzi i detection capabilities.',
-    vspentest: 'Pentest: znajdź wszystkie podatności. Red Team: osiągnij cel jak prawdziwy atakujący - jest selektywny w wyborze ścieżki.',
-    regulatoryLink: 'TLPT (DORA) to regulacyjna forma red team exercise dla sektora finansowego. Standard TIBER-EU definiuje metodologię.'
+    description: 'Zaawansowana, realistyczna symulacja ataku APT: red team próbuje osiągnąć konkretny cel bez wiedzy zespołu obrońców (blue team).',
+    detail: 'Ćwiczenie red team jest bardziej realistyczne niż pentest. Trwa dłużej (tygodnie lub miesiące), obejmuje pełen zakres wektorów ataku (phishing, fizyczny, cyfrowy), a o ćwiczeniu wie tylko wąska grupa („white cell”), nie cały zespół bezpieczeństwa. Zadaniem jest osiągnięcie konkretnego celu biznesowego (np. „wykraść dane finansowe” lub „wyłączyć system produkcyjny”). Ćwiczenie sprawdza podatności techniczne, a także procesy, ludzi i zdolność wykrywania (detection capabilities).',
+    vspentest: 'Pentest: znajdź wszystkie podatności. Red Team: osiągnij cel jak prawdziwy atakujący, który wybiera ścieżkę selektywnie.',
+    regulatoryLink: 'TLPT (DORA) to regulacyjna forma ćwiczenia red team dla sektora finansowego. Metodologię określa standard TIBER-EU.'
   },
   {
     id: 'blue-team',
     name: 'Blue Team',
     icon: '🔵',
-    description: 'Zespół obronny - odpowiada za wykrywanie ataków, reagowanie i wzmacnianie obrony organizacji.',
-    detail: 'Blue team to operacyjny zespół bezpieczeństwa (SOC analitycy, inżynierowie bezpieczeństwa), który broni organizacji. W ćwiczeniach red/blue team: blue team próbuje wykryć działania red team i zareagować. Kluczowe metryki: MTTD (czas wykrycia), MTTC (czas opanowania). Purple team exercise łączy red i blue - red ujawnia techniki, blue uczy się jak je wykrywać.',
-    purpleTeam: 'Purple team = czerwoni i niebiescy wspólnie: red wykonuje atak → blue obserwuje → wspólnie poprawiają detekcję. Bardziej kolaboracyjne niż adversarial.'
+    description: 'Zespół obronny: wykrywa ataki, reaguje na nie i wzmacnia obronę organizacji.',
+    detail: 'Blue team to operacyjny zespół bezpieczeństwa (analitycy SOC, inżynierowie bezpieczeństwa), który broni organizacji. W ćwiczeniach red/blue team blue team próbuje wykryć działania red teamu i na nie zareagować. Główne metryki: MTTD (czas wykrycia) i MTTC (czas opanowania). Ćwiczenie purple team łączy obie strony: red ujawnia techniki, a blue uczy się je wykrywać.',
+    purpleTeam: 'Purple team = czerwoni i niebiescy razem: red wykonuje atak → blue obserwuje → wspólnie poprawiają detekcję. To bardziej współpraca niż rywalizacja (adversarial).'
   },
   {
     id: 'tlpt',
     name: 'TLPT',
     full: 'Threat-Led Penetration Testing',
     icon: '🎯',
-    description: 'Zaawansowany test penetracyjny oparty na aktualnym wywiadzie o zagrożeniach - wymagany przez DORA dla największych instytucji finansowych.',
-    detail: 'TLPT to regulacyjna forma zaawansowanego testu penetracyjnego zdefiniowana w standardzie TIBER-EU. Wyróżnia ją: scenariusze ataków oparte na aktualnym threat intelligence specyficznym dla instytucji i sektora (nie generyczne), zewnętrzni certyfikowani testerzy (red team), ograniczona wiedza wewnętrznego SOC (realistyczny scenariusz), wyniki raportowane do regulatora, możliwość wzajemnego uznawania wyników (cross-border). DORA wymaga TLPT co 3 lata dla instytucji znaczących.',
-    tiber: 'TIBER-EU (Threat Intelligence-based Ethical Red-teaming) to europejski standard TLPT opracowany przez EBC. Definiuje fazy: Preparation, Testing, Closure. Stosowany przez ECB, NBP i inne banki centralne.',
-    regulatoryLink: 'DORA Art. 26: TLPT co 3 lata dla instytucji istotnych. Wyniki do EBA/ESMA/EIOPA lub właściwego organu krajowego (w Polsce KNF).'
+    description: 'Zaawansowany test penetracyjny oparty na aktualnym wywiadzie o zagrożeniach. DORA wymaga go od największych instytucji finansowych.',
+    detail: 'TLPT to regulacyjna forma zaawansowanego testu penetracyjnego, zdefiniowana w standardzie TIBER-EU. Wyróżniają ją: scenariusze ataków oparte na aktualnym threat intelligence dla danej instytucji i sektora (a nie generyczne), zewnętrzni certyfikowani testerzy (red team), ograniczona wiedza wewnętrznego SOC (realistyczny scenariusz), raportowanie wyników do regulatora i możliwość wzajemnego uznawania wyników między krajami (cross-border). DORA wymaga TLPT co 3 lata od instytucji znaczących.',
+    tiber: 'TIBER-EU (Threat Intelligence-based Ethical Red-teaming) to europejski standard TLPT opracowany przez EBC. Definiuje fazy: Preparation, Testing, Closure. Stosują go ECB, NBP i inne banki centralne.',
+    regulatoryLink: 'DORA Art. 26: TLPT co 3 lata dla instytucji istotnych. Wyniki trafiają do EBA/ESMA/EIOPA lub właściwego organu krajowego (w Polsce KNF).'
   },
 ];
 
@@ -475,58 +475,58 @@ export const OFFENSIVE_TESTING = [
 
 export const TECH_QUIZ = [
   {
-    question: 'Jaka jest kluczowa różnica między IDS a IPS?',
+    question: 'Jaka jest główna różnica między IDS a IPS?',
     options: [
       'IDS chroni endpointy, IPS chroni sieć',
       'IDS pasywnie wykrywa i alarmuje, IPS aktywnie blokuje ruch w czasie rzeczywistym',
-      'IPS jest przestarzały - IDS zastąpił go we wszystkich zastosowaniach',
-      'IDS działa na warstwie aplikacji, IPS na warstwie sieciowej'
+      'IPS jest przestarzały – IDS zastąpił go we wszystkich zastosowaniach',
+      'IDS działa w warstwie aplikacji, IPS w warstwie sieciowej'
     ],
     correct: 1,
-    explanation: 'IDS (Intrusion Detection System) to system pasywny - monitoruje ruch i generuje alerty, ale nie blokuje. IPS (Intrusion Prevention System) siedzi inline w ruchu sieciowym i blokuje zagrożenia w czasie rzeczywistym. IPS jest agresywniejszy - wymaga dokładnego strojenia by uniknąć blokowania legalnego ruchu (false positives). Współcześnie IPS jest zazwyczaj wbudowany w NGFW.'
+    explanation: 'IDS (Intrusion Detection System) to system pasywny: monitoruje ruch i generuje alerty, ale nie blokuje. IPS (Intrusion Prevention System) działa inline w ruchu sieciowym i blokuje zagrożenia w czasie rzeczywistym. Jest agresywniejszy, więc wymaga starannego strojenia, żeby nie blokować legalnego ruchu (false positives). Dziś IPS jest zwykle wbudowany w NGFW.'
   },
   {
-    question: 'Firma wdrożyła backup codzienny. Czy spełnia zasadę 3-2-1?',
+    question: 'Firma wdrożyła codzienny backup. Czy spełnia zasadę 3-2-1?',
     options: [
-      'Tak - jeden backup wystarczy jako uzupełnienie produkcji',
-      'Nie - zasada 3-2-1 wymaga 3 kopii na 2 różnych nośnikach, z 1 kopią offline/poza siedzibą',
+      'Tak – jeden backup wystarczy jako uzupełnienie produkcji',
+      'Nie – zasada 3-2-1 wymaga 3 kopii na 2 różnych nośnikach, z 1 kopią offline/poza siedzibą',
       'Tak, ale tylko jeśli backup jest w chmurze',
-      'Nie - backup musi być robiony co godzinę żeby spełniać 3-2-1'
+      'Nie – backup musi być robiony co godzinę, żeby spełniać 3-2-1'
     ],
     correct: 1,
-    explanation: 'Zasada 3-2-1 to: 3 kopie danych (produkcja + co najmniej 2 backupy), na 2 różnych typach nośników (dywersyfikacja), z 1 kopią offline lub poza siedzibą (air-gapped lub geograficznie odległa). Sam codzienny backup to prawdopodobnie tylko jedna kopia zapasowa - nie spełnia pełnej zasady. Kopia offline jest kluczowa dla ochrony przed ransomware.'
+    explanation: 'Zasada 3-2-1 to 3 kopie danych (produkcja + co najmniej 2 backupy) na 2 różnych typach nośników (dywersyfikacja), z 1 kopią offline lub poza siedzibą (air-gapped lub geograficznie odległą). Sam codzienny backup to prawdopodobnie tylko jedna kopia zapasowa, więc nie spełnia całej zasady. Kopia offline to podstawa ochrony przed ransomware.'
   },
   {
     question: 'Czym XDR różni się od EDR?',
     options: [
-      'XDR jest tańszy - to uproszczona wersja EDR dla małych firm',
-      'XDR rozszerza EDR o dane z sieci, poczty i chmury - daje holistyczny obraz zagrożeń',
-      'EDR to nowsza technologia - zastąpił XDR',
-      'XDR i EDR to dwa nazwy tego samego narzędzia'
+      'XDR jest tańszy – to uproszczona wersja EDR dla małych firm',
+      'XDR rozszerza EDR o dane z sieci, poczty i chmury – daje pełny obraz zagrożeń',
+      'EDR to nowsza technologia – zastąpił XDR',
+      'XDR i EDR to dwie nazwy tego samego narzędzia'
     ],
     correct: 1,
-    explanation: 'EDR (Endpoint Detection and Response) skupia się na urządzeniach końcowych. XDR (Extended Detection and Response) rozszerza widoczność o dane z sieci (NDR), poczty, chmury i aplikacji. XDR koreluje zdarzenia z różnych warstw, wykrywając zagrożenia niewidoczne w izolowanych narzędziach. Daje analitykowi SOC jeden, ujednolicony obraz zamiast przełączania między kilkoma konsolami.'
+    explanation: 'EDR (Endpoint Detection and Response) skupia się na urządzeniach końcowych. XDR (Extended Detection and Response) rozszerza widoczność o dane z sieci (NDR), poczty, chmury i aplikacji. Koreluje zdarzenia z różnych warstw i wykrywa zagrożenia niewidoczne w pojedynczych narzędziach. Analityk SOC dostaje jeden, spójny obraz zamiast kilku konsol.'
   },
   {
     question: 'Dlaczego Zero Trust jest lepszy niż tradycyjny model „zaufana sieć wewnętrzna”?',
     options: [
-      'Zero Trust jest tańszy w implementacji',
+      'Zero Trust jest tańszy we wdrożeniu',
       'W modelu tradycyjnym jeden skompromitowany endpoint daje dostęp do całej sieci; Zero Trust weryfikuje każde żądanie niezależnie',
       'Zero Trust całkowicie eliminuje ryzyko cyberataków',
-      'Zero Trust nie wymaga haseł - jest bezpieczniejszy bo używa biometrii'
+      'Zero Trust nie wymaga haseł – jest bezpieczniejszy, bo używa biometrii'
     ],
     correct: 1,
-    explanation: 'Tradycyjny model castle-and-moat: kto jest „wewnątrz” sieci = zaufany. Problem: jeden skompromitowany laptop lub konto VPN = atakujący wewnątrz z szerokim dostępem, lateral movement jest łatwy. Zero Trust: „nigdy nie ufaj, zawsze weryfikuj” - każde żądanie dostępu weryfikowane przez pryzmat tożsamości, urządzenia, kontekstu. Nawet skompromitowane konto ma dostęp tylko do ograniczonych zasobów.'
+    explanation: 'Tradycyjny model castle-and-moat: kto jest „wewnątrz” sieci, ten jest zaufany. Problem: jeden skompromitowany laptop lub konto VPN daje atakującemu szeroki dostęp od środka, a lateral movement jest łatwy. Zero Trust działa według zasady „nigdy nie ufaj, zawsze weryfikuj”: każde żądanie dostępu jest sprawdzane pod kątem tożsamości, urządzenia i kontekstu. Nawet skompromitowane konto ma dostęp tylko do ograniczonych zasobów.'
   },
   {
     question: 'Jaka jest rola SOAR w SOC?',
     options: [
       'SOAR to zaawansowany firewall nowej generacji',
       'SOAR automatyzuje powtarzalne zadania reagowania, integruje narzędzia i przyspiesza obsługę incydentów',
-      'SOAR zastępuje analityków SOC - po wdrożeniu SOAR nie potrzeba ludzi',
+      'SOAR zastępuje analityków SOC – po wdrożeniu SOAR nie potrzeba ludzi',
       'SOAR to narzędzie do backupowania konfiguracji SIEM'
     ],
     correct: 1,
-    explanation: 'SOAR (Security Orchestration, Automation and Response) automatyzuje powtarzalne zadania reagowania na incydenty: gdy SIEM wykryje phishing, SOAR może automatycznie zablokować nadawcę, poddać e-mail kwarantannie, sprawdzić IP w threat intel, stworzyć ticket i powiadomić analityka. Redukuje MTTR z godzin do minut i „odciąża” analityków od rutynowych działań. SOAR uzupełnia, nie zastępuje analityków - skomplikowane incydenty wciąż wymagają ludzkiego osądu.'
+    explanation: 'SOAR (Security Orchestration, Automation and Response) automatyzuje powtarzalne zadania reagowania na incydenty. Gdy SIEM wykryje phishing, SOAR może sam zablokować nadawcę, przenieść e-mail do kwarantanny, sprawdzić IP w threat intel, utworzyć ticket i powiadomić analityka. Skraca MTTR z godzin do minut i zdejmuje z analityków rutynowe zadania. Nie zastępuje ich jednak: złożone incydenty nadal wymagają ludzkiej oceny.'
   },
 ];

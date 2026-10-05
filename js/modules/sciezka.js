@@ -60,7 +60,7 @@ const PATH_STEPS = [
     hash: '#/slownik',
     icon: 'book-open',
     title: 'Słownik',
-    desc: 'Fiszki Leitnera – mistrzowskie opanowanie terminologii',
+    desc: 'Fiszki Leitnera do nauki terminologii',
     badge: 'Słownik',
     order: 6,
   },
@@ -69,7 +69,7 @@ const PATH_STEPS = [
     hash: '#/finalboss',
     icon: 'target',
     title: 'Final Boss',
-    desc: 'Egzamin końcowy - potwierdź swoją wiedzę',
+    desc: 'Egzamin końcowy: potwierdź swoją wiedzę',
     badge: 'Mistrz CyberAkademii',
     order: 7,
   },
@@ -81,8 +81,8 @@ export function renderSciezka() {
   const state = getState();
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Twoja Ścieżka Nauki'),
-    el('p', { class: 'subtitle' }, 'Wizualizacja postępu, zdobyte odznaki i kolejne kroki.'),
+    el('h1', {}, 'Twoja ścieżka nauki'),
+    el('p', { class: 'subtitle' }, 'Twój postęp, zdobyte odznaki i kolejne kroki.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge badge-success' }, `${completedCount} / ${totalModules} modułów`),
       el('span', { class: 'badge badge-accent' }, `${pct}% ukończone`)
@@ -229,9 +229,9 @@ export function renderSciezka() {
   // ── Ścieżka wdrożenia - od czego zacząć ───────────────
 
   const wdrozenieSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Ścieżka wdrożenia - od czego zacząć'),
+    el('div', { class: 'section-title' }, 'Ścieżka wdrożenia: od czego zacząć'),
     el('p', { style: { color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem' } },
-      'Praktyczny załącznik z przewodnika: jak organizacja powinna wdrażać cyberbezpieczeństwo krok po kroku, we właściwej kolejności - od diagnozy regulacyjnej po ciągłe doskonalenie.'
+      'Praktyczny załącznik z przewodnika pokazuje, jak organizacja powinna wdrażać cyberbezpieczeństwo krok po kroku, we właściwej kolejności: od diagnozy regulacyjnej po ciągłe doskonalenie.'
     )
   );
 
@@ -250,7 +250,7 @@ export function renderSciezka() {
 
   const resetSection = el('div', { class: 'section', style: { borderTop: '1px solid var(--border)', paddingTop: '2rem', marginTop: '1rem' } });
   resetSection.appendChild(el('p', { style: { color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem' } },
-    'Zresetuj postęp jeśli chcesz zacząć od nowa. Tej operacji nie można cofnąć.'
+    'Zresetuj postęp, jeśli chcesz zacząć od nowa. Tej operacji nie można cofnąć.'
   ));
   const resetBtn = el('button', {
     class: 'btn btn-danger btn-sm',

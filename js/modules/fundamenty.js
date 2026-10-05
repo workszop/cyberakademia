@@ -22,7 +22,7 @@ function renderCIATriangle() {
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
     'Bezpieczeństwo informacji sprowadza się do ochrony trzech właściwości (stąd „triada CIA”). ' +
-    'Większość ataków i mechanizmów obrony można przypisać do jednej z trzech kategorii – to uniwersalny punkt odniesienia dla całej dziedziny.'
+    'Większość ataków i mechanizmów obrony da się przypisać do jednej z tych trzech kategorii, dlatego triada jest punktem odniesienia dla całej dziedziny.'
   );
   section.appendChild(intro);
 
@@ -93,12 +93,12 @@ function renderCIASortingGame() {
 
 function renderThreatLandscape() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Krajobraz zagrożeń')
+    el('div', { class: 'section-title' }, 'Najczęstsze zagrożenia')
   );
 
   const intro = el('p', { style: { marginBottom: '1.5rem' } },
-    'Te same trzy właściwości CIA są atakowane przez powtarzalny zestaw zagrożeń. ' +
-    'Rozwiń każdą kartę, aby zobaczyć punkt wejścia, skutek, naruszane właściwości CIA, obronę i realny przykład.'
+    'Trzy właściwości CIA atakuje wciąż ten sam zestaw zagrożeń. ' +
+    'Rozwiń kartę, aby zobaczyć punkt wejścia, skutek, naruszane właściwości CIA, obronę i przykład z praktyki.'
   );
   section.appendChild(intro);
 
@@ -133,7 +133,7 @@ function renderRiskResponses() {
     'zarządza ryzykiem: ryzyko = prawdopodobieństwo zdarzenia × jego skutek. ' +
     'Nie da się wyeliminować ryzyka, można je tylko ' +
     'obniżać, przenosić (ubezpieczenie), akceptować albo unikać. ' +
-    'To dlatego wszystkie nowoczesne regulacje mówią o „zarządzaniu ryzykiem”, a nie o konkretnej liście produktów.'
+    'Dlatego wszystkie nowoczesne regulacje mówią o „zarządzaniu ryzykiem”, a nie o konkretnej liście produktów.'
   );
   section.appendChild(intro);
 
@@ -161,7 +161,7 @@ function renderRiskResponses() {
 
 function renderRiskGame() {
   const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra - Dobierz odpowiedź na ryzyko')
+    el('div', { class: 'section-title' }, 'Gra – dobierz odpowiedź na ryzyko')
   );
 
   const desc = el('p', { style: { marginBottom: '1.5rem' } },
@@ -183,7 +183,7 @@ function renderRiskGame() {
       cardEl.appendChild(
         el('div', { class: 'result-overlay' },
           el('div', { class: 'result-title' }, `${score} / ${scenarios.length} (${pct}%)`),
-          el('div', { class: 'result-subtitle', style: { marginBottom: '1rem' } }, pct >= 70 ? 'Rozumiesz 4T!' : 'Powtórz strategie i spróbuj ponownie.'),
+          el('div', { class: 'result-subtitle', style: { marginBottom: '1rem' } }, pct >= 70 ? 'Znasz cztery odpowiedzi na ryzyko!' : 'Powtórz strategie i spróbuj ponownie.'),
           el('button', { class: 'btn btn-primary', onclick: () => { current = 0; score = 0; scoreEl.textContent = `Wynik: 0 / ${scenarios.length}`; render(0); } }, 'Ponów')
         )
       );
@@ -208,7 +208,7 @@ function renderRiskGame() {
               cardEl.innerHTML = '';
               cardEl.appendChild(
                 el('div', { class: `alert ${correct ? 'alert-success' : 'alert-warning'}` },
-                  el('strong', {}, correct ? 'Dobrze! ' : `Lepiej: "${RISK_RESPONSES.find(r2 => r2.id === s.correctResponse).name}". `),
+                  el('strong', {}, correct ? 'Dobrze! ' : `Lepiej: „${RISK_RESPONSES.find(r2 => r2.id === s.correctResponse).name}”. `),
                   s.explanation
                 )
               );
@@ -240,31 +240,31 @@ const QUIZ_QUESTIONS = [
     question: 'Co narusza „Poufność” (C) w triadzie CIA?',
     options: ['Atak DDoS uniemożliwiający dostęp do serwisu', 'Haker wykradł bazę danych klientów', 'Zmiana danych w systemie przez hakera', 'Awaria serwera powodująca przestój'],
     correct: 1,
-    explanation: 'Poufność (Confidentiality) jest naruszona gdy nieautoryzowana osoba uzyskuje dostęp do danych. Wykradzenie bazy danych to klasyczne naruszenie C.'
+    explanation: 'Poufność (Confidentiality) jest naruszona, gdy nieautoryzowana osoba uzyskuje dostęp do danych. Wykradzenie bazy danych to klasyczne naruszenie C.'
   },
   {
     question: 'Która odpowiedź na ryzyko polega na przeniesieniu finansowych skutków na ubezpieczyciela?',
     options: ['Obniżaj (Mitigate)', 'Przenoś (Transfer)', 'Akceptuj (Accept)', 'Unikaj (Avoid)'],
     correct: 1,
-    explanation: 'Transfer ryzyka przenosi finansowe konsekwencje na zewnętrzny podmiot - najczęściej przez ubezpieczenie cybernetyczne lub klauzule umowne.'
+    explanation: 'Transfer ryzyka przenosi finansowe konsekwencje na zewnętrzny podmiot, najczęściej przez ubezpieczenie cybernetyczne lub klauzule umowne.'
   },
   {
     question: 'Atak ransomware szyfruje dane i uniemożliwia pracę. Które właściwości CIA narusza PRZEDE WSZYSTKIM?',
     options: ['Tylko Poufność (C)', 'Poufność i Integralność (C+I)', 'Przede wszystkim Dostępność (A)', 'Tylko Integralność (I)'],
     correct: 2,
-    explanation: 'Ransomware narusza przede wszystkim Dostępność (A) – dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (podwójne wymuszenie) narusza też C przez wcześniejszą eksfiltrację, ale pierwszorzędnie to A.'
+    explanation: 'Ransomware narusza przede wszystkim Dostępność (A): dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (podwójne wymuszenie) narusza też C przez wcześniejszą eksfiltrację, ale na pierwszym miejscu jest A.'
   },
   {
     question: 'Firma akceptuje ryzyko przestarzałego systemu bez wsparcia producenta. Co jest WYMAGANE przy akceptacji ryzyka?',
-    options: ['Natychmiastowe wyłączenie systemu', 'Świadoma decyzja zarządu i dokumentacja', 'Przeniesienie systemu do chmury', 'Żadnych działań - ignorujemy problem'],
+    options: ['Natychmiastowe wyłączenie systemu', 'Świadoma decyzja zarządu i dokumentacja', 'Przeniesienie systemu do chmury', 'Żadnych działań – ignorujemy problem'],
     correct: 1,
     explanation: 'Akceptacja ryzyka ≠ ignorowanie. Wymaga formalnej, świadomej decyzji zarządu z dokumentacją. „Nie wiedzieliśmy” to brak zarządzania ryzykiem, nie akceptacja.'
   },
   {
     question: 'Pracownik przypadkowo usunął produkcyjną bazę danych. Które właściwości CIA są naruszone?',
-    options: ['Tylko Poufność (C)', 'Integralność i Dostępność (I+A)', 'Tylko Dostępność (A)', 'Żadne - to był błąd, nie atak'],
+    options: ['Tylko Poufność (C)', 'Integralność i Dostępność (I+A)', 'Tylko Dostępność (A)', 'Żadne – to był błąd, nie atak'],
     correct: 1,
-    explanation: 'Naruszono Dostępność (A) - danych nie ma, i Integralność (I) - dane bezpowrotnie utracone. CIA nie dotyczy tylko ataków - obejmuje wszystkie incydenty, w tym błędy ludzkie.'
+    explanation: 'Naruszono Dostępność (A), bo danych nie ma, i Integralność (I), bo dane przepadły bezpowrotnie. Triada CIA obejmuje wszystkie incydenty, także błędy ludzkie, a nie wyłącznie ataki.'
   },
 ];
 
@@ -294,8 +294,8 @@ export function renderFundamenty() {
   const wrap = el('div', { class: 'slide-up' });
 
   wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Fundamenty Cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Zanim przejdziemy do skrótów - trzy pojęcia, które są fundamentem całej reszty.'),
+    el('h1', {}, 'Fundamenty cyberbezpieczeństwa'),
+    el('p', { class: 'subtitle' }, 'Zanim przejdziemy do skrótów: trzy pojęcia, na których opiera się cała reszta.'),
     el('div', { class: 'module-meta' },
       el('span', { class: 'badge' }, '~25 min'),
       el('span', { class: 'badge badge-accent' }, 'Moduł 1')
