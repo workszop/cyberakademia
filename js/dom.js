@@ -25,7 +25,11 @@ export function el(tag, props = {}, ...children) {
 
     // Style object
     if (key === 'style' && typeof val === 'object') {
-      Object.assign(node.style, val);
+      for (const [prop, v] of Object.entries(val)) {
+        // Custom properties (--foo) need setProperty; Object.assign ignores them
+        if (prop.startsWith('--')) node.style.setProperty(prop, v);
+        else node.style[prop] = v;
+      }
       continue;
     }
 

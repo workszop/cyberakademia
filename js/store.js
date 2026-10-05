@@ -1,151 +1,124 @@
 // ============================================================
 // CyberAkademia - store.js
-// localStorage-backed state store with pub/sub
+// Reading progress (localStorage) with pub/sub.
+// A section counts as read once the reader scrolls to its end.
 // ============================================================
 
-const KEY = 'cyberakademia_v1';
+import { COURSE_MODULES, getModule } from './course.js';
 
-const DEFAULT = {
-  completed: {},     // moduleId → true
-  scores: {},        // moduleId → { score, total, pct }
-  badges: [],        // array of earned badge ids
-  flashcards: {},    // term → { box, lastSeen }
-  lastVisited: null, // last visited route hash
-};
+const KEY = 'cyberakademia_v2';
+const OLD_KEYS = ['cyberakademia_v1'];
 
-// Deep-merge saved data over defaults so new keys appear automatically
-function loadState() {
+// ─── Persistence ──────────────────────────────────────────
+
+function storage() {
+  try { return window.localStorage; } catch { return null; }
+}
+
+/** Keeps only section ids that exist in the course. */
+function sanitize(read) {
+  const clean = {};
+  if (!read || typeof read !== 'object') return clean;
+  COURSE_MODULES.forEach(m => {
+    const ids = Array.isArray(read[m.id]) ? read[m.id] : [];
+    const valid = m.sections.map(s => s.id).filter(id => ids.includes(id));
+    if (valid.length) clean[m.id] = valid;
+  });
+  return clean;
+}
+
+function load() {
+  const ls = storage();
+  if (!ls) return { read: {}, lastVisited: null };
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    OLD_KEYS.forEach(k => ls.removeItem(k));
+    const saved = JSON.parse(ls.getItem(KEY) || '{}');
     return {
-      ...DEFAULT,
-      ...saved,
-      completed: { ...DEFAULT.completed, ...(saved.completed || {}) },
-      scores: { ...DEFAULT.scores, ...(saved.scores || {}) },
-      badges: Array.isArray(saved.badges) ? [...saved.badges] : [],
-      flashcards: { ...DEFAULT.flashcards, ...(saved.flashcards || {}) },
+      read: sanitize(saved.read),
+      lastVisited: typeof saved.lastVisited === 'string' ? saved.lastVisited : null,
     };
   } catch {
-    return { ...DEFAULT };
+    return { read: {}, lastVisited: null };
   }
 }
-
-let state = loadState();
-
-// Modules that can actually be "completed" (call completeModule).
-// Słownik and Ścieżka are reference views, not completable - so they
-// must NOT count toward the progress denominator.
-export const COMPLETABLE_MODULES = [
-  'fundamenty', 'regulacje', 'organizacja', 'technologia', 'spiecie', 'finalboss',
-];
-
-// ── Internal helpers ─────────────────────────────────────
 
 function save() {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(state));
-  } catch (e) {
-    console.warn('[store] Could not save state:', e);
-  }
+  const ls = storage();
+  if (!ls) return;
+  try { ls.setItem(KEY, JSON.stringify(state)); } catch { /* quota / private mode */ }
 }
 
-// ── Public API ───────────────────────────────────────────
+let state = load();
+const listeners = new Set();
 
-/**
- * Returns a shallow copy of the current state.
- */
-export function getState() {
+function notify() {
+  listeners.forEach(fn => { try { fn(); } catch (e) { console.error('[store]', e); } });
+}
+
+// ─── Public API ───────────────────────────────────────────
+
+export function subscribe(fn) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+export function isRead(moduleId, sectionId) {
+  return (state.read[moduleId] || []).includes(sectionId);
+}
+
+export function getReadIds(moduleId) {
+  return [...(state.read[moduleId] || [])];
+}
+
+/** Marks a section as read. Returns true when it was newly marked. */
+export function markRead(moduleId, sectionId) {
+  const mod = getModule(moduleId);
+  if (!mod || !mod.sections.some(s => s.id === sectionId)) return false;
+  if (isRead(moduleId, sectionId)) return false;
+  state.read = { ...state.read, [moduleId]: [...(state.read[moduleId] || []), sectionId] };
+  save();
+  notify();
+  return true;
+}
+
+/** @returns {{ read: number, total: number, pct: number }} */
+export function getModuleProgress(moduleId) {
+  const mod = getModule(moduleId);
+  const total = mod ? mod.sections.length : 0;
+  const read = getReadIds(moduleId).length;
+  return { read, total, pct: total ? Math.round((read / total) * 100) : 0 };
+}
+
+/** @returns {{ read: number, total: number, pct: number, modulesDone: number, modulesTotal: number }} */
+export function getCourseProgress() {
+  let read = 0, total = 0, modulesDone = 0;
+  COURSE_MODULES.forEach(m => {
+    const p = getModuleProgress(m.id);
+    read += p.read;
+    total += p.total;
+    if (p.total && p.read === p.total) modulesDone++;
+  });
   return {
-    ...state,
-    completed: { ...state.completed },
-    scores: { ...state.scores },
-    badges: [...state.badges],
-    flashcards: { ...state.flashcards },
+    read, total,
+    pct: total ? Math.round((read / total) * 100) : 0,
+    modulesDone, modulesTotal: COURSE_MODULES.length,
   };
 }
 
-/**
- * Mark a module as completed with an optional score.
- * @param {string} moduleId
- * @param {number} score  - number of correct answers
- * @param {number} total  - total questions
- */
-export function completeModule(moduleId, score = 0, total = 0) {
-  const pct = total > 0 ? Math.round((score / total) * 100) : 100;
-  state.completed[moduleId] = true;
-  state.scores[moduleId] = { score, total, pct };
-  save();
+/** First unread section in course order, or null when everything is read. */
+export function getNextSection() {
+  for (const m of COURSE_MODULES) {
+    const s = m.sections.find(sec => !isRead(m.id, sec.id));
+    if (s) return { module: m, section: s };
+  }
+  return null;
 }
 
-/**
- * Earn a badge. No-op if already earned.
- * @param {string} badgeId
- */
-export function earnBadge(badgeId) {
-  if (state.badges.includes(badgeId)) return;
-  state.badges = [...state.badges, badgeId];
-  save();
-}
-
-/**
- * Update Leitner box for a flashcard term.
- * @param {string} term
- * @param {number} box  - 1..5
- */
-export function updateFlashcard(term, box) {
-  state.flashcards = {
-    ...state.flashcards,
-    [term]: { box: Math.max(1, Math.min(5, box)), lastSeen: Date.now() },
-  };
-  save();
-}
-
-/**
- * Record the last visited route.
- * @param {string} hash
- */
 export function setLastVisited(hash) {
   state.lastVisited = hash;
   save();
 }
 
-/**
- * Reset all progress.
- */
-export function resetProgress() {
-  state = {
-    ...DEFAULT,
-    completed: {},
-    scores: {},
-    badges: [],
-    flashcards: {},
-  };
-  save();
-}
-
-/**
- * Returns overall progress summary.
- * @returns {{ totalModules: number, completed: number, pct: number }}
- */
-export function getProgress() {
-  const totalModules = COMPLETABLE_MODULES.length;
-  const completed = COMPLETABLE_MODULES.filter(id => state.completed[id]).length;
-  const pct = Math.round((completed / totalModules) * 100);
-  return { totalModules, completed, pct };
-}
-
-/**
- * Returns whether a specific module is completed.
- * @param {string} moduleId
- */
-export function isCompleted(moduleId) {
-  return !!state.completed[moduleId];
-}
-
-/**
- * Returns the best score for a module, or null.
- * @param {string} moduleId
- */
-export function getScore(moduleId) {
-  return state.scores[moduleId] || null;
+export function getLastVisited() {
+  return state.lastVisited;
 }

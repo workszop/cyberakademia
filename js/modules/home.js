@@ -1,200 +1,157 @@
 // ============================================================
 // CyberAkademia - modules/home.js
-// Landing page / dashboard
+// Start: the course as a map of three layers + "Następny krok"
 // ============================================================
 
 import { el } from '../dom.js';
-import { getProgress, getState, isCompleted } from '../store.js';
-import { createProgressRing } from '../primitives/progressRing.js';
 import { icon } from '../icons.js';
+import { getModule, COURSE_MODULES, LAYERS } from '../course.js';
+import { getModuleProgress, getCourseProgress, getNextSection, isRead } from '../store.js';
+import { eyebrow, chips } from '../sections.js';
 
-const MODULES = [
-  {
-    id: 'fundamenty',
-    hash: '#/fundamenty',
-    iconName: 'shield',
-    title: 'Fundamenty',
-    desc: 'Triada CIA, zarządzanie ryzykiem i najczęstsze zagrożenia. Na tym opiera się reszta kursu.',
-    badge: 'Moduł 1',
-    time: '~25 min',
-  },
-  {
-    id: 'regulacje',
-    hash: '#/regulacje',
-    iconName: 'clipboard-list',
-    title: 'Regulacje',
-    desc: 'NIS2/KSC, DORA i RODO: co trzeba zrobić i kto za to odpowiada.',
-    badge: 'Moduł 2',
-    time: '~20 min',
-  },
-  {
-    id: 'organizacja',
-    hash: '#/organizacja',
-    iconName: 'building-2',
-    title: 'Organizacja',
-    desc: 'Role, SOC i CSIRT: kto i jak wykonuje obowiązki wynikające z regulacji.',
-    badge: 'Moduł 3',
-    time: '~20 min',
-  },
-  {
-    id: 'technologia',
-    hash: '#/technologia',
-    iconName: 'cpu',
-    title: 'Technologia',
-    desc: 'Narzędzia, które wykrywają i blokują ataki: SIEM, EDR, zapory sieciowe, MFA i inne.',
-    badge: 'Moduł 4',
-    time: '~30 min',
-  },
-  {
-    id: 'spiecie',
-    hash: '#/spiecie',
-    iconName: 'layers',
-    title: 'Integracja',
-    desc: 'Tabela powiązań pokazuje, jak regulacje, organizacja i technologia łączą się w jeden system.',
-    badge: 'Moduł 5',
-    time: '~25 min',
-  },
-  {
-    id: 'slownik',
-    hash: '#/slownik',
-    iconName: 'book-open',
-    title: 'Słownik',
-    desc: 'Wszystkie akronimy i pojęcia oraz fiszki Leitnera do nauki metodą powtórek rozłożonych w czasie.',
-    badge: 'Słownik',
-    time: 'Zawsze',
-  },
-  {
-    id: 'sciezka',
-    hash: '#/sciezka',
-    iconName: 'map',
-    title: 'Ścieżka',
-    desc: 'Twój plan nauki, zdobyte odznaki i postęp.',
-    badge: 'Ścieżka',
-    time: 'Zawsze',
-  },
-  {
-    id: 'finalboss',
-    hash: '#/finalboss',
-    iconName: 'target',
-    title: 'Final Boss',
-    desc: 'Końcowy sprawdzian wiedzy ze wszystkich modułów.',
-    badge: 'Egzamin',
-    time: '~45 min',
-  },
-];
+// ─── Helpers ──────────────────────────────────────────────
+
+function progressLine(mod) {
+  const p = getModuleProgress(mod.id);
+  const label = p.read === 0 ? 'Nieprzeczytany'
+    : p.read === p.total ? 'Przeczytany'
+    : `${p.read} z ${p.total} sekcji`;
+  return el('div', { class: 'st-meta' },
+    el('span', { class: 'mono' }, `Moduł ${mod.num} · ${mod.time}`),
+    el('span', { class: 'mini', 'aria-hidden': 'true' }, el('i', { style: { '--p': String(p.pct) } })),
+    el('span', { class: 'go' }, label, icon('arrow-right', 14)),
+  );
+}
+
+// ─── Render: blocks ───────────────────────────────────────
+
+function stratum(mod, { label } = {}) {
+  const layer = LAYERS[mod.layer];
+  return el('a', { class: 'stratum', href: mod.route, 'data-layer': mod.layer, 'data-module': mod.id },
+    el('div', { class: 'st-label' },
+      el('span', { class: 'eyebrow' }, label || layer.name),
+      el('strong', {}, mod.title),
+      el('span', { class: 'q' }, layer.question),
+    ),
+    el('div', { class: 'st-body' },
+      el('p', {}, mod.desc),
+      chips(mod.concepts),
+    ),
+    progressLine(mod),
+  );
+}
+
+function connector(rel, note) {
+  return el('div', { class: 'connector', 'aria-hidden': 'true' },
+    el('span', { class: 'rel' }, icon('arrow-down', 16), rel),
+    note ? el('span', { class: 'note' }, note) : null,
+  );
+}
+
+function progressStrip() {
+  const c = getCourseProgress();
+  return el('div', { class: 'progress-strip' },
+    el('div', { class: 'ps-nums' },
+      el('div', { class: 'ps-num' }, el('strong', {}, `${c.pct}%`), el('span', {}, 'kursu przeczytane')),
+      el('div', { class: 'ps-num' }, el('strong', {}, `${c.read}/${c.total}`), el('span', {}, 'sekcji')),
+      el('div', { class: 'ps-num' }, el('strong', {}, `${c.modulesDone}/${c.modulesTotal}`), el('span', {}, 'modułów w całości')),
+    ),
+    el('div', { class: 'ps-bar', 'aria-hidden': 'true' },
+      COURSE_MODULES.map(m => el('span', { class: 'ps-seg', 'data-layer': m.layer, title: m.title },
+        el('i', { style: { '--p': String(getModuleProgress(m.id).pct) } })))),
+    el('div', { class: 'ps-labels', 'aria-hidden': 'true' }, COURSE_MODULES.map(m => el('span', {}, m.title))),
+  );
+}
+
+function nextPanel() {
+  const next = getNextSection();
+  if (!next) {
+    return el('div', { class: 'next-panel', 'data-next-section': 'done' },
+      eyebrow('Lektura ukończona'),
+      el('h3', {}, 'Przeczytano wszystkie sekcje'),
+      el('p', {}, 'Wracaj do modułów, kiedy chcesz, a skróty i pojęcia znajdziesz w Słowniku.'),
+      el('a', { class: 'btn', href: '#/slownik' }, 'Otwórz Słownik', icon('arrow-right', 16)),
+    );
+  }
+  const { module: mod, section: sec } = next;
+  return el('div', { class: 'next-panel', 'data-layer': mod.layer, 'data-next-section': `${mod.id}:${sec.id}` },
+    eyebrow('Następny krok'),
+    el('h3', {}, `${mod.title} · ${sec.id}`, el('br'), sec.title),
+    el('p', {}, `Moduł ${mod.num} z ${COURSE_MODULES.length} · ${mod.time}`),
+    el('ol', { class: 'next-list' },
+      mod.sections.map(s => el('li', { class: s.id === sec.id ? 'is-next' : '' },
+        el('span', { class: 'mono' }, s.id),
+        el('span', {}, s.title),
+        isRead(mod.id, s.id) ? icon('check', 14) : el('span'),
+      ))),
+    el('a', { class: 'btn', href: `${mod.route}?s=${sec.id}` }, sec.id === mod.sections[0].id ? 'Zacznij' : 'Czytaj dalej', icon('arrow-right', 16)),
+  );
+}
+
+// ─── Render: page ─────────────────────────────────────────
 
 export function renderHome() {
-  const { completed: completedCount, totalModules, pct } = getProgress();
-  const state = getState();
+  const fund = getModule('fundamenty');
+  const integracja = getModule('integracja');
+  const plan = getModule('plan');
+  const slownik = getModule('slownik');
 
-  const wrap = el('div', { class: 'fade-in' });
+  const head = el('header', { class: 'start-head' },
+    el('div', {},
+      eyebrow('Kurs · cyberbezpieczeństwo w organizacji'),
+      el('h1', {}, 'Cyberbezpieczeństwo ', el('em', {}, 'w trzech warstwach')),
+      el('p', { class: 'lead' },
+        'Najłatwiej je zrozumieć, gdy rozłożymy je na trzy warstwy: ',
+        el('b', { class: 't-reg' }, 'regulacje'), ' określają, co trzeba zrobić i kto za to odpowiada; ',
+        el('b', { class: 't-org' }, 'organizacja'), ' pokazuje, kto i jak realizuje te obowiązki; ',
+        el('b', { class: 't-tech' }, 'technologia'), ' wskazuje, jakimi narzędziami można to osiągnąć.'),
+    ),
+    progressStrip(),
+  );
 
-  // ── Hero ─────────────────────────────────────────────────
-  const heroIconWrap = el('div', { style: { marginBottom: '0.5rem' } });
-  heroIconWrap.appendChild(icon('shield', 48));
-  const hero = el('div', { class: 'home-hero' },
-    heroIconWrap,
-    el('h1', {}, 'CyberAkademia'),
-    el('p', {},
-      'Cyberbezpieczeństwo w firmie najłatwiej zrozumieć, gdy rozłożymy je na trzy warstwy: ' +
-      'regulacje określają, co trzeba zrobić i kto za to odpowiada; ' +
-      'organizacja pokazuje, kto i jak realizuje te obowiązki; ' +
-      'technologia wskazuje, jakimi narzędziami można to osiągnąć.'
+  const map = el('section', { class: 'map', 'aria-labelledby': 'map-h' },
+    el('div', { class: 'map-head' },
+      el('h2', { id: 'map-h' }, 'Mapa kursu'),
+      el('p', {}, 'Kliknij warstwę, aby przejść do modułu. Strzałki pokazują kierunek zależności.'),
+    ),
+    stratum(fund, { label: 'Podstawy' }),
+    connector('na tym stoją trzy warstwy'),
+    el('div', { class: 'strata' },
+      stratum(getModule('regulacje'), { label: 'Warstwa 1' }),
+      connector('wymusza', 'Prawo nie mówi: „kup SIEM”. Mówi raczej: „musisz wykrywać i zgłaszać incydenty”.'),
+      stratum(getModule('organizacja'), { label: 'Warstwa 2' }),
+      connector('sięga po', 'Dopiero zespół i procesy decydują, jakie narzędzia są potrzebne.'),
+      stratum(getModule('technologia'), { label: 'Warstwa 3' }),
+    ),
+    connector('razem tworzą system'),
+    el('div', { class: 'synth-row' },
+      stratum(integracja, { label: 'Synteza' }),
+      stratum(plan, { label: 'Synteza' }),
+    ),
+    el('a', { class: 'ref-tile', href: slownik.route, 'data-layer': 'ref' },
+      icon('book-open', 20),
+      el('span', {}, el('b', {}, 'Słownik'), el('span', {}, slownik.desc)),
+      icon('arrow-right', 16),
     ),
   );
 
-  // ── Stats ────────────────────────────────────────────────
-  const statsRow = el('div', { class: 'home-stats' },
-    el('div', { class: 'home-stat' },
-      el('span', { class: 'home-stat-value' }, String(completedCount)),
-      el('span', { class: 'home-stat-label' }, 'Ukończone moduły')
-    ),
-    el('div', { class: 'home-stat' },
-      el('span', { class: 'home-stat-value' }, String(totalModules - completedCount)),
-      el('span', { class: 'home-stat-label' }, 'Pozostało')
-    ),
-    el('div', { class: 'home-stat' },
-      el('span', { class: 'home-stat-value' }, `${pct}%`),
-      el('span', { class: 'home-stat-label' }, 'Ukończono')
-    ),
-    el('div', { class: 'home-stat' },
-      el('span', { class: 'home-stat-value' }, String(state.badges?.length ?? 0)),
-      el('span', { class: 'home-stat-label' }, 'Zdobyte odznaki')
-    ),
-  );
-
-  hero.appendChild(statsRow);
-
-  // Add overall progress ring
-  const ringWrap = el('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '1rem' } });
-  const ring = createProgressRing(pct, 'Ogólny postęp', 100);
-  ringWrap.appendChild(ring);
-  hero.appendChild(ringWrap);
-
-  // CTA
-  const ctaBtn = el('a', {
-    href: completedCount === 0 ? '#/fundamenty' : '#/sciezka',
-    class: 'btn btn-primary btn-lg',
-    style: { marginTop: '1.5rem', display: 'inline-flex' },
-  }, completedCount === 0 ? 'Zacznij naukę' : 'Twoja ścieżka nauki');
-  hero.appendChild(ctaBtn);
-
-  wrap.appendChild(hero);
-
-  // ── Module grid ──────────────────────────────────────────
-  const gridSection = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Moduły')
-  );
-
-  const grid = el('div', { class: 'card-grid' });
-
-  MODULES.forEach(mod => {
-    const done = isCompleted(mod.id);
-    const score = state.scores?.[mod.id];
-
-    const cardIconEl = el('div', { class: 'module-card-icon' });
-    cardIconEl.appendChild(icon(mod.iconName, 24));
-
-    const card = el('a', {
-      href: mod.hash,
-      class: `module-card${done ? ' completed' : ''}`,
-    },
-      cardIconEl,
-      el('div', { class: 'module-card-title' }, mod.title),
-      el('div', { class: 'module-card-desc' }, mod.desc),
-      el('div', { class: 'module-card-meta' },
-        el('span', { class: 'badge' }, mod.time),
-        done
-          ? el('span', { class: 'badge badge-success' }, score ? score.pct + '%' : 'Zaliczone')
-          : el('span', { class: 'badge' }, mod.badge)
-      )
-    );
-
-    grid.appendChild(card);
-  });
-
-  gridSection.appendChild(grid);
-  wrap.appendChild(gridSection);
-
-  // ── Quick tips ───────────────────────────────────────────
-  const tips = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Jak korzystać'),
-    el('div', { class: 'card-grid' },
-      el('div', { class: 'card' },
-        el('div', { class: 'card-title' }, 'Logika zależności jest jednokierunkowa'),
-        el('div', { class: 'card-body' }, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Prawo nie mówi: „kup SIEM”. Mówi raczej: „musisz wykrywać i zgłaszać incydenty”.')
+  const side = el('aside', { class: 'side' },
+    nextPanel(),
+    el('div', { class: 'howto' },
+      el('h3', {}, 'Jak korzystać'),
+      el('ol', {},
+        el('li', {}, el('span', { class: 'mono' }, '01'),
+          el('div', {}, el('b', {}, 'Czytaj w kolejności warstw'),
+            el('span', {}, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Sekcja zalicza się sama, gdy dojdziesz do jej końca.'))),
+        el('li', {}, el('span', { class: 'mono' }, '02'),
+          el('div', {}, el('b', {}, 'Skróty z podpowiedziami'),
+            el('span', {}, 'Podkreślone skróty (CIA, SIEM, MFA, DORA…) pokazują definicję po najechaniu kursorem.'))),
+        el('li', {}, el('span', { class: 'mono' }, '03'),
+          el('div', {}, el('b', {}, 'Klawiatura'),
+            el('span', {}, 'J i K przechodzą między sekcjami, N otwiera następny krok, ? pokazuje wszystkie skróty.'))),
       ),
-      el('div', { class: 'card' },
-        el('div', { class: 'card-title' }, 'Akronimy z podpowiedziami'),
-        el('div', { class: 'card-body' }, 'Skróty (CIA, SIEM, MFA, DORA…) są podkreślone. Najedź na nie kursorem, aby zobaczyć definicję. W Słowniku znajdziesz fiszki ze wszystkimi pojęciami.')
-      ),
-      el('div', { class: 'card' },
-        el('div', { class: 'card-title' }, 'Ćwicz, nie tylko czytaj'),
-        el('div', { class: 'card-body' }, 'W każdym module są ćwiczenia: sortowanie scenariuszy, łączenie pojęć i quizy. Wiedza zostaje, gdy się jej użyje.')
-      ),
-    )
+    ),
   );
-  wrap.appendChild(tips);
 
-  return wrap;
+  return el('div', { class: 'start' }, head, el('div', { class: 'start-body' }, map, side));
 }

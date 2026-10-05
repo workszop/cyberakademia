@@ -106,7 +106,7 @@ export function enrichGlossaryDom(root) {
       const p = node.parentElement;
       if (!p) return NodeFilter.FILTER_REJECT;
       // Don't enrich inside already-wrapped terms, code, headings, or non-text containers
-      if (p.closest('.term, code, pre, script, style, svg, .section-title, h1, h2')) {
+      if (p.closest('.term, code, pre, script, style, svg, h1, h2, .no-terms, .eyebrow, .chip, button, summary .nl-num')) {
         return NodeFilter.FILTER_REJECT;
       }
       TERM_PATTERN.lastIndex = 0;

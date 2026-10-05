@@ -1,324 +1,156 @@
 // ============================================================
 // CyberAkademia - modules/fundamenty.js
-// Module 1: CIA triad, risk management, intro concepts
+// Module 1: CIA triad, most common threats, risk management.
+// Reading material only: games became examples and tables.
 // ============================================================
 
 import { el } from '../dom.js';
+import { getModule } from '../course.js';
+import {
+  moduleHeader, moduleFooter, section, propertyColumns, compareTable,
+  numberedList, callout, bullets, eyebrow,
+} from '../sections.js';
 import { CIA_TRIAD, CIA_SCENARIOS, RISK_RESPONSES, RISK_SCENARIOS } from '../content/fundamenty.js';
 import { THREATS } from '../content/threats.js';
-import { completeModule, earnBadge } from '../store.js';
-import { fullBurst } from '../confetti.js';
-import { initQuiz } from '../primitives/quiz.js';
-import { initSortIntoBuckets } from '../primitives/sortIntoBuckets.js';
-import { initExpandable } from '../primitives/expandable.js';
-import { icon } from '../icons.js';
 
-// ── CIA Triangle SVG ─────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────
 
-function renderCIATriangle() {
-  const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Triada CIA')
-  );
+const MODULE_ID = 'fundamenty';
+const CIA_ORDER = ['C', 'I', 'A'];
+const EXAMPLES_PER_PROPERTY = 2;
 
-  const intro = el('p', { style: { marginBottom: '1.5rem' } },
-    'Bezpieczeństwo informacji sprowadza się do ochrony trzech właściwości (stąd „triada CIA”). ' +
-    'Większość ataków i mechanizmów obrony da się przypisać do jednej z tych trzech kategorii, dlatego triada jest punktem odniesienia dla całej dziedziny.'
-  );
-  section.appendChild(intro);
+const INTRO_CIA =
+  'Bezpieczeństwo informacji sprowadza się do ochrony trzech właściwości (stąd „triada CIA”). ' +
+  'Większość ataków i mechanizmów obrony da się przypisać do jednej z tych trzech kategorii, dlatego triada jest punktem odniesienia dla całej dziedziny.';
 
-  // Three CIA cards
-  const grid = el('div', { class: 'card-grid' });
+const INTRO_THREATS =
+  'Trzy właściwości CIA atakuje wciąż ten sam zestaw zagrożeń. ' +
+  'Rozwiń wiersz, aby zobaczyć opis zagrożenia, pełny opis skutków i przykład z praktyki.';
 
-  const CIA_ICON_MAP = { C: 'lock', I: 'check-circle', A: 'zap' };
+const INTRO_RISK =
+  'Dojrzałe podejście nie pyta „czy jesteśmy bezpieczni” (odpowiedź zawsze brzmi „nie w 100%”), tylko zarządza ryzykiem. ' +
+  'Ryzyka nie da się sprowadzić do zera w całej organizacji: pojedyncze ryzyko można obniżać, przenosić (ubezpieczenie), akceptować albo unikać, rezygnując z działania, które je wywołuje. ' +
+  'Dlatego wszystkie nowoczesne regulacje mówią o „zarządzaniu ryzykiem”, a nie o konkretnej liście produktów.';
 
-  Object.values(CIA_TRIAD).forEach(entry => {
-    const iconEl = el('div', { style: { marginBottom: '0.5rem' } });
-    iconEl.appendChild(icon(CIA_ICON_MAP[entry.id] || 'shield', 24));
-    const card = el('div', { class: 'card' },
-      iconEl,
-      el('h3', {}, `${entry.id} – ${entry.namePL}`),
-      el('p', { style: { fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' } }, entry.name),
-      el('p', { style: { marginTop: '0.5rem', fontSize: '1rem', lineHeight: '1.5' } }, entry.description),
-      el('p', { style: { marginTop: '0.6rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic' } }, entry.violationExample),
-      el('div', { style: { marginTop: '1rem' } },
-        el('div', { style: { fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.4rem' } }, 'Przykładowe kontrole'),
-        el('ul', { style: { paddingLeft: '1.2rem', color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: '1.7' } },
-          ...entry.controls.map(c => el('li', {}, c))
-        )
-      )
-    );
-    grid.appendChild(card);
+// ─── Helpers ──────────────────────────────────────────────
+
+const label = text => el('div', { class: 'label' }, text);
+
+/** "Naruszenie = wyciek danych. …" → "Wyciek danych. …" */
+function violationText(raw) {
+  const t = raw.replace(/^Naruszenie\s*=\s*/, '');
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+function lead(prefix, text) {
+  return el('p', {}, el('b', {}, prefix), text);
+}
+
+// ─── 1.1 Triada CIA ───────────────────────────────────────
+
+function ciaColumn(key) {
+  const p = CIA_TRIAD[key];
+  const examples = CIA_SCENARIOS.filter(s => s.answer === key).slice(0, EXAMPLES_PER_PROPERTY);
+  return {
+    key: p.id,
+    title: p.namePL,
+    sub: p.name,
+    body: [
+      el('p', {}, p.description),
+      label('Naruszenie'),
+      el('p', {}, violationText(p.violationExample)),
+      p.questions?.length ? [label('Pytania'), bullets(p.questions)] : null,
+      label('Zabezpieczenia'),
+      bullets(p.controls),
+      examples.length ? label('Przykłady incydentów') : null,
+      examples.map(s => el('p', { class: 'example' }, el('b', {}, s.text), ' ', s.explanation)),
+    ].flat(2).filter(Boolean),
+  };
+}
+
+// ─── 1.2 Najczęstsze zagrożenia ───────────────────────────
+
+/** "Dostępność (A) – …; Poufność (C) – …" → one tag per violated property. */
+function ciaTags(text) {
+  const names = [...text.matchAll(/(Poufność|Integralność|Dostępność) \(([CIA])\)/g)].map(m => `${m[1]} (${m[2]})`);
+  return names.length
+    ? names.map(n => el('div', {}, el('span', { class: 'cell-tag' }, el('i'), n)))
+    : text;
+}
+
+/** First sentence goes to the table cell, the rest to the expandable detail. */
+function splitFirstSentence(text) {
+  const m = text.match(/^(.+?\.)\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ])(.*)$/s);
+  return m ? [m[1], m[2]] : [text, ''];
+}
+
+function threatRows() {
+  return THREATS.map(t => {
+    const [effectShort, effectMore] = splitFirstSentence(t.effect);
+    return {
+      th: t.name,
+      cells: [t.entryPoint, effectShort, ciaTags(t.cia), t.defense],
+      detail: [
+        el('p', {}, t.front),
+        effectMore ? lead('Skutek: ', effectMore) : null,
+        lead('Narusza: ', t.cia),
+        el('p', { class: 'example' }, el('b', {}, 'Przykład: '), t.example),
+      ].filter(Boolean),
+    };
   });
-
-  section.appendChild(grid);
-  return section;
 }
 
-// ── CIA Sorting Game (sortIntoBuckets) ───────────────────
+// ─── 1.3 Ryzyko ───────────────────────────────────────────
 
-function renderCIASortingGame() {
-  const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra – przyporządkuj incydent')
-  );
-
-  const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Przeczytaj opis incydentu i przypisz go do właściwej kategorii – która z właściwości CIA została naruszona? ' +
-    'Przeciągnij element do kategorii Poufność, Integralność lub Dostępność, albo kliknij element i wybierz kategorię.'
-  );
-  section.appendChild(desc);
-
-  const gameEl = el('div', {});
-  section.appendChild(gameEl);
-
-  const buckets = [
-    { id: 'C', label: 'Poufność', color: CIA_TRIAD.C.color },
-    { id: 'I', label: 'Integralność', color: CIA_TRIAD.I.color },
-    { id: 'A', label: 'Dostępność', color: CIA_TRIAD.A.color },
-  ];
-
-  const items = CIA_SCENARIOS.map((scenario, index) => ({
-    id: index,
-    text: scenario.text,
-    answer: scenario.answer,
-    explanation: scenario.explanation,
-  }));
-
-  // Practice exercise - result does not gate module completion.
-  initSortIntoBuckets(gameEl, { buckets, items });
-
-  return section;
-}
-
-// ── Krajobraz zagrożeń (expandable) ──────────────────────
-
-function renderThreatLandscape() {
-  const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Najczęstsze zagrożenia')
-  );
-
-  const intro = el('p', { style: { marginBottom: '1.5rem' } },
-    'Trzy właściwości CIA atakuje wciąż ten sam zestaw zagrożeń. ' +
-    'Rozwiń kartę, aby zobaczyć punkt wejścia, skutek, naruszane właściwości CIA, obronę i przykład z praktyki.'
-  );
-  section.appendChild(intro);
-
-  const listEl = el('div', {});
-  section.appendChild(listEl);
-
-  const threatItems = THREATS.map(t => ({
-    title: t.name,
-    summary: t.front,
-    detail:
-      `Punkt wejścia: ${t.entryPoint} ` +
-      `Skutek: ${t.effect} ` +
-      `Narusza: ${t.cia} ` +
-      `Obrona: ${t.defense} ` +
-      `Przykład: ${t.example}`,
-  }));
-
-  initExpandable(listEl, threatItems);
-
-  return section;
-}
-
-// ── Risk responses ───────────────────────────────────────
-
-function renderRiskResponses() {
-  const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Ryzyko zamiast „czy jesteśmy bezpieczni”')
-  );
-
-  const intro = el('p', { style: { marginBottom: '1.5rem' } },
-    'Dojrzałe podejście nie pyta „czy jesteśmy bezpieczni” (odpowiedź zawsze brzmi „nie w 100%”), tylko ' +
-    'zarządza ryzykiem: ryzyko = prawdopodobieństwo zdarzenia × jego skutek. ' +
-    'Nie da się wyeliminować ryzyka, można je tylko ' +
-    'obniżać, przenosić (ubezpieczenie), akceptować albo unikać. ' +
-    'Dlatego wszystkie nowoczesne regulacje mówią o „zarządzaniu ryzykiem”, a nie o konkretnej liście produktów.'
-  );
-  section.appendChild(intro);
-
-  const grid = el('div', { class: 'card-grid' });
-  RISK_RESPONSES.forEach(r => {
-    const card = el('div', { class: 'card' },
-      el('h3', {}, r.name),
-      el('p', {}, r.description),
-      el('div', { style: { marginTop: '0.75rem', fontSize: '0.82rem', color: 'var(--text-muted)' } },
-        el('strong', { style: { color: 'var(--accent)' } }, 'Kiedy stosować: '),
-        r.whenToUse
-      ),
-      el('div', { style: { marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--text-muted)' } },
-        el('strong', { style: { color: 'var(--warning)' } }, 'Koszt: '),
-        r.cost
-      )
-    );
-    grid.appendChild(card);
+function riskItems() {
+  return RISK_RESPONSES.map(r => {
+    const cases = RISK_SCENARIOS.filter(s => s.correctResponse === r.id);
+    return {
+      title: r.name,
+      summary: r.description,
+      detail: [
+        lead('Kiedy stosować: ', r.whenToUse),
+        eyebrow('Przykłady'),
+        bullets(r.examples),
+        lead('Koszt: ', r.cost),
+        cases.length ? eyebrow('Przykład z praktyki') : null,
+        ...cases.map(s => el('p', { class: 'example' }, el('b', {}, s.risk + '. '), s.explanation)),
+      ].filter(Boolean),
+    };
   });
-  section.appendChild(grid);
-  return section;
 }
 
-// ── Risk response matching game ──────────────────────────
-
-function renderRiskGame() {
-  const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Gra – dobierz odpowiedź na ryzyko')
-  );
-
-  const desc = el('p', { style: { marginBottom: '1.5rem' } },
-    'Dla każdego ryzyka wybierz właściwą strategię odpowiedzi: Obniżaj / Przenoś / Akceptuj / Unikaj.'
-  );
-  section.appendChild(desc);
-
-  const scenarios = [...RISK_SCENARIOS];
-  let current = 0;
-  let score = 0;
-
-  const scoreEl = el('div', { class: 'badge badge-accent', style: { marginBottom: '1rem' } }, `Wynik: 0 / ${scenarios.length}`);
-  const cardEl = el('div', { class: 'card', style: { maxWidth: '640px', margin: '0 auto' } });
-
-  function render(i) {
-    if (i >= scenarios.length) {
-      const pct = Math.round((score / scenarios.length) * 100);
-      cardEl.innerHTML = '';
-      cardEl.appendChild(
-        el('div', { class: 'result-overlay' },
-          el('div', { class: 'result-title' }, `${score} / ${scenarios.length} (${pct}%)`),
-          el('div', { class: 'result-subtitle', style: { marginBottom: '1rem' } }, pct >= 70 ? 'Znasz cztery odpowiedzi na ryzyko!' : 'Powtórz strategie i spróbuj ponownie.'),
-          el('button', { class: 'btn btn-primary', onclick: () => { current = 0; score = 0; scoreEl.textContent = `Wynik: 0 / ${scenarios.length}`; render(0); } }, 'Ponów')
-        )
-      );
-      return;
-    }
-
-    const s = scenarios[i];
-    cardEl.innerHTML = '';
-
-    const question = el('div', {},
-      el('p', { style: { fontSize: '0.95rem', marginBottom: '1.25rem', lineHeight: '1.6', padding: '0.75rem', background: 'rgba(0,212,255,0.05)', borderRadius: '8px', borderLeft: '3px solid var(--accent)' } }, s.risk),
-      el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } },
-        ...RISK_RESPONSES.map(r => {
-          const btn = el('button', {
-            class: 'btn btn-ghost',
-            onclick: () => {
-              const correct = s.correctResponse === r.id;
-              if (correct) score++;
-              current++;
-              scoreEl.textContent = `Wynik: ${score} / ${scenarios.length}`;
-
-              cardEl.innerHTML = '';
-              cardEl.appendChild(
-                el('div', { class: `alert ${correct ? 'alert-success' : 'alert-warning'}` },
-                  el('strong', {}, correct ? 'Dobrze! ' : `Lepiej: „${RISK_RESPONSES.find(r2 => r2.id === s.correctResponse).name}”. `),
-                  s.explanation
-                )
-              );
-              const nextBtn = el('button', {
-                class: 'btn btn-primary',
-                style: { marginTop: '1rem' },
-                onclick: () => render(current)
-              }, current >= scenarios.length ? 'Wyniki' : 'Dalej');
-              cardEl.appendChild(nextBtn);
-            }
-          }, r.name);
-          return btn;
-        })
-      )
-    );
-    cardEl.appendChild(question);
-  }
-
-  render(0);
-  section.appendChild(scoreEl);
-  section.appendChild(cardEl);
-  return section;
-}
-
-// ── Knowledge quiz ───────────────────────────────────────
-
-const QUIZ_QUESTIONS = [
-  {
-    question: 'Co narusza „Poufność” (C) w triadzie CIA?',
-    options: ['Atak DDoS uniemożliwiający dostęp do serwisu', 'Haker wykradł bazę danych klientów', 'Zmiana danych w systemie przez hakera', 'Awaria serwera powodująca przestój'],
-    correct: 1,
-    explanation: 'Poufność (Confidentiality) jest naruszona, gdy nieautoryzowana osoba uzyskuje dostęp do danych. Wykradzenie bazy danych to klasyczne naruszenie C.'
-  },
-  {
-    question: 'Która odpowiedź na ryzyko polega na przeniesieniu finansowych skutków na ubezpieczyciela?',
-    options: ['Obniżaj (Mitigate)', 'Przenoś (Transfer)', 'Akceptuj (Accept)', 'Unikaj (Avoid)'],
-    correct: 1,
-    explanation: 'Transfer ryzyka przenosi finansowe konsekwencje na zewnętrzny podmiot, najczęściej przez ubezpieczenie cybernetyczne lub klauzule umowne.'
-  },
-  {
-    question: 'Atak ransomware szyfruje dane i uniemożliwia pracę. Które właściwości CIA narusza PRZEDE WSZYSTKIM?',
-    options: ['Tylko Poufność (C)', 'Poufność i Integralność (C+I)', 'Przede wszystkim Dostępność (A)', 'Tylko Integralność (I)'],
-    correct: 2,
-    explanation: 'Ransomware narusza przede wszystkim Dostępność (A): dane są zaszyfrowane i niedostępne. Nowoczesny ransomware (podwójne wymuszenie) narusza też C przez wcześniejszą eksfiltrację, ale na pierwszym miejscu jest A.'
-  },
-  {
-    question: 'Firma akceptuje ryzyko przestarzałego systemu bez wsparcia producenta. Co jest WYMAGANE przy akceptacji ryzyka?',
-    options: ['Natychmiastowe wyłączenie systemu', 'Świadoma decyzja zarządu i dokumentacja', 'Przeniesienie systemu do chmury', 'Żadnych działań – ignorujemy problem'],
-    correct: 1,
-    explanation: 'Akceptacja ryzyka ≠ ignorowanie. Wymaga formalnej, świadomej decyzji zarządu z dokumentacją. „Nie wiedzieliśmy” to brak zarządzania ryzykiem, nie akceptacja.'
-  },
-  {
-    question: 'Pracownik przypadkowo usunął produkcyjną bazę danych. Które właściwości CIA są naruszone?',
-    options: ['Tylko Poufność (C)', 'Integralność i Dostępność (I+A)', 'Tylko Dostępność (A)', 'Żadne – to był błąd, nie atak'],
-    correct: 1,
-    explanation: 'Naruszono Dostępność (A), bo danych nie ma, i Integralność (I), bo dane przepadły bezpowrotnie. Triada CIA obejmuje wszystkie incydenty, także błędy ludzkie, a nie wyłącznie ataki.'
-  },
-];
-
-function renderQuiz(onPass) {
-  const section = el('div', { class: 'section' },
-    el('div', { class: 'section-title' }, 'Quiz końcowy')
-  );
-
-  const container = el('div', {});
-  section.appendChild(container);
-
-  initQuiz(container, { questions: QUIZ_QUESTIONS }, (score, total) => {
-    if (score / total >= 0.7) {
-      completeModule('fundamenty', score, total);
-      earnBadge('fundamenty');
-      fullBurst();
-      onPass?.(score, total);
-    }
-  });
-
-  return section;
-}
-
-// ── Main render ──────────────────────────────────────────
+// ─── Render ───────────────────────────────────────────────
 
 export function renderFundamenty() {
-  const wrap = el('div', { class: 'slide-up' });
+  const [s1, s2, s3] = getModule(MODULE_ID).sections;
 
-  wrap.appendChild(el('div', { class: 'module-header' },
-    el('h1', {}, 'Fundamenty cyberbezpieczeństwa'),
-    el('p', { class: 'subtitle' }, 'Zanim przejdziemy do skrótów: trzy pojęcia, na których opiera się cała reszta.'),
-    el('div', { class: 'module-meta' },
-      el('span', { class: 'badge' }, '~25 min'),
-      el('span', { class: 'badge badge-accent' }, 'Moduł 1')
-    )
-  ));
+  return el('div', { class: 'module-page' },
+    moduleHeader(MODULE_ID),
 
-  wrap.appendChild(renderCIATriangle());
-  wrap.appendChild(renderCIASortingGame());
-  wrap.appendChild(renderThreatLandscape());
-  wrap.appendChild(renderRiskResponses());
-  wrap.appendChild(renderRiskGame());
+    section({ id: s1.id, title: s1.title, intro: INTRO_CIA, block: 'propertyColumns' },
+      propertyColumns(CIA_ORDER.map(ciaColumn)),
+    ),
 
-  let passed = false;
-  wrap.appendChild(renderQuiz((score, total) => {
-    if (!passed) {
-      passed = true;
-      const banner = el('div', { class: 'alert alert-success', style: { marginTop: '1rem' } },
-        el('strong', {}, 'Moduł zaliczony! '),
-        `Wynik: ${score}/${total}. Odznaka „Fundamenty” odblokowana!`
-      );
-      wrap.appendChild(banner);
-    }
-  }));
+    section({ id: s2.id, title: s2.title, intro: INTRO_THREATS, block: 'compareTable', tone: 'tint' },
+      compareTable({
+        caption: 'Najczęstsze zagrożenia: punkt wejścia, skutek, naruszane właściwości CIA i obrona',
+        head: ['Zagrożenie', 'Punkt wejścia', 'Skutek', 'Narusza (CIA)', 'Obrona'],
+        rows: threatRows(),
+        minWidth: 750,
+      }),
+    ),
 
-  return wrap;
+    section({ id: s3.id, title: s3.title, intro: INTRO_RISK, block: 'numberedList' },
+      callout({
+        tone: 'key',
+        iconName: 'bar-chart-2',
+        title: 'Ryzyko = prawdopodobieństwo × skutek',
+        text: 'Im bardziej prawdopodobne zdarzenie i im dotkliwsze jego skutki, tym wyższe ryzyko. Na tej podstawie wybiera się jedną z czterech odpowiedzi.',
+      }),
+      numberedList(riskItems(), { cols: 2 }),
+    ),
+
+    moduleFooter(MODULE_ID),
+  );
 }

@@ -10,10 +10,8 @@ export const STEPS = [
   {
     n: 1,
     name: 'Zdiagnozuj status regulacyjny',
-    icon: '🔍',
     description: 'Czy podlegamy NIS2/KSC i/lub DORA? Sprawdź sektor (kody PKD), wielkość podmiotu, wyjątki.',
     detail: 'Decydują: sektor (kody PKD, np. energia: 35.1x, transport: 49-52, zdrowie: 86-87, IT: 62-63), wielkość (podmioty kluczowe: 250+ pracowników lub 50+ mln EUR obrotu; podmioty ważne: 50+ pracowników lub 10+ mln EUR; wyjątki np. MSSP/rejestry domen od 10 pracowników / 2 mln EUR) i specjalne wykluczenia (organy bezpieczeństwa narodowego, organy ścigania). Ostateczna kwalifikacja wymaga analizy ustawy lub porady prawnej. Istnieją bezpłatne testery weryfikacji po numerze NIP.',
-    badge: null,
     tools: ['Tester NIP (strona UKNF/CERT Polska)', 'Analiza ustawy o KSC', 'Analiza DORA dla sektora finansowego', 'Porada prawna dla skomplikowanych przypadków'],
     keyQuestions: [
       'W jakich sektorach PKD działa firma?',
@@ -27,10 +25,8 @@ export const STEPS = [
   {
     n: 2,
     name: 'Oceń ryzyko i zbadaj luki (gap analysis)',
-    icon: '📊',
     description: 'Zidentyfikuj aktywa, zagrożenia i obecny poziom bezpieczeństwa. Porównaj z wymaganiami.',
     detail: 'Gap analysis to ocena różnicy między obecnym stanem bezpieczeństwa a wymaganym. Krok 1: inwentaryzacja aktywów – co mamy do ochrony (systemy, dane, procesy). Krok 2: ocena zagrożeń – co nam grozi (ransomware, phishing, insider, APT). Krok 3: ocena obecnych kontroli – co już mamy (polityki, narzędzia, procesy). Krok 4: identyfikacja luk – czego brakuje względem wymagań NIS2/DORA/ISO 27001. Krok 5: priorytetyzacja – co naprawić najpierw (wg ryzyka i wymagań regulacyjnych).',
-    badge: null,
     tools: ['Framework ISO/IEC 27001 (wymagania SZBI)', 'NIST CSF 2.0 (ocena dojrzałości)', 'CIS Controls v8 (techniczne baseline)', 'Zewnętrzny audyt/konsultant (obiektywna ocena)'],
     keyQuestions: [
       'Jakie mamy aktywa krytyczne (systemy, dane)?',
@@ -44,10 +40,8 @@ export const STEPS = [
   {
     n: 3,
     name: 'Zbuduj strukturę zarządzania (governance)',
-    icon: '👔',
     description: 'Powołaj CISO (lub odpowiedzialną osobę), zdefiniuj role, uzyskaj zaangażowanie zarządu.',
     detail: 'NIS2 i DORA wprost wymagają zaangażowania zarządu w cyberbezpieczeństwo, więc nie jest to kwestia wyboru. Minimalne kroki: (1) Powołanie osoby odpowiedzialnej za cyberbezpieczeństwo (CISO lub menedżer bezpieczeństwa, zależnie od wielkości organizacji). (2) Formalne przypisanie ról i odpowiedzialności (RACI). (3) Zatwierdzenie polityki bezpieczeństwa przez zarząd. (4) Regularne raportowanie zarządowi (np. kwartalny raport stanu bezpieczeństwa). (5) Szkolenie zarządu z cyberbezpieczeństwa (wymagane przez NIS2). (6) Powołanie DPO (jeśli wymagany przez RODO).',
-    badge: null,
     tools: ['Wzór polityki bezpieczeństwa informacji', 'Szablon RACI dla ról bezpieczeństwa', 'Materiały szkoleniowe dla zarządu', 'Wzór raportu bezpieczeństwa dla zarządu'],
     keyQuestions: [
       'Kto odpowiada za cyberbezpieczeństwo (z imienia i nazwiska)?',
@@ -61,10 +55,8 @@ export const STEPS = [
   {
     n: 4,
     name: 'Wdróż SZBI i podstawowe kontrole techniczne',
-    icon: '⚙️',
     description: 'System Zarządzania Bezpieczeństwem Informacji + podstawowe „cyber hygiene”: MFA, backup, EDR, patching.',
     detail: 'Wdrożenie SZBI to największy krok i wymaga czasu oraz zasobów. Zacznij od „cyber hygiene”, która daje efekt od razu: (1) MFA wszędzie, szczególnie na kontach administratorów, w poczcie, VPN i aplikacjach biznesowych. (2) Backup 3-2-1 z testami odtwarzania. (3) EDR zamiast antywirusa na wszystkich stacjach i serwerach. (4) Zarządzanie podatnościami: regularny patching z SLA (krytyczne: 24-72h). (5) Segmentacja sieci: co najmniej podział na sieć użytkowników, serwery i sieć zarządzania. (6) Polityki: hasła, BYOD, praca zdalna, klasyfikacja danych. Równolegle: dokumentacja SZBI wg ISO 27001 (polityki, procedury, rejestry ryzyk, aktywa).',
-    badge: 'Fundament',
     tools: ['Microsoft Defender for Endpoint / inny EDR', 'Narzędzie MFA (Microsoft Authenticator, Duo)', 'System backupu (Veeam, Azure Backup)', 'Skaner podatności (Tenable, Qualys)', 'CIS Controls IG1 jako minimalna lista kontrolna'],
     keyQuestions: [
       'Czy MFA jest włączone dla wszystkich kont administracyjnych?',
@@ -78,10 +70,8 @@ export const STEPS = [
   {
     n: 5,
     name: 'Uruchom monitoring i reagowanie na incydenty',
-    icon: '🚨',
     description: 'SOC lub MSSP/MDR, playbooki IR, procesy zgłaszania incydentów do CSIRT/KNF.',
     detail: 'Bez monitoringu organizacja nie widzi ataków, a bez procesu IR nie spełni wymagań regulacyjnych (zgłoszenie w 24h/72h/4h). Kroki: (1) Wybór modelu SOC: własny (duże organizacje), MSSP/MDR (MŚP, szybki start), hybrydowy (przejściowo). (2) Konfiguracja SIEM (lub zapewnienie przez MSSP). (3) Wdrożenie SOAR dla automatyzacji podstawowych odpowiedzi. (4) Opracowanie playbooków IR dla minimum: ransomware, phishing/BEC, kradzież danych, atak DDoS. (5) Procedury zgłaszania incydentów do CSIRT (NIS2) lub KNF (DORA) z przypisanymi rolami i wzorami zgłoszeń. (6) Kontakt z właściwym CSIRT: warto go nawiązać przed incydentem, a nie w jego trakcie.',
-    badge: null,
     tools: ['SIEM (Microsoft Sentinel, Splunk lub przez MSSP)', 'SOAR (opcjonalnie na początku)', 'Playbooki IR (szablony ENISA, CERT Polska)', 'Wzory zgłoszeń incydentów do CSIRT NASK/GOV', 'Retainer z firmą Incident Response (na wypadek poważnego ataku)'],
     keyQuestions: [
       'Kto monitoruje alerty bezpieczeństwa poza godzinami pracy?',
@@ -95,10 +85,8 @@ export const STEPS = [
   {
     n: 6,
     name: 'Zarządzaj ryzykiem dostawców i łańcuchem dostaw',
-    icon: '🔗',
     description: 'Ocena bezpieczeństwa kluczowych dostawców ICT, wymogi w umowach, nadzór, plany wyjścia.',
     detail: 'NIS2 i DORA wprost wymagają zarządzania ryzykiem dostawców; inspiracją był atak SolarWinds (2020). Kroki: (1) Inwentaryzacja dostawców ICT: kto ma dostęp do systemów lub danych? (2) Klasyfikacja wg krytyczności: kluczowi (np. dostawca ERP, chmura) i standardowi. (3) Ocena bezpieczeństwa kluczowych dostawców: kwestionariusz, certyfikaty (ISO 27001), wyniki audytów. (4) Wymogi bezpieczeństwa w umowach – klauzule: prawo do audytu, SLA bezpieczeństwa, obowiązek informowania o incydentach, plany wyjścia (exit plan). (5) Monitoring ciągły: regularne przeglądy, powiadomienia o incydentach u dostawcy. (6) Dla sektora finansowego (DORA): szczególna uwaga na koncentrację ryzyka (zbyt wiele zależności od jednego dostawcy chmury).',
-    badge: null,
     tools: ['Rejestr dostawców z oceną ryzyka (Excel/GRC)', 'Kwestionariusz bezpieczeństwa dostawców', 'Standardowe klauzule bezpieczeństwa w umowach ICT', 'Platforma GRC (opcjonalnie), np. ServiceNow, OneTrust'],
     keyQuestions: [
       'Kto z dostawców ma dostęp do naszych krytycznych systemów lub danych?',
@@ -112,10 +100,8 @@ export const STEPS = [
   {
     n: 7,
     name: 'Testuj, audytuj i stale doskonal',
-    icon: '🔄',
     description: 'Regularne testy penetracyjne, audyt SZBI, ćwiczenia kryzysowe, aktualizacja planów po wnioskach.',
     detail: 'Cyberbezpieczeństwo to ciągły proces doskonalenia, który nie kończy się razem z projektem. (1) Testy penetracyjne: minimum raz w roku dla systemów krytycznych i przy każdej istotnej zmianie infrastruktury. Zewnętrzni testerzy, zakres zgodny z ryzykiem, wnioski wdrażane z SLA. (2) Audyt SZBI: wewnętrzny (co rok) i zewnętrzny (certyfikacja ISO 27001 co 3 lata lub wymagany przez KSC). (3) Ćwiczenia tabletop: symulacje kryzysowe z zarządem (scenariusze: ransomware, wyciek danych, DDoS), minimum raz w roku. (4) Testy odtwarzania DR: minimum raz w roku dla krytycznych systemów, żeby sprawdzić, czy backup naprawdę działa. (5) TLPT: co 3 lata w sektorze finansowym objętym DORA. (6) Lessons learned: wnioski z każdego incydentu, ćwiczenia lub audytu trafiają do polityk, playbooków i konfiguracji.',
-    badge: 'Ciągłe doskonalenie',
     tools: ['Firmy wykonujące testy penetracyjne (z certyfikatami CREST/OSCE)', 'Standard TIBER-EU dla TLPT (sektor finansowy)', 'Szablony ćwiczeń tabletop (ENISA, BSI)', 'Narzędzia skanowania podatności (Tenable, Qualys)', 'Platforma GRC do śledzenia wniosków i działań naprawczych'],
     keyQuestions: [
       'Kiedy ostatnio testowaliśmy, czy możemy odtworzyć dane z backupu?',
@@ -128,16 +114,16 @@ export const STEPS = [
   },
 ];
 
-// ── Mapa priorytetów ("quick wins" vs. długoterminowe) ─────────────────────
+// ── Mapa priorytetów (szybkie efekty i działania długoterminowe) ──────────
 
 export const PRIORITY_MAP = {
   quickWins: [
     {
       action: 'Włącz MFA dla wszystkich kont administracyjnych i poczty e-mail',
       effort: 'Niski',
-      impact: 'Bardzo wysoki: eliminuje 99% ataków na przejęte hasła',
+      impact: 'Bardzo wysoki: mocno ogranicza ataki z użyciem przejętych haseł',
       cost: 'Często bezpłatne (wbudowane w Microsoft 365, Google Workspace)',
-      timeToComplete: '1-2 tygodnie'
+      timeToComplete: '1–2 tygodnie'
     },
     {
       action: 'Przetestuj odtwarzanie z backupu',
@@ -150,20 +136,20 @@ export const PRIORITY_MAP = {
       action: 'Wdróż EDR na stacjach roboczych i serwerach',
       effort: 'Średni',
       impact: 'Bardzo wysoki: wykrywa i blokuje nowoczesne ataki, które antywirus przepuszcza',
-      cost: 'Licencja per endpoint (np. Microsoft Defender for Endpoint jest wliczony w M365 E5)',
-      timeToComplete: '2-4 tygodnie'
+      cost: 'Licencja na każde urządzenie (np. Microsoft Defender for Endpoint jest w pakiecie M365 E5)',
+      timeToComplete: '2–4 tygodnie'
     },
     {
-      action: 'Ustal, kogo obejmują regulacje (NIS2/KSC, DORA)',
+      action: 'Ustal, czy firmę obejmują regulacje (NIS2/KSC, DORA)',
       effort: 'Niski',
       impact: 'Wysoki: bez tego nie wiesz, jakie masz terminy i kary',
       cost: 'Czas prawnika lub CISO',
-      timeToComplete: '1-2 tygodnie'
+      timeToComplete: '1–2 tygodnie'
     },
     {
-      action: 'Opracuj listę kluczowych dostawców ICT z dostępem do sieci/danych',
+      action: 'Spisz kluczowych dostawców ICT z dostępem do sieci lub danych',
       effort: 'Niski',
-      impact: 'Średni: punkt startowy zarządzania ryzykiem łańcucha dostaw',
+      impact: 'Średni: punkt wyjścia do zarządzania ryzykiem w łańcuchu dostaw',
       cost: 'Czas IT i zakupów',
       timeToComplete: '1 tydzień'
     },
@@ -172,30 +158,30 @@ export const PRIORITY_MAP = {
     {
       action: 'Wdrożenie pełnego SZBI wg ISO/IEC 27001',
       effort: 'Bardzo wysoki',
-      impact: 'Bardzo wysoki: fundament dojrzałego programu bezpieczeństwa',
-      cost: 'Kilkadziesiąt-kilkaset tysięcy PLN (zależnie od wielkości)',
-      timeToComplete: '12-24 miesiące'
+      impact: 'Bardzo wysoki: podstawa dojrzałego programu bezpieczeństwa',
+      cost: 'Od kilkudziesięciu do kilkuset tysięcy PLN (zależnie od wielkości organizacji)',
+      timeToComplete: '12–24 miesiące'
     },
     {
       action: 'Uruchomienie SOC (własnego lub MSSP)',
       effort: 'Wysoki',
-      impact: 'Bardzo wysoki: monitoring 24/7, szybkie wykrywanie ataków',
-      cost: 'SOC własny: kilka mln PLN rocznie; MSSP: od kilkudziesięciu tys. PLN miesięcznie',
-      timeToComplete: '3-12 miesięcy'
+      impact: 'Bardzo wysoki: monitoring 24/7 i szybkie wykrywanie ataków',
+      cost: 'Własny SOC: kilka mln PLN rocznie; MSSP: od kilkudziesięciu tys. PLN miesięcznie',
+      timeToComplete: '3–12 miesięcy'
     },
     {
       action: 'Wdrożenie architektury Zero Trust',
       effort: 'Bardzo wysoki',
       impact: 'Bardzo wysoki: zmienia cały model bezpieczeństwa',
-      cost: 'Zależy od skali (projekt wieloletni)',
-      timeToComplete: '2-5 lat (stopniowe wdrożenie)'
+      cost: 'Zależny od skali (projekt wieloletni)',
+      timeToComplete: '2–5 lat (stopniowe wdrożenie)'
     },
     {
       action: 'Certyfikacja ISO/IEC 27001',
       effort: 'Wysoki',
-      impact: 'Wysoki: zewnętrzna weryfikacja skuteczności SZBI, akceptowana przez regulatorów',
+      impact: 'Wysoki: zewnętrzne potwierdzenie skuteczności SZBI, uznawane przez regulatorów',
       cost: 'Audyt certyfikacyjny: od kilku do kilkudziesięciu tys. PLN',
-      timeToComplete: '12-18 miesięcy po wdrożeniu SZBI'
+      timeToComplete: '12–18 miesięcy po wdrożeniu SZBI'
     },
   ],
 };

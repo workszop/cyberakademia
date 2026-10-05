@@ -23,7 +23,14 @@ export const REGULATIONS = [
       'Kary: podmioty kluczowe do 10 mln EUR lub 2% światowego obrotu; ważne do 7 mln EUR lub 1,4% obrotu',
       'Polska oś czasu: KSC 2.0 wchodzi w życie 3.04.2026, rejestracja podmiotów do 3.10.2026, wdrożenie SZBI do 3.04.2027, audyt do 3.04.2028'
     ],
-    color: '#4F46E5'
+    color: '#4F46E5',
+    compare: {
+      since: '3.04.2026',
+      sinceNote: 'KSC 2.0 w Polsce; rejestracja do 3.10.2026',
+      incident: 'do CSIRT (NASK, GOV, MON), poważne incydenty',
+      times: ['24 h ostrzeżenie', '72 h zgłoszenie', '30 dni raport'],
+      fines: 'Podmioty kluczowe: do 10 mln EUR lub 2% światowego obrotu. Ważne: do 7 mln EUR lub 1,4% obrotu.'
+    }
   },
   {
     id: 'dora',
@@ -43,7 +50,14 @@ export const REGULATIONS = [
       'Filar 5: Wymiana informacji – udział w strukturach wymiany informacji o zagrożeniach',
       'Kary: do 1% dziennego globalnego obrotu przez maks. 6 miesięcy; zarząd do 1 mln EUR'
     ],
-    color: '#0891B2'
+    color: '#0891B2',
+    compare: {
+      since: '17.01.2025',
+      sinceNote: 'bez okresu przejściowego',
+      incident: 'do KNF, poważne incydenty',
+      times: ['4 h ostrzeżenie', '24 h aktualizacja', '30 dni raport'],
+      fines: 'Do 1% dziennego globalnego obrotu przez maks. 6 miesięcy; zarząd do 1 mln EUR.'
+    }
   },
   {
     id: 'rodo',
@@ -63,7 +77,14 @@ export const REGULATIONS = [
       'Kary: do 20 mln EUR lub 4% globalnego obrotu (wyższa kwota)',
       'Organ nadzorczy w Polsce: UODO (Urząd Ochrony Danych Osobowych)'
     ],
-    color: '#059669'
+    color: '#059669',
+    compare: {
+      since: '25.05.2018',
+      incident: 'do UODO',
+      times: ['72 h'],
+      incidentNote: 'Liczone od stwierdzenia naruszenia. Osoby powiadamia się, gdy ryzyko jest wysokie.',
+      fines: 'Do 20 mln EUR lub 4% globalnego obrotu (wyższa kwota).'
+    }
   },
   {
     id: 'iso27001',
@@ -82,7 +103,14 @@ export const REGULATIONS = [
       'Relacja z NIS2: wdrożony i certyfikowany ISMS może zostać uznany za spełnienie znacznej części wymagań NIS2/KSC',
       'Koszty certyfikacji zależą od wielkości organizacji; dla MŚP zaczynają się od kilkudziesięciu tysięcy PLN'
     ],
-    color: '#D97706'
+    color: '#D97706',
+    compare: {
+      since: 'wersja 2022',
+      sinceNote: 'recertyfikacja co 3 lata',
+      incident: null,
+      times: [],
+      fines: null
+    }
   },
 ];
 
@@ -160,35 +188,30 @@ export const DORA_PILLARS = [
   {
     id: 'risk-management',
     name: 'Zarządzanie ryzykiem ICT',
-    icon: '⚙️',
     description: 'Ład zarządczy i ramy zarządzania ryzykiem ICT – polityki, procedury, odpowiedzialność zarządu.',
     detail: 'Instytucja musi wdrożyć pełne ramy zarządzania ryzykiem ICT: identyfikację i klasyfikację zasobów ICT, ciągłą ocenę ryzyka, polityki bezpieczeństwa, plany ochrony i odtwarzania. Zarząd bezpośrednio odpowiada za zatwierdzenie tych ram i nadzór nad nimi. Zarząd i pracownicy muszą też regularnie przechodzić szkolenia z bezpieczeństwa ICT.'
   },
   {
     id: 'incident-management',
     name: 'Zarządzanie incydentami ICT',
-    icon: '🚨',
     description: 'Klasyfikacja, zarządzanie i zgłaszanie incydentów ICT do regulatorów finansowych.',
     detail: 'Instytucje muszą wdrożyć procesy zarządzania incydentami ICT: wykrywanie, klasyfikację (poważne vs. inne), eskalację i zgłaszanie. Poważne incydenty zgłasza się do właściwego organu nadzoru (w Polsce KNF): wczesne ostrzeżenie w 4h, aktualizacja w 24h, raport końcowy w 30 dni. DORA przewiduje też dobrowolne zgłaszanie cyberzagrożeń, które nie spowodowały jeszcze incydentu.'
   },
   {
     id: 'testing',
     name: 'Testowanie odporności operacyjnej',
-    icon: '🔬',
     description: 'Regularne testowanie systemów ICT: od podstawowych testów po zaawansowane TLPT.',
     detail: 'DORA wymaga regularnych testów: podstawowych (podatności, przeglądy kodu, testy aplikacji) od wszystkich instytucji i zaawansowanych TLPT (Threat-Led Penetration Testing) co 3 lata od największych. TLPT bazuje na standardzie TIBER-EU i angażuje zewnętrznych testerów (red team), którzy działają jak prawdziwi napastnicy. Wyniki TLPT trafiają do regulatora i mogą być współdzielone między instytucjami.'
   },
   {
     id: 'third-party',
     name: 'Ryzyko dostawców ICT',
-    icon: '🔗',
     description: 'Zarządzanie ryzykiem zewnętrznych dostawców ICT, szczególnie dostawców chmury.',
     detail: 'Instytucje muszą prowadzić rejestr umów z dostawcami ICT, regularnie oceniać ryzyko koncentracji (zbyt duże uzależnienie od jednego dostawcy), negocjować wymagane klauzule umowne (prawo do audytu, SLA, plany wyjścia) i przygotować plany wyjścia. Plan wyjścia to procedura zakończenia korzystania z dostawcy ICT i przeniesienia usługi do innego dostawcy albo do rozwiązania wewnętrznego bez zakłócenia działania funkcji krytycznych lub ważnych. Nie jest to plan awaryjny na wypadek incydentu, lecz z góry przygotowana ścieżka migracji na wypadek, gdyby dostawca przestał spełniać wymagania lub zakończył działalność. Kluczowi dostawcy ICT (np. wielkie firmy chmurowe obsługujące wiele banków) podlegają bezpośredniemu nadzorowi ESA (EBA, ESMA, EIOPA).'
   },
   {
     id: 'information-sharing',
     name: 'Wymiana informacji o zagrożeniach',
-    icon: '🤝',
     description: 'Udział w strukturach wymiany informacji o cyberzagrożeniach między instytucjami finansowymi.',
     detail: 'DORA zachęca instytucje do udziału w ustaleniach dotyczących wymiany informacji o zagrożeniach cybernetycznych (CTI). Wymiana informacji o wskaźnikach kompromitacji (IoC), technikach atakujących (TTPs) i podatnościach wzmacnia odporność całego sektora finansowego. Udział jest dobrowolny, ale DORA tworzy ramy prawne, które zapewniają bezpieczeństwo i poufność tej wymiany.'
   },
@@ -200,28 +223,24 @@ export const OBLIGATIONS_NIS2 = [
   {
     id: 'risk-management',
     name: 'Zarządzanie ryzykiem cyberbezpieczeństwa',
-    icon: '⚠️',
     description: 'Wdrożenie SZBI i systematyczne szacowanie ryzyka co najmniej raz na 2 lata.',
     detail: 'Podmiot musi wdrożyć System Zarządzania Bezpieczeństwem Informacji (SZBI) obejmujący: identyfikację aktywów, szacowanie ryzyka, wdrożenie kontroli (polityki bezpieczeństwa, zarządzanie dostępem, kryptografia, bezpieczeństwo fizyczne, BCP/DRP, bezpieczeństwo łańcucha dostaw). Punktem odniesienia jest zwykle ISO/IEC 27001. Zarząd zatwierdza SZBI i odpowiada za jego skuteczność.'
   },
   {
     id: 'incident-handling',
     name: 'Obsługa incydentów i zgłaszanie',
-    icon: '🚨',
     description: 'Procesy wykrywania, zarządzania i zgłaszania poważnych incydentów do CSIRT.',
     detail: 'Podmiot musi wdrożyć procesy zarządzania incydentami i zgłaszać poważne incydenty do właściwego CSIRT: wczesne ostrzeżenie w 24h od powzięcia wiedzy, pełne zgłoszenie w 72h, raport końcowy w 30 dni. „Poważny incydent” to taki, który zakłóca lub może zakłócić świadczenie usług. KSC definiuje kryteria klasyfikacji. Za niezgłoszenie grożą kary administracyjne.'
   },
   {
     id: 'supply-chain',
     name: 'Bezpieczeństwo łańcucha dostaw',
-    icon: '🔗',
     description: 'Ocena i zarządzanie ryzykiem cyberbezpieczeństwa dostawców i podwykonawców.',
     detail: 'Podmiot musi oceniać ryzyko cyberbezpieczeństwa w łańcuchu dostaw i nim zarządzać: wskazać najważniejszych dostawców ICT, oceniać ich poziom bezpieczeństwa, wpisywać wymogi bezpieczeństwa do umów i sprawdzać, czy dostawcy je spełniają. NIS2 wprost wskazuje atak SolarWinds jako przykład zagrożenia, któremu ta regulacja ma zapobiegać. Wymagany jest rejestr dostawców z oceną ryzyka.'
   },
   {
     id: 'governance',
     name: 'Odpowiedzialność i nadzór zarządu',
-    icon: '👔',
     description: 'Zarząd zatwierdza środki zarządzania ryzykiem, szkoli się i odpowiada osobiście.',
     detail: 'NIS2 przełamuje zasadę, że cyberbezpieczeństwo to „sprawa IT”. Zarząd musi: zatwierdzać środki zarządzania ryzykiem cyberbezpieczeństwa, regularnie szkolić się z cyberbezpieczeństwa, monitorować realizację polityk bezpieczeństwa. Członkowie zarządu mogą odpowiadać osobiście za naruszenia. Ten mechanizm ma wymusić faktyczne zaangażowanie kadry kierowniczej zamiast przerzucania tematu na CISO.'
   },
@@ -323,76 +342,5 @@ export const NIST_FUNCTIONS = [
       'Komunikacja do klientów o przywróceniu usług',
       'Rejestr wniosków i plan poprawy'
     ]
-  },
-];
-
-// ── Quiz - regulacje ────────────────────────────────────────────────────────
-
-export const REGULATION_QUIZ = [
-  {
-    question: 'Organizacja z sektora energetycznego ma 300 pracowników. Jakie regulacje cyberbezpieczeństwa jej dotyczą?',
-    options: [
-      'Tylko RODO, bo przetwarza dane pracowników',
-      'NIS2/KSC i RODO, bo sektor energetyczny jest objęty NIS2 jako podmiot kluczowy',
-      'Tylko ISO 27001, bo to norma dla dużych organizacji',
-      'Żadne, bo regulacje dotyczą tylko banków i administracji'
-    ],
-    correct: 1,
-    explanation: 'Dyrektywa NIS2 wymienia energetykę jako sektor kluczowy. Organizacja z 300 pracownikami przekracza próg podmiotów kluczowych (250 os. / 50 mln EUR). RODO dotyczy jej niezależnie od tego, bo przetwarza dane osobowe pracowników i klientów. ISO 27001 jest dobrowolna, ale certyfikacja może potwierdzać spełnienie wymagań KSC.'
-  },
-  {
-    question: 'DORA obowiązuje od 17 stycznia 2025. Kogo dotyczy ta regulacja?',
-    options: [
-      'Wszystkich firm prowadzących działalność w Polsce',
-      'Tylko dużych korporacji powyżej 1000 pracowników',
-      'Instytucji finansowych UE i ich kluczowych dostawców ICT',
-      'Wyłącznie banków objętych nadzorem EBC'
-    ],
-    correct: 2,
-    explanation: 'DORA to lex specialis dla sektora finansowego: obejmuje banki, ubezpieczycieli, firmy inwestycyjne, instytucje płatnicze, giełdy kryptowalut i inne. Nowością jest objęcie regulacją dostawców ICT obsługujących sektor finansowy (w tym dostawców chmury). DORA nie ma progu wielkości, więc dotyczy nawet małych instytucji finansowych.'
-  },
-  {
-    question: 'Firma odkryła, że baza danych klientów wyciekła. RODO nakazuje zgłoszenie naruszenia do UODO w ciągu:',
-    options: [
-      '24 godzin od wykrycia',
-      '48 godzin od wykrycia',
-      '72 godzin od powzięcia wiedzy o naruszeniu',
-      '7 dni roboczych od wykrycia'
-    ],
-    correct: 2,
-    explanation: 'Art. 33 RODO nakłada obowiązek zgłoszenia naruszenia ochrony danych osobowych organowi nadzorczemu (w Polsce UODO) „bez zbędnej zwłoki – w miarę możliwości, nie później niż w terminie 72 godzin po stwierdzeniu naruszenia”. Jeśli zgłoszenie następuje po 72h, trzeba dołączyć wyjaśnienie opóźnienia. Gdy naruszenie grozi wysokim ryzykiem dla osób, trzeba też powiadomić same osoby.'
-  },
-  {
-    question: 'Co odróżnia DORA od NIS2 pod względem formy prawnej i skutku?',
-    options: [
-      'DORA to dyrektywa – wymaga implementacji; NIS2 to rozporządzenie – działa wprost',
-      'DORA to rozporządzenie – działa wprost w całej UE; NIS2 to dyrektywa – wymaga implementacji krajowej',
-      'Obie są dyrektywami – obie wymagają implementacji krajowej',
-      'Obie są rozporządzeniami – obie działają wprost bez implementacji'
-    ],
-    correct: 1,
-    explanation: 'DORA jest rozporządzeniem UE (2022/2554), więc ma bezpośredni skutek prawny we wszystkich krajach UE bez implementacji. NIS2 jest dyrektywą (2022/2555): wyznacza cele, ale każdy kraj musi ją wdrożyć do prawa krajowego. Polska wdraża NIS2 przez nowelizację ustawy o KSC.'
-  },
-  {
-    question: 'Który termin na osi czasu KSC 2.0 dotyczy wdrożenia pełnego SZBI?',
-    options: [
-      '3 kwietnia 2026 – wejście w życie ustawy',
-      '3 października 2026 – rejestracja podmiotów',
-      '3 kwietnia 2027 – 12 miesięcy od wejścia w życie',
-      '3 kwietnia 2028 – termin pierwszego audytu'
-    ],
-    correct: 2,
-    explanation: 'KSC 2.0 wchodzi w życie 3 kwietnia 2026. Objęte nią podmioty mają 6 miesięcy na rejestrację (do 3.10.2026), 12 miesięcy na wdrożenie SZBI (do 3.04.2027) i 24 miesiące na przeprowadzenie pierwszego audytu (do 3.04.2028). Obowiązki wchodzą stopniowo, żeby organizacje zdążyły się przygotować, a ten czas trzeba wykorzystać na wdrożenie.'
-  },
-  {
-    question: 'NIST CSF 2.0 dodał nową funkcję w porównaniu z wersją 1.1. Która to?',
-    options: [
-      'Detect (Wykrywaj) – bo wcześniej nie było monitoringu',
-      'Govern (Zarządzaj) – strategia i governance na poziomie organizacji',
-      'Respond (Reaguj) – reagowanie na incydenty',
-      'Recover (Odtwarzaj) – odtwarzanie po incydencie'
-    ],
-    correct: 1,
-    explanation: 'NIST CSF 2.0 (luty 2024) dodał szóstą funkcję: Govern (Zarządzaj). Poprzednia wersja 1.1 miała 5 funkcji: Identify, Protect, Detect, Respond, Recover. Govern dotyczy całej organizacji: strategii, polityk, ról, odpowiedzialności i zarządzania ryzykiem na poziomie zarządu. To odpowiedź na rosnące wymagania regulacyjne (NIS2, DORA) dotyczące zaangażowania zarządu w cyberbezpieczeństwo.'
   },
 ];

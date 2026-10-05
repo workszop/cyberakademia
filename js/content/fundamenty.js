@@ -10,7 +10,6 @@ export const CIA_TRIAD = {
     id: 'C',
     name: 'Confidentiality',
     namePL: 'Poufność',
-    icon: '🔐',
     color: '#4F46E5',
     description: 'Dostęp do danych mają tylko uprawnieni.',
     violationExample: 'Naruszenie = wyciek danych. Haker wykradł bazę klientów. Pracownik wysłał poufny dokument na prywatny e-mail.',
@@ -21,7 +20,6 @@ export const CIA_TRIAD = {
     id: 'I',
     name: 'Integrity',
     namePL: 'Integralność',
-    icon: '✅',
     color: '#059669',
     description: 'Dane nie zostały niepostrzeżenie zmienione.',
     violationExample: 'Naruszenie = sfałszowany przelew, podmieniona faktura. Atakujący zmienił numer konta bankowego w systemie finansowym.',
@@ -32,7 +30,6 @@ export const CIA_TRIAD = {
     id: 'A',
     name: 'Availability',
     namePL: 'Dostępność',
-    icon: '⚡',
     color: '#D97706',
     description: 'System jest dostępny wtedy, gdy jest potrzebny.',
     violationExample: 'Naruszenie = ransomware, który blokuje firmę, albo atak DDoS. Szpital niedostępny przez tydzień po zaszyfrowaniu serwerów.',
@@ -47,7 +44,6 @@ export const RISK_RESPONSES = [
   {
     id: 'obniżać',
     name: 'Obniżaj ryzyko (Mitigate)',
-    icon: '🛡️',
     color: '#4F46E5',
     description: 'Wdrożenie kontroli technicznych lub organizacyjnych, które zmniejszają prawdopodobieństwo zagrożenia albo jego skutki. Ryzyko pozostaje, ale na akceptowalnym poziomie.',
     whenToUse: 'Gdy ryzyko przekracza apetyt na ryzyko organizacji, ale kontrole mogą je zmniejszyć do akceptowalnego poziomu. Najczęstsza i zalecana odpowiedź.',
@@ -57,7 +53,6 @@ export const RISK_RESPONSES = [
   {
     id: 'przenosić',
     name: 'Przenoś ryzyko (Transfer)',
-    icon: '🤝',
     color: '#0891B2',
     description: 'Przeniesienie finansowych skutków ryzyka na zewnętrzny podmiot przez ubezpieczenie lub umowy z dostawcami. Ryzyko nadal istnieje, ale skutki finansowe pokrywa ktoś inny.',
     whenToUse: 'Gdy ryzyko ma niskie prawdopodobieństwo, ale wysokie skutki finansowe, albo gdy mitygacja kosztuje więcej niż ubezpieczenie. Ubezpieczenie cybernetyczne staje się standardem.',
@@ -67,7 +62,6 @@ export const RISK_RESPONSES = [
   {
     id: 'akceptować',
     name: 'Akceptuj ryzyko (Accept)',
-    icon: '✋',
     color: '#059669',
     description: 'Świadoma decyzja, że organizacja nie podejmuje dalszych działań wobec danego ryzyka. Akceptuje możliwe skutki, bo ryzyko mieści się w apetycie na ryzyko albo mitygacja kosztowałaby więcej niż potencjalna strata.',
     whenToUse: 'Gdy ryzyko ma niskie prawdopodobieństwo i/lub niskie skutki albo gdy koszt kontroli jest nieproporcjonalny. Wymaga formalnej decyzji zarządu i dokumentacji. Nie jest to ignorowanie ryzyka!',
@@ -77,7 +71,6 @@ export const RISK_RESPONSES = [
   {
     id: 'unikać',
     name: 'Unikaj ryzyka (Avoid)',
-    icon: '🚫',
     color: '#DC2626',
     description: 'Zaprzestanie działalności lub procesu, który generuje ryzyko. Ryzyko znika razem ze swoim źródłem. Zwykle oznacza to rezygnację z czegoś.',
     whenToUse: 'Gdy ryzyko jest zbyt wysokie, a inne metody nie zmniejszą go skutecznie, albo gdy działalność jest niezgodna z regulacjami. Stosowane rzadko, bo eliminuje też potencjalną wartość biznesową.',
@@ -86,7 +79,7 @@ export const RISK_RESPONSES = [
   },
 ];
 
-// ── Scenariusze CIA (gra "wrzuć do właściwego koszyka") ────────────────────
+// ── Scenariusze CIA (przykłady naruszeń w kolumnach triady) ─────────────────
 
 export const CIA_SCENARIOS = [
   {
@@ -141,7 +134,7 @@ export const CIA_SCENARIOS = [
   },
 ];
 
-// ── Scenariusze ryzyka (gra "dobierz odpowiedź") ───────────────────────────
+// ── Scenariusze ryzyka (przykłady przy strategiach odpowiedzi) ─────────────
 
 export const RISK_SCENARIOS = [
   {

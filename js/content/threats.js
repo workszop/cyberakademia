@@ -1,5 +1,5 @@
 /**
- * THREATS - karty zagrożeń cyberbezpieczeństwa (flip cards)
+ * THREATS - najczęstsze zagrożenia cyberbezpieczeństwa (tabela w module 1)
  * Źródło: "Cyberbezpieczeństwo w organizacjach - przewodnik porządkujący"
  */
 
@@ -7,7 +7,6 @@ export const THREATS = [
   {
     id: 'ransomware',
     name: 'Ransomware',
-    icon: '🔒',
     front: 'Złośliwe oprogramowanie szyfrujące dane i żądające okupu za ich odblokowanie.',
     entryPoint: 'E-mail phishingowy z załącznikiem lub linkiem, podatność w oprogramowaniu (np. nieaktualne VPN/RDP), słabe hasło do RDP, złośliwy plik pobrany z internetu.',
     effect: 'Zaszyfrowanie wszystkich danych na urządzeniu i w udziałach sieciowych, przez co systemy przestają działać. Nowoczesny ransomware stosuje podwójne wymuszenie: najpierw wykrada dane (eksfiltracja), potem je szyfruje i grozi ich opublikowaniem, jeśli ofiara nie zapłaci okupu.',
@@ -18,18 +17,16 @@ export const THREATS = [
   {
     id: 'phishing',
     name: 'Phishing / inżynieria społeczna',
-    icon: '🎣',
     front: 'Manipulowanie ludźmi, by wyłudzić dane dostępowe albo skłonić ich do szkodliwego działania.',
     entryPoint: 'Fałszywy e-mail udający bank/szefa/IT, SMS (smishing), telefon (vishing), fałszywa strona logowania, spreparowany link lub załącznik.',
     effect: 'Wykradzenie haseł i danych logowania, przejęcie kont (Account Takeover), instalacja złośliwego oprogramowania, autoryzacja fałszywego przelewu (Business Email Compromise, BEC). Phishing jest wektorem wejścia dla ok. 90% ataków ransomware.',
     cia: 'Poufność (C) – wykradzione dane logowania; Integralność (I) – nieautoryzowane transakcje; Dostępność (A) – przejęte konta blokują dostęp prawowitemu użytkownikowi.',
-    defense: 'MFA (eliminuje 99% ataków na hasła), szkolenia pracowników z rozpoznawania phishingu, filtrowanie poczty (SPF, DKIM, DMARC), symulacje phishingu, weryfikacja tożsamości dla przelewów.',
+    defense: 'MFA (mocno ogranicza ataki z użyciem wykradzionych haseł), szkolenia pracowników z rozpoznawania phishingu, filtrowanie poczty (SPF, DKIM, DMARC), symulacje phishingu, weryfikacja tożsamości dla przelewów.',
     example: 'CEO fraud (BEC): pracownik działu finansowego otrzymał e-mail „od prezesa” z pilną prośbą o przelew 2 mln PLN na nowe konto. E-mail wyglądał autentycznie: domena różniła się tylko jedną literą. Przelew wykonano, zanim ktoś zadzwonił do prezesa.'
   },
   {
     id: 'supply-chain',
     name: 'Atak na łańcuch dostaw',
-    icon: '🔗',
     front: 'Kompromitacja organizacji przez zainfekowanie oprogramowania lub infrastruktury zaufanego dostawcy.',
     entryPoint: 'Zainfekowana aktualizacja oprogramowania (SolarWinds, 3CX), skompromitowany kod biblioteki open source (Log4Shell, XZ Utils), zainfekowany sprzęt lub firmware, dostęp dostawcy IT do sieci klienta.',
     effect: 'Jeden zainfekowany dostawca może skompromitować tysiące klientów jednocześnie. Atakujący zyskują zaufany, podpisany cyfrowo wektor wejścia, który omija tradycyjne zabezpieczenia. To jeden z ataków najtrudniejszych do wykrycia i do obrony.',
@@ -40,7 +37,6 @@ export const THREATS = [
   {
     id: 'ddos',
     name: 'Atak DDoS',
-    icon: '🌊',
     front: 'Atak rozproszonej odmowy usługi: zalanie systemów ruchem, który uniemożliwia ich działanie.',
     entryPoint: 'Botnet (tysiące zainfekowanych urządzeń IoT lub komputerów), amplifikacja DNS/NTP, atak wolumetryczny lub na aplikację (warstwa 7). Często zlecany jako usługa (DDoS-for-hire).',
     effect: 'Niedostępność serwisów internetowych, API, systemów transakcyjnych. Może być zasłoną dymną dla właściwego ataku (włamanie w czasie, gdy zespół IT skupia się na DDoS). Bezpośrednie straty: utracone przychody, kary za SLA, utrata reputacji.',
@@ -51,7 +47,6 @@ export const THREATS = [
   {
     id: 'insider',
     name: 'Zagrożenie wewnętrzne (Insider Threat)',
-    icon: '👤',
     front: 'Zagrożenie ze strony obecnych lub byłych pracowników, kontrahentów lub partnerów mających legalny dostęp.',
     entryPoint: 'Pracownik z dostępem do systemów, który działa złośliwie (świadoma kradzież/sabotaż), nieświadomie (błąd, brak wiedzy) albo pod przymusem (szantaż, socjotechnika z zewnątrz).',
     effect: 'Kradzież wrażliwych danych (własność intelektualna, dane klientów), sabotaż systemów, celowe wycieki, sprzedaż danych konkurencji lub obcym służbom. Zagrożenia wewnętrzne są najtrudniejsze do wykrycia, bo osoba ma legalny dostęp i zna procedury bezpieczeństwa.',
@@ -62,7 +57,6 @@ export const THREATS = [
   {
     id: 'apt',
     name: 'APT – zaawansowane trwałe zagrożenie',
-    icon: '🕵️',
     front: 'Długotrwały, ukryty atak celowany, często sponsorowany przez państwo lub zorganizowaną przestępczość.',
     entryPoint: 'Spear-phishing (precyzyjnie celowany phishing), wykorzystanie podatności zero-day, skompromitowany dostawca (supply chain), insider, fizyczny dostęp do infrastruktury.',
     effect: 'Atakujący przez miesiące lub lata pozostaje ukryty w sieci ofiary: eksfiltruje dane wywiadowcze lub handlowe, instaluje backdoory dla przyszłego użytku, może sabotować infrastrukturę krytyczną w zaplanowanym momencie. Trudno go wykryć, bo unika głośnych działań.',
