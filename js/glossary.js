@@ -133,18 +133,78 @@ const TERM_PATTERN = (() => {
   return new RegExp(`(?<![\\w])(${escaped.join('|')})(?![\\w])`, 'g');
 })();
 
+// ─── Meaning in parentheses at the first occurrence ───────
+
+// Terms already explained on the current page
+let explained = new Set();
+
+// Spots too tight for an inserted explanation (labels, tags, table headers)
+const NO_ROOM = 'th, label, .chip, .node, .mono, .eyebrow, .cell-tag, .cell-sub, .times, .tl-label, .tl-detail-date, .stat, .ls-cat, .pillar, .split-sub, .step-meta, .prop-sub';
+
+// The explanation fits only before a space or punctuation, not in 'NIS2/KSC' or 'SIEM-a'
+const ROOM_AFTER = /^($|[\s.,;:!?])/;
+// Part of a longer name: 'NIST CSF', 'ISO 27001', 'DORA Art. 10'
+const NAME_CONTINUES = /^\s+[\dA-ZĄĆĘŁŃÓŚŹŻ]/;
+
+const count = (text, ch) => text.split(ch).length - 1;
+
+/** Text of the siblings before `node` within its parent. */
+function textBefore(node) {
+  let text = '';
+  for (let n = node.previousSibling; n; n = n.previousSibling) text = n.textContent + text;
+  return text;
+}
+
+/** Adds ' (meaning)' after the term unless the text around it already explains it or has no room. */
+function explain(span) {
+  const term = span.dataset.term;
+  const meaning = GLOSSARY[term]?.meaning;
+  if (!meaning || explained.has(term) || span.closest(NO_ROOM)) return;
+  const before = textBefore(span);
+  const after = span.nextSibling?.nodeType === Node.TEXT_NODE ? span.nextSibling.nodeValue : '';
+  // The meaning is already spelled out here: 'System Zarządzania … (ISMS)', 'NGFW – zapora …'
+  if (span.parentElement.textContent.toLowerCase().includes(meaning.toLowerCase())) {
+    explained.add(term);
+    return;
+  }
+  // A bracket already follows ('CSIRT (NASK, …)', 'DPO (IOD)'): wait for a later occurrence
+  if (/^\s*\(/.test(after)) return;
+  const insideBrackets = count(before, '(') > count(before, ')');
+  const insideQuote = count(before, '„') > count(before, '”');
+  const inGroup = /[/-]$/.test(before) || !ROOM_AFTER.test(after) || NAME_CONTINUES.test(after)
+    || (/^\s*$/.test(after) && span.nextSibling?.nextSibling?.classList?.contains('term'));
+  if (insideBrackets || insideQuote || inGroup) return;
+  const note = document.createElement('span');
+  note.className = 'term-meaning no-terms';
+  note.dataset.termMeaning = term;
+  note.textContent = ` (${meaning})`;
+  span.after(note);
+  explained.add(term);
+}
+
+/** Explains each term once per page: visible text first, then collapsed details. */
+function explainFirstOccurrences(root) {
+  const spans = [...root.querySelectorAll('.term')];
+  const visible = spans.filter(s => s.getClientRects().length);
+  const collapsed = spans.filter(s => !s.getClientRects().length);
+  [...visible, ...collapsed].forEach(explain);
+}
+
 /**
  * Walks the DOM under `root` and wraps every glossary term found in a text
- * node with a keyboard-accessible definition trigger.
+ * node with a keyboard-accessible definition trigger, then adds the meaning in
+ * parentheses at the first occurrence of each term on the page.
  * Skips text already inside .term, headings, scripts, styles, SVG.
  *
- * Called by the router after each route mounts (content is rebuilt fresh
- * each navigation, so there is no double-wrapping across renders).
+ * The router calls it with { newPage: true } after each route mounts; blocks
+ * that rebuild part of the page (timeline, temple) call it on that part.
  *
  * @param {HTMLElement} root
+ * @param {{ newPage?: boolean }} [options]
  */
-export function enrichGlossaryDom(root) {
+export function enrichGlossaryDom(root, { newPage = false } = {}) {
   if (!root) return;
+  if (newPage) explained = new Set();
 
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -193,6 +253,9 @@ export function enrichGlossaryDom(root) {
     }
     textNode.parentNode.replaceChild(frag, textNode);
   });
+
+  // Blocks enrich their first detail before mounting; the page pass explains it
+  if (root.isConnected) explainFirstOccurrences(root);
 }
 
 /**

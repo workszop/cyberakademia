@@ -49,7 +49,7 @@ export function init({ afterRender, onSectionParam }) {
       const page = routes[route]();
       if (page instanceof Node) {
         app.appendChild(page);
-        enrichGlossaryDom(app);
+        enrichGlossaryDom(app, { newPage: true });
       }
     } catch (err) {
       console.error('[router] render error for', route, err);
