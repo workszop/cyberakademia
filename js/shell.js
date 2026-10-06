@@ -14,6 +14,7 @@ import {
 import { sectionDomId } from './sections.js';
 
 const MOBILE_LAYOUT = window.matchMedia('(max-width: 768px)');
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // ─── State ────────────────────────────────────────────────
 
@@ -49,8 +50,7 @@ function sectionsInPage() {
 function scrollToSection(sectionId, { smooth = true } = {}) {
   const target = document.getElementById(sectionDomId(sectionId));
   if (!target) return false;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  target.scrollIntoView({ behavior: smooth && !reduceMotion ? 'smooth' : 'instant', block: 'start' });
+  target.scrollIntoView({ behavior: smooth && !REDUCED_MOTION.matches ? 'smooth' : 'instant', block: 'start' });
   if (shell.module) {
     history.replaceState(null, '', `${shell.module.route}?s=${sectionId}`);
   }
@@ -62,11 +62,10 @@ function nextSectionHref() {
   return next ? `${next.module.route}?s=${next.section.id}` : '#/slownik';
 }
 
-/** Goes to the next step; an unchanged hash fires no hashchange, so scroll directly. */
-function goNext() {
-  const href = nextSectionHref();
-  if (href !== location.hash) { location.hash = href; return; }
-  onSectionParam(parseHash(href).params);
+/** Follows an in-app link; an unchanged hash fires no hashchange, so act on the current page directly. */
+function navigate(href) {
+  if (href !== location.hash) location.hash = href;
+  else onSectionParam(parseHash(href).params);
 }
 
 function statusEl(mod) {
@@ -79,47 +78,35 @@ function statusEl(mod) {
 
 // ─── Render: sidebar ──────────────────────────────────────
 
+/** Builds the sidebar once; route and progress changes patch it via syncSidebar(). */
 function renderSidebar() {
-  const current = shell.page?.id || null;
-  const course = getCourseProgress();
-
-  const navItem = (mod) => {
-    const p = getModuleProgress(mod.id);
-    return el('a', {
-      class: 'nav-item',
-      href: mod.route,
-      'data-module': mod.id,
-      'data-layer': mod.layer,
-      'data-read-count': String(p.read),
-      'data-total': String(p.total),
-      'aria-current': current === mod.id ? 'page' : null,
-    },
-      mod.num
-        ? el('span', { class: 'layer-swatch mono' }, String(mod.num))
-        : el('span', { class: 'nav-icon' }, icon(mod.icon, 16)),
-      el('span', { class: 'nav-text' },
-        el('span', { class: 'nav-label' }, mod.title),
-        el('span', { class: 'nav-sub' }, mod.sections.length ? `${p.read}/${p.total} sekcji` : LAYERS[mod.layer].question),
-      ),
-      statusEl(mod),
-    );
-  };
+  const navItem = (mod) => el('a', {
+    class: 'nav-item',
+    href: mod.route,
+    'data-module': mod.id,
+    'data-layer': mod.layer,
+    'data-total': String(mod.sections.length),
+  },
+    mod.num
+      ? el('span', { class: 'layer-swatch mono' }, String(mod.num))
+      : el('span', { class: 'nav-icon' }, icon(mod.icon, 16)),
+    el('span', { class: 'nav-text' },
+      el('span', { class: 'nav-label' }, mod.title),
+      el('span', { class: 'nav-sub' }, mod.sections.length ? '' : LAYERS[mod.layer].question),
+    ),
+    statusEl(mod),
+  );
 
   const groups = GROUPS.map(g => {
-    const mods = g.modules.map(getModule);
-    const done = mods.filter(m => m.sections.length && getModuleProgress(m.id).pct === 100).length;
-    const countable = mods.filter(m => m.sections.length).length;
-    const items = [];
-    mods.forEach((m, i) => {
-      items.push(navItem(m));
-      if (g.relations && g.relations[i]) {
-        items.push(el('div', { class: 'rail-rel', 'aria-hidden': 'true' }, `${g.relations[i]} ↓`));
-      }
-    });
+    const items = g.modules.map(getModule).flatMap((m, i) => [
+      navItem(m),
+      g.relations?.[i] ? el('div', { class: 'rail-rel', 'aria-hidden': 'true' }, `${g.relations[i]} ↓`) : null,
+    ]);
+    const countable = g.modules.map(getModule).some(m => m.sections.length);
     return el('div', { class: `nav-group${g.relations ? ' layer-rail' : ''}` },
       el('div', { class: 'nav-group-title eyebrow' },
         el('span', {}, g.title),
-        countable ? el('span', {}, `${done}/${countable}`) : null),
+        countable ? el('span', { 'data-group-count': g.id }) : null),
       items,
     );
   });
@@ -129,20 +116,46 @@ function renderSidebar() {
     el('a', { class: 'brand', href: '#/', 'aria-label': 'CyberAkademia – mapa kursu' },
       el('img', { src: 'assets/quantica-q-mark-pink.png', alt: '', class: 'brand-mark' }),
       el('span', { class: 'brand-name' }, 'CyberAkademia')),
-    el('a', { class: 'nav-item nav-start', href: '#/', 'aria-current': shell.route === '#/' ? 'page' : null },
+    el('a', { class: 'nav-item nav-start', href: '#/' },
       el('span', { class: 'nav-icon' }, icon('layout-grid', 16)),
       el('span', { class: 'nav-text' }, el('span', { class: 'nav-label' }, 'Start · mapa kursu')),
       el('span', {})),
     el('nav', { class: 'nav-groups', 'aria-label': 'Moduły kursu' }, groups),
     el('div', { class: 'sidebar-foot' },
-      el('div', { class: 'overall' }, el('span', {}, 'Przeczytano'), el('strong', {}, `${course.pct}%`)),
+      el('div', { class: 'overall' }, el('span', {}, 'Przeczytano'), el('strong', { 'data-course-pct': '' })),
       el('div', { class: 'overall-bar', 'aria-hidden': 'true' },
         GROUPS.flatMap(g => g.modules).map(getModule).filter(m => m.sections.length).map(m =>
-          el('span', { 'data-layer': m.layer }, el('i', { style: { '--p': String(getModuleProgress(m.id).pct) } })))),
+          el('span', { 'data-layer': m.layer }, el('i', { 'data-bar-module': m.id })))),
       el('button', { class: 'kbd-hint', type: 'button', 'data-action': 'help' },
         'Skróty klawiszowe ', el('kbd', {}, '?')),
     ),
   );
+}
+
+/** Updates current page and progress in place, so a focused sidebar link survives. */
+function syncSidebar() {
+  const current = shell.page?.id || null;
+  const setCurrent = (node, on) => on ? node.setAttribute('aria-current', 'page') : node.removeAttribute('aria-current');
+
+  setCurrent(refs.sidebar.querySelector('.nav-start'), shell.route === '#/');
+  refs.sidebar.querySelectorAll('.nav-item[data-module]').forEach(a => {
+    const mod = getModule(a.dataset.module);
+    const p = getModuleProgress(mod.id);
+    setCurrent(a, current === mod.id);
+    a.dataset.readCount = String(p.read);
+    if (mod.sections.length) a.querySelector('.nav-sub').textContent = `${p.read}/${p.total} sekcji`;
+    a.querySelector('.status').replaceWith(statusEl(mod));
+  });
+  GROUPS.forEach(g => {
+    const counter = refs.sidebar.querySelector(`[data-group-count="${g.id}"]`);
+    if (!counter) return;
+    const mods = g.modules.map(getModule).filter(m => m.sections.length);
+    counter.textContent = `${mods.filter(m => getModuleProgress(m.id).pct === 100).length}/${mods.length}`;
+  });
+  refs.sidebar.querySelector('[data-course-pct]').textContent = `${getCourseProgress().pct}%`;
+  refs.sidebar.querySelectorAll('[data-bar-module]').forEach(i => {
+    i.style.setProperty('--p', String(getModuleProgress(i.dataset.barModule).pct));
+  });
 }
 
 // ─── Render: topbar ───────────────────────────────────────
@@ -221,7 +234,7 @@ function refreshProgress() {
       a.classList.toggle('visited', isRead(mod.id, a.dataset.toc));
     });
   }
-  renderSidebar();
+  syncSidebar();
   const next = refs.topbar.querySelector('[data-action="next"]');
   if (next) next.href = nextSectionHref();
 }
@@ -379,17 +392,18 @@ function bindListeners() {
     if (action === 'close-menu') setMenu(false);
     if (action === 'help') { e.preventDefault(); setHelp(true); }
     if (action === 'close-help') setHelp(false);
-    // An unchanged hash fires no hashchange: scroll to the section directly
-    if (action === 'next' && nextSectionHref() === location.hash && !(e.ctrlKey || e.metaKey || e.shiftKey)) {
-      e.preventDefault();
-      goNext();
-    }
 
     const tocLink = e.target.closest('[data-toc]');
+    const link = e.target.closest('a[href^="#/"]');
     if (tocLink) {
       e.preventDefault();
       scrollToSection(tocLink.dataset.toc);
       setActive(tocLink.dataset.toc);
+    } else if (link && link.getAttribute('href') === location.hash && !e.defaultPrevented
+      && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) {
+      // Link to the URL already shown: no hashchange would fire, so handle it here
+      e.preventDefault();
+      navigate(location.hash);
     }
     // Close the mobile menu after choosing a module
     if (e.target.closest('.sidebar a')) setMenu(false);
@@ -425,7 +439,7 @@ function bindListeners() {
     switch (e.key) {
       case 'j': case 'J': stepSection(1); break;
       case 'k': case 'K': stepSection(-1); break;
-      case 'n': case 'N': goNext(); break;
+      case 'n': case 'N': navigate(nextSectionHref()); break;
       case 'm': case 'M': setMenu(!shell.menuOpen); break;
       case '?': setHelp(true); break;
       default: return;
@@ -456,6 +470,7 @@ export function initShell() {
   refs.main = document.querySelector('.main');
   refs.skip = document.querySelector('.skip-link');
   renderHelp();
+  renderSidebar();
   syncOverlays();
   bindListeners();
 }
@@ -481,7 +496,12 @@ export function onRoute({ route, params, module }) {
   announce(module ? module.fullTitle : 'Mapa kursu');
 }
 
-/** Same page, different ?s= parameter (e.g. back/forward). */
+/** Same page, different or repeated ?s= parameter: go to that section, or to the top. */
 export function onSectionParam(params) {
-  if (params.s && scrollToSection(params.s)) setActive(params.s);
+  if (params.s && scrollToSection(params.s)) {
+    setActive(params.s);
+    announce(`Sekcja ${params.s}`);
+  } else if (!params.s) {
+    window.scrollTo({ top: 0, behavior: REDUCED_MOTION.matches ? 'instant' : 'smooth' });
+  }
 }

@@ -23,7 +23,6 @@ export const REGULATIONS = [
       'NIS2 (art. 34) określa progi maksymalnych kar: co najmniej 10 mln EUR lub 2% światowego obrotu dla podmiotów kluczowych i 7 mln EUR lub 1,4% dla ważnych. Polskie kary KSC opisuje art. 73 ustawy; podstawą procentową są przychody z działalności gospodarczej',
       'Polska oś czasu dla podmiotów spełniających kryteria w dniu wejścia nowelizacji w życie: 3.04.2026 wejście ustawy, rejestracja do 3.10.2026, wdrożenie obowiązków (m.in. SZBI) do 3.04.2027, pierwszy audyt podmiotów kluczowych do 3.04.2028'
     ],
-    color: '#4F46E5',
     compare: {
       since: '3.04.2026',
       sinceNote: 'KSC 2.0 w Polsce; rejestracja do 3.10.2026 dla podmiotów spełniających kryteria w dniu wejścia ustawy w życie',
@@ -50,7 +49,6 @@ export const REGULATIONS = [
       'Filar 5: Wymiana informacji – udział w strukturach wymiany informacji o zagrożeniach',
       'Kary dla instytucji finansowych określa prawo krajowe. W Polsce KNF może nałożyć do 20 869 500 zł lub 10% rocznego przychodu, a na członka zarządu do 3 042 410 zł. Kluczowym dostawcom ICT grozi okresowa kara do 1% średniego dziennego światowego obrotu, przez maks. 6 miesięcy'
     ],
-    color: '#0891B2',
     compare: {
       since: '17.01.2025',
       sinceNote: 'w życie od 16.01.2023, dwa lata na przygotowanie',
@@ -77,7 +75,6 @@ export const REGULATIONS = [
       'Kary: do 20 mln EUR lub 4% globalnego obrotu (wyższa kwota)',
       'Organ nadzorczy w Polsce: UODO (Urząd Ochrony Danych Osobowych)'
     ],
-    color: '#059669',
     compare: {
       since: '25.05.2018',
       incident: 'do UODO, chyba że jest mało prawdopodobne ryzyko naruszenia praw lub wolności osób',
@@ -103,7 +100,6 @@ export const REGULATIONS = [
       'Relacja z NIS2: wdrożony i certyfikowany ISMS może zostać uznany za spełnienie znacznej części wymagań NIS2/KSC',
       'Koszty certyfikacji zależą od wielkości organizacji; dla MŚP zaczynają się od kilkudziesięciu tysięcy PLN'
     ],
-    color: '#D97706',
     compare: {
       since: 'wersja 2022',
       sinceNote: 'recertyfikacja co 3 lata',

@@ -98,6 +98,10 @@ table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size
 .row-detail-body { display: grid; gap: var(--space-3); max-width: 100ch; animation: fadeIn var(--dur-3) var(--ease); }
 .cell-tag { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; font-weight: var(--fw-bold); color: var(--fg-1); }
 .cell-tag i { width: 10px; height: 10px; border-radius: 2px; background: var(--tc, var(--lc)); }
+.cell-tag[data-reg="nis2"] { --tc: var(--reg-nis2); }
+.cell-tag[data-reg="dora"] { --tc: var(--reg-dora); }
+.cell-tag[data-reg="rodo"] { --tc: var(--reg-rodo); }
+.cell-tag[data-reg="iso27001"] { --tc: var(--reg-iso); }
 .cell-sub { display: block; font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.04em; font-weight: var(--fw-medium); margin-top: 2px; }
 .times { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 .times span { font-family: var(--font-mono); font-size: var(--fs-micro); padding: 2px 6px; border-radius: var(--radius-xs); background: var(--ink); color: var(--fg-on-dark); white-space: nowrap; }
@@ -208,10 +212,10 @@ table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size
 .tl-detail p { font-size: var(--fs-sm); color: var(--fg-2); }
 
 /* ─── Numbered list ─── */
-.num-list { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); border-top: 1px solid var(--border-1); }
+.num-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border-1); }
 .nl-item { border-bottom: 1px solid var(--border-1); padding: var(--space-4) var(--space-5) var(--space-4) 0; }
-.num-list.cols-2 .nl-item:nth-child(odd) { border-right: 1px solid var(--border-1); }
-.num-list.cols-2 .nl-item:nth-child(even) { padding-left: var(--space-5); }
+.num-list .nl-item:nth-child(odd) { border-right: 1px solid var(--border-1); }
+.num-list .nl-item:nth-child(even) { padding-left: var(--space-5); }
 .nl-item summary, .nl-item.static { list-style: none; display: grid; grid-template-columns: 44px minmax(0, 1fr) 20px; gap: var(--space-2); }
 .nl-item summary { cursor: pointer; }
 .nl-item summary::-webkit-details-marker { display: none; }
@@ -379,8 +383,8 @@ table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size
   .sec-num { font-size: 20px; }
   .scroll-hint { display: block; }
   .split-fork, .split-versus, .prop-cols, .num-list, .stat-strip, .mod-foot { grid-template-columns: minmax(0, 1fr); }
-  .num-list.cols-2 .nl-item:nth-child(odd) { border-right: 0; }
-  .num-list.cols-2 .nl-item:nth-child(even) { padding-left: 0; }
+  .num-list .nl-item:nth-child(odd) { border-right: 0; }
+  .num-list .nl-item:nth-child(even) { padding-left: 0; }
   .nl-item { padding-right: 0; }
   .nl-detail { margin-left: 0; }
   .vs-mid { flex-direction: row; padding: var(--space-3) 0; }

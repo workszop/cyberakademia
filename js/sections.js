@@ -12,12 +12,6 @@ import { MODULE_NOTES, SOURCES } from './editorial.js';
 
 // ─── Helpers ──────────────────────────────────────────────
 
-/** Accepts string | Node | array → array of children for el(). */
-function kids(content) {
-  if (content === null || content === undefined || content === false) return [];
-  return Array.isArray(content) ? content : [content];
-}
-
 function para(text, cls) {
   if (!text) return null;
   return typeof text === 'string' ? el('p', { class: cls }, text) : text;
@@ -51,14 +45,19 @@ export function callout({ title, text, tone = 'note', iconName = 'info' }) {
     el('span', { class: 'callout-icon' }, icon(iconName, 20)),
     el('div', {},
       title ? el('b', {}, title) : null,
-      ...kids(typeof text === 'string' ? el('p', {}, text) : text),
+      asBlock(text),
     ),
   );
 }
 
-/** Paragraph led by a bold label: labelled('Przykład: ', text). */
-export function labelled(label, text) {
-  return el('p', {}, el('b', {}, label), text);
+/** Paragraph led by a bold label: labelled('Przykład: ', content, 'example'). */
+export function labelled(label, content, cls) {
+  return el('p', { class: cls }, el('b', {}, label), content);
+}
+
+/** A string becomes a paragraph; nodes and arrays pass through to el(). */
+function asBlock(content) {
+  return typeof content === 'string' ? el('p', {}, content) : content;
 }
 
 /** Label: value pairs (definition list). */
@@ -237,7 +236,7 @@ export function split({ left, right, root, variant = 'fork', midLabel = 'a' }) {
     s.eyebrow ? eyebrow(s.eyebrow) : null,
     el('h3', {}, s.title),
     s.sub ? el('div', { class: 'split-sub' }, s.sub) : null,
-    ...kids(typeof s.body === 'string' ? el('p', {}, s.body) : s.body),
+    asBlock(s.body),
   );
   if (variant === 'versus') {
     return el('div', { class: 'split split-versus' },
@@ -270,7 +269,7 @@ export function propertyColumns(items, { cols } = {}) {
       el('div', { class: 'prop-key no-terms' }, it.key),
       el('h3', {}, it.title),
       it.sub ? el('div', { class: 'prop-sub' }, it.sub) : null,
-      ...kids(it.body),
+      it.body,
     )),
   );
 }
@@ -290,7 +289,7 @@ export function process(steps, { direction = 'horizontal' } = {}) {
       if (s.detail) {
         body.appendChild(el('details', { class: 'step-more' },
           el('summary', {}, 'Więcej'),
-          ...kids(typeof s.detail === 'string' ? el('p', {}, s.detail) : s.detail)));
+          asBlock(s.detail)));
       }
       return el('li', { class: 'step' },
         el('span', { class: 'step-num no-terms' }, String(s.num ?? i + 1)),
@@ -387,11 +386,11 @@ export function timeline(events, { today = new Date() } = {}) {
 }
 
 /**
- * Numbered list of expandable items (2 columns on desktop by default).
+ * Numbered list of expandable items (2 columns on desktop, 1 on mobile).
  * items: [{ title, summary, detail: Node|string|array, meta }]
  */
-export function numberedList(items, { cols = 2 } = {}) {
-  return el('div', { class: `num-list cols-${cols}`, style: { '--cols': String(cols) } },
+export function numberedList(items) {
+  return el('div', { class: 'num-list' },
     items.map((it, i) => {
       const head = el('summary', {},
         el('span', { class: 'nl-num mono no-terms' }, String(i + 1).padStart(2, '0')),
@@ -404,7 +403,7 @@ export function numberedList(items, { cols = 2 } = {}) {
       );
       if (!it.detail) return el('div', { class: 'nl-item static' }, [...head.childNodes]);
       return el('details', { class: 'nl-item' }, head,
-        el('div', { class: 'nl-detail' }, ...kids(typeof it.detail === 'string' ? el('p', {}, it.detail) : it.detail)));
+        el('div', { class: 'nl-detail' }, asBlock(it.detail)));
     }),
   );
 }
@@ -435,7 +434,7 @@ export function caseStudy({ title, intro, stages }) {
           el('p', { class: 'case-situation' }, s.situation),
           el('div', { class: 'case-decision' }, icon('check-circle', 16), el('div', {}, el('b', {}, 'Właściwa decyzja: '), s.decision)),
           s.explanation ? el('p', { class: 'case-expl' }, s.explanation) : null,
-          s.avoid ? el('p', { class: 'case-avoid' }, el('b', {}, 'Czego unikać: '), s.avoid) : null,
+          s.avoid ? labelled('Czego unikać: ', s.avoid, 'case-avoid') : null,
         ),
       )),
     ),
@@ -474,7 +473,7 @@ export function hierarchy(levels) {
       el('div', { class: 'tier-items' },
         lv.items.map(it => el('details', { class: 'tier-item' },
           el('summary', {}, el('b', {}, it.title), it.text ? el('span', {}, it.text) : null, icon('plus', 16)),
-          el('div', { class: 'tier-detail' }, ...kids(typeof it.detail === 'string' ? el('p', {}, it.detail) : it.detail)),
+          el('div', { class: 'tier-detail' }, asBlock(it.detail)),
         )),
       ),
     )),

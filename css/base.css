@@ -43,6 +43,12 @@
   --grad-layers:      linear-gradient(90deg, var(--layer-reg) 0%, var(--layer-org) 50%, var(--layer-tech) 100%);
   --grad-layers-v:    linear-gradient(180deg, var(--layer-reg) 0%, var(--layer-org) 50%, var(--layer-tech) 100%);
 
+  /* ─── Regulations: tag colours in the comparison table ─── */
+  --reg-nis2:         var(--indigo);
+  --reg-dora:         #0891B2;
+  --reg-rodo:         #059669;
+  --reg-iso:          #D97706;
+
   /* ─── Reading typography (app scale) ─── */
   --fs-app-h1:        44px;
   --fs-app-h2:        26px;

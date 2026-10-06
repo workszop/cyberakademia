@@ -6,7 +6,7 @@
 
 import { el } from '../dom.js';
 import { getModule } from '../course.js';
-import { moduleHeader, moduleFooter, section, process, compareTable, chips, bullets, eyebrow, sourceLink } from '../sections.js';
+import { moduleHeader, moduleFooter, section, process, compareTable, chips, bullets, eyebrow, labelled, sourceLink } from '../sections.js';
 import { STEPS, PRIORITY_MAP } from '../content/sciezka.js';
 
 // ─── Constants ────────────────────────────────────────────
@@ -30,13 +30,13 @@ function stepItem(s) {
     title: s.name,
     text: el('div', { class: 'step-text' },
       el('p', {}, s.description),
-      el('p', { class: 'example' }, el('b', {}, 'Efekt: '), s.output),
+      labelled('Efekt: ', s.output, 'example'),
     ),
     detail: [
       el('p', {}, s.detail),
       s.tools?.length ? [eyebrow('Narzędzia'), chips(s.tools)] : null,
       s.keyQuestions?.length ? [eyebrow('Pytania kontrolne'), bullets(s.keyQuestions)] : null,
-      s.regulatoryLink ? el('p', {}, el('b', {}, 'Regulacje: '), s.regulatoryLink, ' ', sourceLink('ksc', 'Harmonogram KSC'), ' · ', el('a', { href: '#/regulacje?s=2.2' }, 'Porównanie i źródła przepisów')) : null,
+      s.regulatoryLink ? labelled('Regulacje: ', [s.regulatoryLink, ' ', sourceLink('ksc', 'Harmonogram KSC'), ' · ', el('a', { href: '#/regulacje?s=2.2' }, 'Porównanie i źródła przepisów')]) : null,
     ].flat().filter(Boolean),
   };
 }

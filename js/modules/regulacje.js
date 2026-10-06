@@ -44,7 +44,7 @@ const regName = id => REGULATIONS.find(r => r.id === id)?.name || '';
 
 function regHead(reg) {
   return el('div', {},
-    el('span', { class: 'cell-tag', style: { '--tc': reg.color } }, el('i'), reg.name),
+    el('span', { class: 'cell-tag', 'data-reg': reg.id }, el('i'), reg.name),
     el('span', { class: 'cell-sub' }, reg.type),
   );
 }

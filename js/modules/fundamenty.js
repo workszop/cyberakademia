@@ -59,7 +59,7 @@ function ciaColumn(key) {
       label('Zabezpieczenia'),
       bullets(p.controls),
       examples.length ? label('Przykłady incydentów') : null,
-      examples.map(s => el('p', { class: 'example' }, el('b', {}, s.text), ' ', s.explanation)),
+      examples.map(s => labelled(`${s.text} `, s.explanation, 'example')),
     ].flat(2).filter(Boolean),
   };
 }
@@ -90,7 +90,7 @@ function threatRows() {
         el('p', {}, t.front),
         effectMore ? labelled('Skutek: ', effectMore) : null,
         labelled('Narusza: ', t.cia),
-        el('p', { class: 'example' }, el('b', {}, 'Przykład: '), t.example),
+        labelled('Przykład: ', t.example, 'example'),
       ].filter(Boolean),
     };
   });
@@ -110,7 +110,7 @@ function riskItems() {
         bullets(r.examples),
         labelled('Koszt: ', r.cost),
         cases.length ? eyebrow('Przykład z praktyki') : null,
-        ...cases.map(s => el('p', { class: 'example' }, el('b', {}, s.risk + '. '), s.explanation)),
+        ...cases.map(s => labelled(`${s.risk}. `, s.explanation, 'example')),
       ].filter(Boolean),
     };
   });
