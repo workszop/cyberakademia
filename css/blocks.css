@@ -48,8 +48,6 @@
 .sec-end { height: 1px; margin-top: 0 !important; }
 .sub-h { font-size: var(--fs-app-h3); margin-top: var(--space-7) !important; display: flex; gap: var(--space-3); align-items: baseline; }
 .sub-h .mono { font-size: var(--fs-sm); color: var(--lc); }
-.prose { max-width: var(--measure); }
-.prose p + p { margin-top: var(--space-3); }
 
 /* ─── Small pieces ─── */
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }

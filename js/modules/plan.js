@@ -6,7 +6,7 @@
 
 import { el } from '../dom.js';
 import { getModule } from '../course.js';
-import { moduleHeader, moduleFooter, section, process, compareTable, chips, bullets, sourceLink } from '../sections.js';
+import { moduleHeader, moduleFooter, section, process, compareTable, chips, bullets, eyebrow, sourceLink } from '../sections.js';
 import { STEPS, PRIORITY_MAP } from '../content/sciezka.js';
 
 // ─── Constants ────────────────────────────────────────────
@@ -22,10 +22,6 @@ const INTRO_PRIORITIES =
 
 const PRIORITY_HEAD = ['Działanie', 'Wysiłek', 'Efekt', 'Koszt', 'Czas'];
 
-// ─── Helpers ──────────────────────────────────────────────
-
-const label = text => el('div', { class: 'eyebrow' }, text);
-
 // ─── 6.1 Od czego zacząć ──────────────────────────────────
 
 function stepItem(s) {
@@ -38,8 +34,8 @@ function stepItem(s) {
     ),
     detail: [
       el('p', {}, s.detail),
-      s.tools?.length ? [label('Narzędzia'), chips(s.tools)] : null,
-      s.keyQuestions?.length ? [label('Pytania kontrolne'), bullets(s.keyQuestions)] : null,
+      s.tools?.length ? [eyebrow('Narzędzia'), chips(s.tools)] : null,
+      s.keyQuestions?.length ? [eyebrow('Pytania kontrolne'), bullets(s.keyQuestions)] : null,
       s.regulatoryLink ? el('p', {}, el('b', {}, 'Regulacje: '), s.regulatoryLink, ' ', sourceLink('ksc', 'Harmonogram KSC'), ' · ', el('a', { href: '#/regulacje?s=2.2' }, 'Porównanie i źródła przepisów')) : null,
     ].flat().filter(Boolean),
   };

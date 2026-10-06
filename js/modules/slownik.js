@@ -21,7 +21,7 @@ function pluralPl(n, [one, few, many]) {
 }
 
 function normalize(text) {
-  return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l');
+  return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l');
 }
 
 function letterOf(term) {
@@ -44,6 +44,7 @@ function termEntry(t) {
 export function renderSlownik() {
   const mod = getModule('slownik');
   const terms = getAllTerms();
+  const searchText = new Map(terms.map(t => [t.term, normalize(`${t.term} ${t.full || ''} ${t.short} ${t.long || ''}`)]));
   const letters = [...new Set(terms.map(t => letterOf(t.term)))];
 
   const count = el('span', { class: 'gl-count', 'aria-live': 'polite' }, pluralPl(terms.length, ['termin', 'terminy', 'terminów']));
@@ -70,9 +71,7 @@ export function renderSlownik() {
     groups.forEach(g => {
       let inGroup = 0;
       g.querySelectorAll('[data-term-entry]').forEach(entry => {
-        const t = terms.find(x => x.term === entry.dataset.termEntry);
-        const hay = normalize(`${t.term} ${t.full || ''} ${t.short} ${t.long || ''}`);
-        const show = !q || hay.includes(q);
+        const show = !q || searchText.get(entry.dataset.termEntry).includes(q);
         entry.hidden = !show;
         if (show) inGroup++;
       });

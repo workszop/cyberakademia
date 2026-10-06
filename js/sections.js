@@ -56,6 +56,11 @@ export function callout({ title, text, tone = 'note', iconName = 'info' }) {
   );
 }
 
+/** Paragraph led by a bold label: labelled('Przykład: ', text). */
+export function labelled(label, text) {
+  return el('p', {}, el('b', {}, label), text);
+}
+
 /** Label: value pairs (definition list). */
 export function facts(pairs, cls = '') {
   return el('dl', { class: `facts-dl ${cls}`.trim() },
@@ -147,16 +152,18 @@ export function moduleFooter(moduleId) {
         el('span', {}, dir === 'prev' ? 'Wróć do przeglądu warstw.' : 'Wszystkie skróty i pojęcia w jednym miejscu.'));
   const notes = MODULE_NOTES[moduleId];
   return el('div', { class: 'module-close' },
-    notes ? el('aside', { class: 'module-takeaways', 'data-module-takeaways': moduleId, 'aria-labelledby': `${moduleId}-takeaways` },
-      el('h2', { id: `${moduleId}-takeaways` }, 'Co to oznacza dla organizacji'),
-      bullets(notes.takeaways),
-    ) : null,
-    notes ? el('details', { class: 'module-sources', 'data-module-sources': moduleId },
-      el('summary', {}, 'Źródła i zakres opracowania'),
-      el('p', {}, 'Materiał edukacyjny na podstawie przewodnika z 9.06.2026. Wymagania prawne zależą od zakresu przepisów; zalecenia wdrożeniowe i scenariusze są praktyką lub przykładami, nie dodatkowymi obowiązkami.'),
-      notes.checked ? el('p', {}, notes.checked) : el('p', {}, 'Ten moduł nie ma odrębnej, pełnej weryfikacji aktualności.'),
-      bullets(notes.sources.map(key => sourceLink(key))),
-    ) : null,
+    notes ? [
+      el('aside', { class: 'module-takeaways', 'data-module-takeaways': moduleId, 'aria-labelledby': `${moduleId}-takeaways` },
+        el('h2', { id: `${moduleId}-takeaways` }, 'Co to oznacza dla organizacji'),
+        bullets(notes.takeaways),
+      ),
+      el('details', { class: 'module-sources', 'data-module-sources': moduleId },
+        el('summary', {}, 'Źródła i zakres opracowania'),
+        el('p', {}, 'Materiał edukacyjny na podstawie przewodnika z 9.06.2026. Wymagania prawne zależą od zakresu przepisów; zalecenia wdrożeniowe i scenariusze są praktyką lub przykładami, nie dodatkowymi obowiązkami.'),
+        el('p', {}, notes.checked || 'Ten moduł nie ma odrębnej, pełnej weryfikacji aktualności.'),
+        bullets(notes.sources.map(key => sourceLink(key))),
+      ),
+    ] : null,
     el('nav', { class: 'mod-foot', 'aria-label': 'Sąsiednie moduły' }, link(prev, 'prev'), link(next, 'next')),
   );
 }
@@ -299,7 +306,8 @@ export function process(steps, { direction = 'horizontal' } = {}) {
  */
 export function timeline(events, { today = new Date() } = {}) {
   const sorted = [...events].sort((a, b) => a.date.localeCompare(b.date));
-  const todayIso = today.toISOString().slice(0, 10);
+  const pad = n => String(n).padStart(2, '0');
+  const todayIso = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
   const detail = el('div', { class: 'tl-detail', 'aria-live': 'polite' });
   const track = el('div', { class: 'tl-track', role: 'group', 'aria-label': 'Oś czasu – wybierz zdarzenie' });
   const nodes = [];
@@ -394,7 +402,7 @@ export function numberedList(items, { cols = 2 } = {}) {
         ),
         it.detail ? icon('plus', 18) : null,
       );
-      if (!it.detail) return el('div', { class: 'nl-item static' }, head.childNodes.length ? [...head.childNodes] : null);
+      if (!it.detail) return el('div', { class: 'nl-item static' }, [...head.childNodes]);
       return el('details', { class: 'nl-item' }, head,
         el('div', { class: 'nl-detail' }, ...kids(typeof it.detail === 'string' ? el('p', {}, it.detail) : it.detail)));
     }),

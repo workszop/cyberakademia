@@ -72,24 +72,16 @@ export function el(tag, props = {}, ...children) {
     }
   }
 
+  appendChildren(node, children);
+  return node;
+}
+
+/** Appends strings, numbers, nodes and (nested) arrays of them; skips null/undefined. */
+function appendChildren(node, children) {
   for (const child of children) {
     if (child === null || child === undefined) continue;
-    if (typeof child === 'string' || typeof child === 'number') {
-      node.appendChild(document.createTextNode(String(child)));
-    } else if (child instanceof Node) {
-      node.appendChild(child);
-    } else if (Array.isArray(child)) {
-      // Support nested arrays of children
-      for (const c of child) {
-        if (c === null || c === undefined) continue;
-        if (typeof c === 'string' || typeof c === 'number') {
-          node.appendChild(document.createTextNode(String(c)));
-        } else if (c instanceof Node) {
-          node.appendChild(c);
-        }
-      }
-    }
+    if (Array.isArray(child)) appendChildren(node, child);
+    else if (child instanceof Node) node.appendChild(child);
+    else if (typeof child === 'string' || typeof child === 'number') node.appendChild(document.createTextNode(String(child)));
   }
-
-  return node;
 }

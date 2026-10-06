@@ -135,7 +135,7 @@ function renderLayers(meta) {
     }),
     el('h3', { class: 'sub-h' }, 'Jak warstwy zatrzymują ataki'),
     el('p', { class: 'intro' }, 'Cztery typowe ataki rozpisane na etapy. Rozwiń przykład, żeby zobaczyć łańcuch ataku i warstwy, które go przerywają.'),
-    numberedList(scenarios, { cols: 2 }),
+    numberedList(scenarios),
   );
 }
 
@@ -173,7 +173,6 @@ function networkTable() {
 }
 
 function identityTable() {
-  const zeroTrust = IDENTITY_TOOLS.find(t => t.id === 'zero-trust');
   return compareTable({
     caption: 'Narzędzia tożsamości i dostępu',
     head: ['Narzędzie', 'Do czego służy', 'Przykłady'],
@@ -181,7 +180,7 @@ function identityTable() {
       let pairs;
       if (t.id === 'zero-trust') {
         pairs = [
-          { label: 'Filary', value: listText(zeroTrust.pillars, '; ') },
+          { label: 'Filary', value: listText(t.pillars, '; ') },
           { label: 'Zob. 4.3', value: localLink('4.3', 'Stary model a Zero Trust i trzy zasady podejścia.') },
         ];
       } else if (t.id === 'pam-tool') {
@@ -337,7 +336,6 @@ function renderZeroTrust(meta) {
   },
     split({
       variant: 'versus',
-      midLabel: 'a',
       left: {
         eyebrow: 'Stary model',
         title: 'Zamek i fosa (castle-and-moat)',

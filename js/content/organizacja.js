@@ -323,7 +323,6 @@ export const GOVERNANCE_FRAMEWORKS = [
   {
     id: 'nist-csf',
     name: 'NIST CSF 2.0',
-    icon: '🇺🇸',
     description: 'Elastyczny framework NIST z 6 funkcjami: Govern, Identify, Protect, Detect, Respond, Recover.',
     useCase: 'Dla organizacji, które szukają elastycznego, nienormatywnego frameworka do zarządzania ryzykiem cyberbezpieczeństwa. Dobrze sprawdza się w ocenie dojrzałości (maturity assessment), komunikacji z zarządem i planowaniu roadmapy. Popularny w USA, coraz częściej stosowany na świecie.',
     relation: 'NIST CSF nie wymaga certyfikacji: to narzędzie do samooceny i poprawy. Funkcje NIST CSF pokrywają się z wymaganiami NIS2/DORA. Można go łączyć z ISO 27001: CSF jako mapa strategiczna, ISO 27001 jako ISMS operacyjny.',

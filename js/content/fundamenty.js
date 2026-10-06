@@ -10,7 +10,6 @@ export const CIA_TRIAD = {
     id: 'C',
     name: 'Confidentiality',
     namePL: 'Poufność',
-    color: '#4F46E5',
     description: 'Dostęp do danych mają tylko uprawnieni.',
     violationExample: 'Naruszenie = wyciek danych. Haker wykradł bazę klientów. Pracownik wysłał poufny dokument na prywatny e-mail.',
     controls: ['Szyfrowanie danych przechowywanych i przesyłanych', 'Kontrola dostępu (IAM, PAM)', 'MFA', 'DLP', 'Klasyfikacja danych'],
@@ -20,7 +19,6 @@ export const CIA_TRIAD = {
     id: 'I',
     name: 'Integrity',
     namePL: 'Integralność',
-    color: '#059669',
     description: 'Dane nie zostały niepostrzeżenie zmienione.',
     violationExample: 'Naruszenie = sfałszowany przelew, podmieniona faktura. Atakujący zmienił numer konta bankowego w systemie finansowym.',
     controls: ['Podpisy cyfrowe i sumy kontrolne', 'Kontrola wersji i logi zmian', 'Separacja obowiązków', 'Weryfikowane kopie zapasowe', 'SIEM do wykrywania zmian'],
@@ -30,7 +28,6 @@ export const CIA_TRIAD = {
     id: 'A',
     name: 'Availability',
     namePL: 'Dostępność',
-    color: '#D97706',
     description: 'System jest dostępny wtedy, gdy jest potrzebny.',
     violationExample: 'Naruszenie = ransomware, który blokuje firmę, albo atak DDoS. Szpital niedostępny przez tydzień po zaszyfrowaniu serwerów.',
     controls: ['Redundancja systemów (HA)', 'Backup 3-2-1 z testami odtwarzania', 'DRP i BCP', 'Ochrona DDoS (CDN)', 'Monitoring dostępności'],
@@ -44,7 +41,6 @@ export const RISK_RESPONSES = [
   {
     id: 'obniżać',
     name: 'Obniżaj ryzyko (Mitigate)',
-    color: '#4F46E5',
     description: 'Wdrożenie kontroli technicznych lub organizacyjnych, które zmniejszają prawdopodobieństwo zagrożenia albo jego skutki. Ryzyko pozostaje, ale na akceptowalnym poziomie.',
     whenToUse: 'Gdy ryzyko przekracza apetyt na ryzyko organizacji, ale kontrole mogą je zmniejszyć do akceptowalnego poziomu. Najczęstsza i zalecana odpowiedź.',
     examples: ['Wdrożenie MFA redukuje ryzyko przejęcia kont', 'Aktualizacja oprogramowania redukuje ryzyko wykorzystania podatności', 'Szkolenia zmniejszają ryzyko phishingu', 'Kopie zapasowe redukują skutki ransomware'],
@@ -53,7 +49,6 @@ export const RISK_RESPONSES = [
   {
     id: 'przenosić',
     name: 'Przenoś ryzyko (Transfer)',
-    color: '#0891B2',
     description: 'Przeniesienie finansowych skutków ryzyka na zewnętrzny podmiot przez ubezpieczenie lub umowy z dostawcami. Ryzyko nadal istnieje, ale skutki finansowe pokrywa ktoś inny.',
     whenToUse: 'Gdy ryzyko ma niskie prawdopodobieństwo, ale wysokie skutki finansowe, albo gdy mitygacja kosztuje więcej niż ubezpieczenie. Ubezpieczenie cybernetyczne staje się standardem.',
     examples: ['Polisa ubezpieczenia cybernetycznego', 'Klauzule SLA i kary umowne dla dostawców', 'Outsourcing odpowiedzialności do MSSP', 'Umowy o odpowiedzialności z dostawcami chmury'],
@@ -62,7 +57,6 @@ export const RISK_RESPONSES = [
   {
     id: 'akceptować',
     name: 'Akceptuj ryzyko (Accept)',
-    color: '#059669',
     description: 'Świadoma decyzja, że organizacja nie podejmuje dalszych działań wobec danego ryzyka. Akceptuje możliwe skutki, bo ryzyko mieści się w apetycie na ryzyko albo mitygacja kosztowałaby więcej niż potencjalna strata.',
     whenToUse: 'Gdy ryzyko ma niskie prawdopodobieństwo i/lub niskie skutki albo gdy koszt kontroli jest nieproporcjonalny. Wymaga formalnej decyzji zarządu i dokumentacji. Nie jest to ignorowanie ryzyka!',
     examples: ['Akceptacja ryzyka przestarzałej maszyny produkcyjnej, której wymiana jest niemożliwa', 'Ryzyko incydentów niskoprawdopodobnych o małych skutkach', 'Ryzyko poniżej zdefiniowanego progu akceptacji'],
@@ -71,7 +65,6 @@ export const RISK_RESPONSES = [
   {
     id: 'unikać',
     name: 'Unikaj ryzyka (Avoid)',
-    color: '#DC2626',
     description: 'Zaprzestanie działalności lub procesu, który generuje ryzyko. Ryzyko znika razem ze swoim źródłem. Zwykle oznacza to rezygnację z czegoś.',
     whenToUse: 'Gdy ryzyko jest zbyt wysokie, a inne metody nie zmniejszą go skutecznie, albo gdy działalność jest niezgodna z regulacjami. Stosowane rzadko, bo eliminuje też potencjalną wartość biznesową.',
     examples: ['Rezygnacja z uruchamiania aplikacji w niezabezpieczonym środowisku chmurowym', 'Zaprzestanie przetwarzania określonej kategorii wrażliwych danych', 'Nierozwijanie produktu ze zbyt dużą powierzchnią ataku'],
@@ -141,30 +134,25 @@ export const RISK_SCENARIOS = [
     risk: 'Możliwość włamania przez nieaktualne oprogramowanie z krytyczną podatnością',
     correctResponse: 'obniżać',
     explanation: 'Aktualizowanie zabezpieczeń (zarządzanie poprawkami) bezpośrednio obniża prawdopodobieństwo wykorzystania podatności. To klasyczne i najtańsze działanie mitygacyjne. Ignorowanie aktualizacji to jedno z największych zaniedbań bezpieczeństwa.',
-    alternatives: 'Do czasu aktualizacji można też tymczasowo zastosować dodatkowe mitygacje, takie jak segmentacja sieci lub WAF.'
   },
   {
     risk: 'Ryzyko finansowe ataku ransomware: koszt odtworzenia szacowany na 5 mln PLN',
     correctResponse: 'przenosić',
     explanation: 'Ubezpieczenie cybernetyczne przenosi finansowe skutki ataku na ubezpieczyciela. Powinno mu towarzyszyć obniżanie ryzyka (backup, EDR), ale przy dużej ekspozycji finansowej transfer jest ważną częścią strategii.',
-    alternatives: 'Mitygacja (backup, EDR, MFA) + transfer (ubezpieczenie) to najlepsza kombinacja dla ransomware.'
   },
   {
     risk: 'Bardzo stary system odziedziczony bez wsparcia producenta, którego wymiana kosztuje 10 mln PLN',
     correctResponse: 'akceptować',
     explanation: 'Gdy koszt mitygacji (wymiana systemu) jest nieproporcjonalny do ryzyka lub gdy wymiana jest technicznie niemożliwa (np. sterowanie maszyną przemysłową), formalna akceptacja ryzyka z dokumentacją jest właściwą odpowiedzią. Należy też rozważyć kontrole uzupełniające (segmentacja, monitoring).',
-    alternatives: 'Jeśli ryzyko jest zbyt wysokie, by je zaakceptować, rozważ unikanie (wyłączenie systemu) albo mitygację przez maksymalną izolację.'
   },
   {
     risk: 'Planowane wdrożenie aplikacji, która wymaga przetwarzania danych medycznych w niezbadanym środowisku chmurowym',
     correctResponse: 'unikać',
     explanation: 'Rezygnacja z wdrożenia w niezabezpieczonym środowisku eliminuje ryzyko. Dane medyczne podlegają surowym regulacjom (RODO, NIS2), a wdrożenie w środowisku o niezweryfikowanym bezpieczeństwie może mieć poważne skutki regulacyjne i reputacyjne.',
-    alternatives: 'Alternatywnie: oceń bezpieczeństwo chmury i wdrażaj dopiero wtedy, gdy ocena wypadnie pozytywnie (mitygacja).'
   },
   {
     risk: 'Ryzyko, że pracownik biurowy przypadkowo kliknie link phishingowy',
     correctResponse: 'obniżać',
     explanation: 'Szkolenia antyphishingowe, filtrowanie poczty, MFA i EDR bezpośrednio redukują prawdopodobieństwo i skutki udanego phishingu. Tego ryzyka nie da się całkowicie wyeliminować (błąd ludzki zawsze istnieje), ale wielowarstwowa ochrona mocno je obniża.',
-    alternatives: 'Ryzyko zerowe nie istnieje, więc celem jest obniżenie go do akceptowalnego poziomu. MFA jest szczególnie skuteczne: nawet jeśli pracownik poda hasło, konto pozostaje chronione.'
   },
 ];

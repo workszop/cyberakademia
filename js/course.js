@@ -17,7 +17,7 @@ export const LAYERS = {
 
 // ─── Modules ──────────────────────────────────────────────
 
-export const MODULES = [
+const MODULES = [
   {
     id: 'fundamenty',
     num: 1,
@@ -163,10 +163,9 @@ export const GROUPS = [
 
 export const START_ROUTE = '#/';
 
-export const ROUTE_ALIASES = {
+const ROUTE_ALIASES = {
   '#/spiecie': '#/integracja',
   '#/sciezka': '#/plan',
-  '#/finalboss': '#/',
 };
 
 // Modules that count toward reading progress (have sections).

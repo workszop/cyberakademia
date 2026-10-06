@@ -10,7 +10,7 @@ import { getModule } from '../course.js';
 import {
   moduleHeader, moduleFooter, section,
   propertyColumns, compareTable, caseStudy, numberedList, process,
-  bullets, callout,
+  bullets, callout, labelled,
 } from '../sections.js';
 import { NIST_FUNCTIONS } from '../content/regulacje.js';
 import { CONNECTIONS, MORAL, RANSOMWARE_CASE, ANTIPATTERNS, MATURITY_LEVELS } from '../content/spiecie.js';
@@ -25,10 +25,6 @@ const NIST_KEYS = { govern: 'GV', identify: 'ID', protect: 'PR', detect: 'DE', r
 const MAX_EXAMPLES = 3;
 
 // ─── Helpers ──────────────────────────────────────────────
-
-function labelled(label, text) {
-  return el('p', {}, el('b', {}, label), text);
-}
 
 function more(...children) {
   return el('details', { class: 'step-more' }, el('summary', {}, 'Więcej'), ...children);
@@ -100,7 +96,7 @@ function antipatternsSection(meta) {
     intro: 'Cztery błędy, przez które pieniądze i praca włożone w bezpieczeństwo nie dają ochrony. Przy każdym jest przykład i sposób naprawy.',
     block: 'numberedList',
     tone: 'wash',
-  }, numberedList(items, { cols: 2 }));
+  }, numberedList(items));
 }
 
 function maturitySection(meta) {

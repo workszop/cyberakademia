@@ -122,7 +122,6 @@ export const ATTACK_SCENARIOS = [
       'Żądanie okupu'
     ],
     blockedBy: ['mfa', 'backup', 'edr', 'segmentation', 'ngfw'],
-    bestLayer: 'backup',
     explanation: 'MFA nie zatrzyma kliknięcia w link, ale utrudni przejęcie konta. EDR może wykryć i zatrzymać szyfrowanie. Segmentacja ograniczy zasięg. Backup 3-2-1 z osobno zabezpieczoną kopią offline lub niezmienialną pomaga odtworzyć dane, jeśli kopia nie została naruszona i testy potwierdziły możliwość odtworzenia.'
   },
   {
@@ -136,7 +135,6 @@ export const ATTACK_SCENARIOS = [
       'Presja czasu i poufności utrudnia weryfikację'
     ],
     blockedBy: ['mfa', 'iam-layer', 'siem-layer'],
-    bestLayer: 'mfa',
     explanation: 'SPF/DKIM/DMARC blokuje podszywanie się pod prawdziwą domenę firmy, ale nie zatrzyma e-maila z domeny tylko podobnej, takiej jak firma-pl.com. MFA chroni przed odmianą tego ataku, w której przestępca przejmuje prawdziwą skrzynkę prezesa. Najważniejsza kontrola jest tu procesowa: telefoniczna weryfikacja dużych przelewów, bo sama technologia nie wystarczy.'
   },
   {
@@ -151,7 +149,6 @@ export const ATTACK_SCENARIOS = [
       'Eksfiltracja danych przez zaszyfrowany kanał'
     ],
     blockedBy: ['ngfw', 'pam-layer', 'segmentation', 'siem-layer', 'edr', 'vuln-mgmt-layer'],
-    bestLayer: 'segmentation',
     explanation: 'Żadna warstwa nie zatrzyma APT w 100%. Podstawą jest patching (brak podatności VPN). Segmentacja ogranicza lateral movement. EDR wykrywa anomalie behawioralne. SIEM koreluje zdarzenia z wielu źródeł. PAM chroni konta administratorów. Ochrona przed APT to obrona w głąb: wiele warstw działających razem.'
   },
   {
@@ -166,7 +163,6 @@ export const ATTACK_SCENARIOS = [
       'Masowa kompromitacja klientów'
     ],
     blockedBy: ['edr', 'siem-layer', 'segmentation', 'ngfw'],
-    bestLayer: 'edr',
     explanation: 'Atak na łańcuch dostaw (supply chain attack) omija tradycyjne zabezpieczenia, bo malware ma podpis zaufanego dostawcy. EDR z wykrywaniem behawioralnym może wychwycić nietypowe zachowanie nawet podpisanego oprogramowania. SIEM koreluje masowe anomalie. Segmentacja ogranicza skutki. Liczy się też ocena bezpieczeństwa dostawców (wymagana przez NIS2/DORA).'
   },
 ];

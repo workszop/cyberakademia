@@ -252,8 +252,6 @@ export const NIST_FUNCTIONS = [
   {
     id: 'govern',
     name: 'Govern (Zarządzaj)',
-    color: '#7C3AED',
-    shortColor: '#EDE9FE',
     description: 'Nowa funkcja w CSF 2.0: strategia, polityki, role i odpowiedzialność na poziomie organizacji.',
     detail: 'Govern odpowiada na pytanie: jak cyberbezpieczeństwo jest wbudowane w strategię organizacji? Obejmuje: określenie tolerancji ryzyka, polityki cyberbezpieczeństwa, role i odpowiedzialności (CISO, zarząd, operacje), zarządzanie ryzykiem dostawców, integrację z zarządzaniem ryzykiem przedsiębiorstwa (ERM).',
     examples: [
@@ -267,8 +265,6 @@ export const NIST_FUNCTIONS = [
   {
     id: 'identify',
     name: 'Identify (Identyfikuj)',
-    color: '#1D4ED8',
-    shortColor: '#DBEAFE',
     description: 'Zrozumienie kontekstu organizacji: co mamy, co jest krytyczne, jakie ryzyka nam grożą.',
     detail: 'Identify odpowiada na pytanie: co mamy do ochrony? Obejmuje: inwentaryzację zasobów (hardware, software, dane, ludzie, dostawcy), ocenę ryzyka, analizę środowiska biznesowego, określenie wymagań regulacyjnych i priorytetów. Bez dobrego „Identify” nie można skutecznie chronić.',
     examples: [
@@ -282,8 +278,6 @@ export const NIST_FUNCTIONS = [
   {
     id: 'protect',
     name: 'Protect (Chroń)',
-    color: '#047857',
-    shortColor: '#D1FAE5',
     description: 'Wdrożenie zabezpieczeń ograniczających ryzyko: kontrola dostępu, szkolenia, kryptografia.',
     detail: 'Protect to wdrażanie środków ochronnych: zarządzanie tożsamością i dostępem (IAM/MFA/PAM), szkolenia i świadomość bezpieczeństwa, ochrona danych (szyfrowanie, DLP), bezpieczeństwo sieci (NGFW, segmentacja), zarządzanie podatnościami (aktualizacje), bezpieczeństwo fizyczne.',
     examples: [
@@ -298,8 +292,6 @@ export const NIST_FUNCTIONS = [
   {
     id: 'detect',
     name: 'Detect (Wykrywaj)',
-    color: '#B45309',
-    shortColor: '#FEF3C7',
     description: 'Ciągły monitoring i wykrywanie incydentów: SIEM, EDR, NDR, monitoring anomalii.',
     detail: 'Detect odpowiada na pytanie: jak szybko wykryjemy atak? Obejmuje: monitoring ciągły (SIEM, EDR, NDR), wykrywanie anomalii, logi i audyt, threat intelligence, testy wykrywania (purple team). Im krótszy time-to-detect, tym mniejsze szkody wyrządza atak.',
     examples: [
@@ -314,8 +306,6 @@ export const NIST_FUNCTIONS = [
   {
     id: 'respond',
     name: 'Respond (Reaguj)',
-    color: '#DC2626',
-    shortColor: '#FEE2E2',
     description: 'Reagowanie na wykryte incydenty: playbooki, komunikacja, powstrzymanie i usunięcie.',
     detail: 'Respond to procesy reagowania na incydenty: playbooki IR (co robić krok po kroku), komunikacja (wewnętrzna i zewnętrzna: regulatorzy, klienci, media), powstrzymanie (containment, czyli izolacja zainfekowanych systemów), usunięcie zagrożenia (eradication). SOAR automatyzuje powtarzalne kroki reagowania.',
     examples: [
@@ -330,8 +320,6 @@ export const NIST_FUNCTIONS = [
   {
     id: 'recover',
     name: 'Recover (Odtwarzaj)',
-    color: '#7C3AED',
-    shortColor: '#F3E8FF',
     description: 'Odtwarzanie systemów po incydencie i wyciąganie wniosków: BCP, DRP, lessons learned.',
     detail: 'Recover odpowiada na pytanie: jak szybko wrócimy do normalnego działania? Obejmuje: plany odtwarzania (DRP/BCP), testy backupów, odtwarzanie systemów z kopii zapasowych, komunikację o przywróceniu usług, analizę poincydentalną (lessons learned) i wdrożenie wniosków. Dobrze przygotowane odtwarzanie skraca czas niedostępności i zapobiega powtórzeniu incydentu.',
     examples: [

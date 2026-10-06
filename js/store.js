@@ -29,16 +29,13 @@ function sanitize(read) {
 
 function load() {
   const ls = storage();
-  if (!ls) return { read: {}, lastVisited: null };
+  if (!ls) return { read: {} };
   try {
     OLD_KEYS.forEach(k => ls.removeItem(k));
     const saved = JSON.parse(ls.getItem(KEY) || '{}');
-    return {
-      read: sanitize(saved.read),
-      lastVisited: typeof saved.lastVisited === 'string' ? saved.lastVisited : null,
-    };
+    return { read: sanitize(saved.read) };
   } catch {
-    return { read: {}, lastVisited: null };
+    return { read: {} };
   }
 }
 
@@ -66,10 +63,6 @@ export function isRead(moduleId, sectionId) {
   return (state.read[moduleId] || []).includes(sectionId);
 }
 
-export function getReadIds(moduleId) {
-  return [...(state.read[moduleId] || [])];
-}
-
 /** Marks a section as read. Returns true when it was newly marked. */
 export function markRead(moduleId, sectionId) {
   const mod = getModule(moduleId);
@@ -85,7 +78,7 @@ export function markRead(moduleId, sectionId) {
 export function getModuleProgress(moduleId) {
   const mod = getModule(moduleId);
   const total = mod ? mod.sections.length : 0;
-  const read = getReadIds(moduleId).length;
+  const read = (state.read[moduleId] || []).length;
   return { read, total, pct: total ? Math.round((read / total) * 100) : 0 };
 }
 
@@ -112,13 +105,4 @@ export function getNextSection() {
     if (s) return { module: m, section: s };
   }
   return null;
-}
-
-export function setLastVisited(hash) {
-  state.lastVisited = hash;
-  save();
-}
-
-export function getLastVisited() {
-  return state.lastVisited;
 }

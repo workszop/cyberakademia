@@ -7,7 +7,7 @@
 
 import { el } from './dom.js';
 import { icon } from './icons.js';
-import { GROUPS, LAYERS, getModule, getGroupOf } from './course.js';
+import { GROUPS, LAYERS, getModule, getGroupOf, parseHash } from './course.js';
 import {
   subscribe, markRead, isRead, getModuleProgress, getCourseProgress, getNextSection,
 } from './store.js';
@@ -35,7 +35,7 @@ const refs = {};
 
 // ─── Helpers ──────────────────────────────────────────────
 
-export function announce(text) {
+function announce(text) {
   if (!refs.live) return;
   refs.live.textContent = '';
   // New text node on the next frame so screen readers re-announce
@@ -46,7 +46,7 @@ function sectionsInPage() {
   return [...document.querySelectorAll('#app section[data-section-id]')];
 }
 
-export function scrollToSection(sectionId, { smooth = true } = {}) {
+function scrollToSection(sectionId, { smooth = true } = {}) {
   const target = document.getElementById(sectionDomId(sectionId));
   if (!target) return false;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -60,6 +60,13 @@ export function scrollToSection(sectionId, { smooth = true } = {}) {
 function nextSectionHref() {
   const next = getNextSection();
   return next ? `${next.module.route}?s=${next.section.id}` : '#/slownik';
+}
+
+/** Goes to the next step; an unchanged hash fires no hashchange, so scroll directly. */
+function goNext() {
+  const href = nextSectionHref();
+  if (href !== location.hash) { location.hash = href; return; }
+  onSectionParam(parseHash(href).params);
 }
 
 function statusEl(mod) {
@@ -368,10 +375,15 @@ function stepSection(dir) {
 function bindListeners() {
   document.addEventListener('click', e => {
     const action = e.target.closest('[data-action]')?.dataset.action;
-    if (action === 'menu') setMenu(!refs.sidebar.classList.contains('open'));
+    if (action === 'menu') setMenu(!shell.menuOpen);
     if (action === 'close-menu') setMenu(false);
     if (action === 'help') { e.preventDefault(); setHelp(true); }
     if (action === 'close-help') setHelp(false);
+    // An unchanged hash fires no hashchange: scroll to the section directly
+    if (action === 'next' && nextSectionHref() === location.hash && !(e.ctrlKey || e.metaKey || e.shiftKey)) {
+      e.preventDefault();
+      goNext();
+    }
 
     const tocLink = e.target.closest('[data-toc]');
     if (tocLink) {
@@ -411,18 +423,11 @@ function bindListeners() {
       return;
     }
     switch (e.key) {
-      case 'Escape':
-        if (refs.help.classList.contains('show')) setHelp(false);
-        else if (refs.sidebar.classList.contains('open')) {
-          setMenu(false);
-          refs.topbar.querySelector('[data-action="menu"]')?.focus();
-        }
-        break;
       case 'j': case 'J': stepSection(1); break;
       case 'k': case 'K': stepSection(-1); break;
-      case 'n': case 'N': location.hash = nextSectionHref(); break;
-      case 'm': case 'M': setMenu(!refs.sidebar.classList.contains('open')); break;
-      case '?': setHelp(!refs.help.classList.contains('show')); break;
+      case 'n': case 'N': goNext(); break;
+      case 'm': case 'M': setMenu(!shell.menuOpen); break;
+      case '?': setHelp(true); break;
       default: return;
     }
   });
@@ -464,7 +469,6 @@ export function onRoute({ route, params, module }) {
   shell.activeSection = null;
   document.body.dataset.route = module ? module.id : 'start';
   document.body.dataset.layer = module ? module.layer : 'base';
-  renderSidebar();
   renderTopbar();
   renderToc();
   refreshProgress();
@@ -474,7 +478,7 @@ export function onRoute({ route, params, module }) {
   if (params.s && scrollToSection(params.s, { smooth: false })) setActive(params.s);
   else window.scrollTo({ top: 0, behavior: 'instant' });
 
-  announce(module ? `${module.fullTitle}` : 'Mapa kursu');
+  announce(module ? module.fullTitle : 'Mapa kursu');
 }
 
 /** Same page, different ?s= parameter (e.g. back/forward). */

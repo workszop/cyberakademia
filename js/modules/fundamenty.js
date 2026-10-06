@@ -8,7 +8,7 @@ import { el } from '../dom.js';
 import { getModule } from '../course.js';
 import {
   moduleHeader, moduleFooter, section, propertyColumns, compareTable,
-  numberedList, callout, bullets, eyebrow,
+  numberedList, callout, bullets, eyebrow, labelled,
 } from '../sections.js';
 import { CIA_TRIAD, CIA_SCENARIOS, RISK_RESPONSES, RISK_SCENARIOS } from '../content/fundamenty.js';
 import { THREATS } from '../content/threats.js';
@@ -40,10 +40,6 @@ const label = text => el('div', { class: 'label' }, text);
 function violationText(raw) {
   const t = raw.replace(/^Naruszenie\s*=\s*/, '');
   return t.charAt(0).toUpperCase() + t.slice(1);
-}
-
-function lead(prefix, text) {
-  return el('p', {}, el('b', {}, prefix), text);
 }
 
 // ─── 1.1 Triada CIA ───────────────────────────────────────
@@ -92,8 +88,8 @@ function threatRows() {
       cells: [t.entryPoint, effectShort, ciaTags(t.cia), t.defense],
       detail: [
         el('p', {}, t.front),
-        effectMore ? lead('Skutek: ', effectMore) : null,
-        lead('Narusza: ', t.cia),
+        effectMore ? labelled('Skutek: ', effectMore) : null,
+        labelled('Narusza: ', t.cia),
         el('p', { class: 'example' }, el('b', {}, 'Przykład: '), t.example),
       ].filter(Boolean),
     };
@@ -109,10 +105,10 @@ function riskItems() {
       title: r.name,
       summary: r.description,
       detail: [
-        lead('Kiedy stosować: ', r.whenToUse),
+        labelled('Kiedy stosować: ', r.whenToUse),
         eyebrow('Przykłady'),
         bullets(r.examples),
-        lead('Koszt: ', r.cost),
+        labelled('Koszt: ', r.cost),
         cases.length ? eyebrow('Przykład z praktyki') : null,
         ...cases.map(s => el('p', { class: 'example' }, el('b', {}, s.risk + '. '), s.explanation)),
       ].filter(Boolean),
@@ -148,7 +144,7 @@ export function renderFundamenty() {
         title: 'Ryzyko = prawdopodobieństwo × skutek',
         text: 'Im bardziej prawdopodobne zdarzenie i im dotkliwsze jego skutki, tym wyższe ryzyko. Na tej podstawie wybiera się jedną z czterech odpowiedzi.',
       }),
-      numberedList(riskItems(), { cols: 2 }),
+      numberedList(riskItems()),
     ),
 
     moduleFooter(MODULE_ID),

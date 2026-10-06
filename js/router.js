@@ -3,7 +3,7 @@
 // Hash router: '#/modul' renders a page, '?s=2.3' scrolls to a section.
 // ============================================================
 
-import { setLastVisited } from './store.js';
+import { el } from './dom.js';
 import { enrichGlossaryDom } from './glossary.js';
 import { parseHash, getModuleByRoute, START_ROUTE } from './course.js';
 
@@ -35,7 +35,6 @@ export function init({ afterRender, onSectionParam }) {
       return;
     }
     currentRoute = route;
-    setLastVisited(route);
 
     const app = document.getElementById('app');
     if (!app) return;
@@ -50,7 +49,8 @@ export function init({ afterRender, onSectionParam }) {
       }
     } catch (err) {
       console.error('[router] render error for', route, err);
-      app.innerHTML = `<div class="callout callout-warn" role="alert"><div><b>Błąd:</b> nie można załadować strony (${route}).<p>${err.message}</p></div></div>`;
+      app.replaceChildren(el('div', { class: 'callout callout-warn', role: 'alert' },
+        el('div', {}, el('b', {}, 'Błąd:'), ` nie można załadować strony (${route}).`, el('p', {}, err.message))));
     }
 
     afterRender({ route, params, module: getModuleByRoute(route) });

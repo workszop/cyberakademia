@@ -30,6 +30,14 @@ const INTROS = {
   '2.6': 'Obie role dotyczą bezpieczeństwa informacji, ale mają inny zakres, inną podstawę i inną pozycję w organizacji.',
 };
 
+// Source (key in editorial.js SOURCES) for each comparison row and the key facts
+const REG_SOURCES = {
+  nis2: { since: 'ksc', incident: 'kscAct', fines: 'kscAct', facts: 'kscAct' },
+  dora: { since: 'dora', incident: 'doraReporting', fines: 'doraFines', facts: 'dora' },
+  rodo: { since: 'rodo', incident: 'rodo', fines: 'rodoAct', facts: 'rodoAct' },
+  iso27001: { since: 'iso', incident: 'iso', fines: 'iso', facts: 'iso' },
+};
+
 // ─── Helpers ──────────────────────────────────────────────
 
 const regName = id => REGULATIONS.find(r => r.id === id)?.name || '';
@@ -91,10 +99,8 @@ function secDirective(s) {
 
 function secCompare(s) {
   const row = (th, fn) => ({ th, cells: REGULATIONS.map(fn) });
-  const sourced = (r, field, content) => [...(Array.isArray(content) ? content : [content]), el('span', { class: 'cell-source' },
-    sourceLink(r.id === 'nis2' ? (field === 'since' ? 'ksc' : 'kscAct')
-      : r.id === 'dora' ? (field === 'since' ? 'dora' : field === 'incident' ? 'doraReporting' : 'doraFines')
-        : r.id === 'rodo' ? (field === 'fines' ? 'rodoAct' : 'rodo') : 'iso'),
+  const sourced = (r, field, content) => [content, el('span', { class: 'cell-source' },
+    sourceLink(REG_SOURCES[r.id][field]),
     r.id === 'dora' && field === 'fines' ? [' · ', sourceLink('dora', 'Dostawcy ICT: art. 35 DORA')] : null)];
   return section({ ...s, block: 'compareTable', tone: 'tint' },
     compareTable({
@@ -116,8 +122,8 @@ function secCompare(s) {
       title: r.name,
       summary: r.description,
       meta: r.type,
-      detail: [bullets(r.keyFacts), sourceLink(r.id === 'nis2' ? 'kscAct' : r.id === 'dora' ? 'dora' : r.id === 'rodo' ? 'rodoAct' : 'iso')],
-    })), { cols: 2 }),
+      detail: [bullets(r.keyFacts), sourceLink(REG_SOURCES[r.id].facts)],
+    }))),
   );
 }
 
@@ -140,7 +146,7 @@ function secObligations(s) {
       title: o.name,
       summary: o.description,
       detail: o.detail,
-    })), { cols: 2 }),
+    }))),
   );
 }
 

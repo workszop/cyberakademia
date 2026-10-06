@@ -8,7 +8,7 @@ import { el } from '../dom.js';
 import { getModule } from '../course.js';
 import {
   moduleHeader, moduleFooter, section, eyebrow, bullets, callout,
-  compareTable, process, numberedList, hierarchy,
+  compareTable, process, numberedList, hierarchy, labelled,
 } from '../sections.js';
 import {
   ROLES,
@@ -46,12 +46,6 @@ const INTROS = {
   '3.6': 'Bezpieczeństwo opiera się na powtarzalnych, udokumentowanych procesach. Dopiero one sprawiają, że narzędzia i ludzie tworzą sprawną obronę.',
 };
 
-// ─── Helpers ──────────────────────────────────────────────
-
-function labeled(label, text) {
-  return el('p', {}, el('b', {}, `${label}: `), text);
-}
-
 // ─── Render: sections ─────────────────────────────────────
 
 function renderRoles(s) {
@@ -64,7 +58,7 @@ function renderRoles(s) {
         title: r.name,
         text: r.responsibility,
         detail: [
-          r.reports_to ? labeled('Raportuje do', r.reports_to) : null,
+          r.reports_to ? labelled('Raportuje do: ', r.reports_to) : null,
           bullets(r.keyActions),
           r.trap ? callout({ title: 'Pułapka', text: r.trap, tone: 'warn', iconName: 'alert-triangle' }) : null,
         ].filter(Boolean),
@@ -99,7 +93,7 @@ function renderSocModels(s) {
     rows: SOC_MODELS.map(m => ({
       th: el('b', {}, m.name),
       cells: [bullets(m.pros), bullets(m.cons), m.bestFor],
-      detail: m.relatedConcept ? labeled('Warto wiedzieć', m.relatedConcept) : null,
+      detail: m.relatedConcept ? labelled('Warto wiedzieć: ', m.relatedConcept) : null,
     })),
   });
   return section({ ...s, intro: INTROS[s.id], block: 'compareTable' }, table);
@@ -112,7 +106,7 @@ function renderIrCycle(s) {
     text: p.description,
     detail: [
       el('p', {}, p.detail),
-      p.regulatoryLink ? labeled('Wymóg', p.regulatoryLink) : null,
+      p.regulatoryLink ? labelled('Wymóg: ', p.regulatoryLink) : null,
     ].filter(Boolean),
   }));
   return section({ ...s, intro: INTROS[s.id], block: 'process' }, process(steps, { direction: 'horizontal' }));
@@ -125,7 +119,7 @@ function renderGovernance(s) {
     rows: GOVERNANCE_FRAMEWORKS.map(fw => ({
       th: el('b', {}, fw.name),
       cells: [fw.description, fw.useCase, bullets(fw.strengths)],
-      detail: fw.relation ? labeled('Relacja do regulacji i innych ram', fw.relation) : null,
+      detail: fw.relation ? labelled('Relacja do regulacji i innych ram: ', fw.relation) : null,
     })),
   });
   return section({ ...s, intro: INTROS[s.id], block: 'compareTable', tone: 'wash' }, table);
@@ -137,7 +131,7 @@ function renderProcesses(s) {
     summary: p.description,
     detail: [
       el('p', {}, p.fullDescription),
-      p.regulatoryReq ? labeled('Wymóg regulacyjny', p.regulatoryReq) : null,
+      p.regulatoryReq ? labelled('Wymóg regulacyjny: ', p.regulatoryReq) : null,
       p.keyMetrics?.length ? el('div', {}, eyebrow('Mierniki'), bullets(p.keyMetrics)) : null,
     ].filter(Boolean),
   }));
