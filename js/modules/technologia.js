@@ -55,6 +55,8 @@ const ZERO_TRUST_PRINCIPLES = [
 const orderedLayers = () => LAYER_ORDER.map(id => DEFENSE_LAYERS.find(l => l.id === id)).filter(Boolean);
 const layerById = id => DEFENSE_LAYERS.find(l => l.id === id);
 const layerNum = id => LAYER_ORDER.indexOf(id) + 1;
+/** Layer rows are addressable like sub-headings: '4.1.3' → #s-4-1-3 */
+const layerRef = id => `4.1.${layerNum(id)}`;
 
 /** "MFA – uwierzytelnianie wieloskładnikowe" → "MFA" */
 const shortName = layer => layer.name.split(' – ')[0];
@@ -63,16 +65,9 @@ function subHeading(num, text) {
   return el('h3', { class: 'sub-h no-terms', id: sectionDomId(num), tabindex: '-1' }, el('span', { class: 'mono' }, num), ' ', text);
 }
 
-function localLink(id, label, targetId = sectionDomId(id)) {
-  return el('a', { href: `#/technologia?s=${id}`, class: 'local-reference', onclick: event => {
-    const target = document.getElementById(targetId);
-    if (!target || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
-    event.preventDefault();
-    history.pushState(null, '', `#/technologia?s=${id}`);
-    target.scrollIntoView({ block: 'start' });
-    target.setAttribute('tabindex', '-1');
-    target.focus({ preventScroll: true });
-  } }, label);
+/** In-page link; the shell scrolls to the target (section, sub-heading or layer row) and focuses it. */
+function localLink(id, label) {
+  return el('a', { href: `#/technologia?s=${id}`, class: 'local-reference' }, label);
 }
 
 function toolHead(name, full) {
@@ -87,7 +82,7 @@ function listText(arr, sep = ', ') {
 function seeLayer(toolId) {
   const layerId = SEE_LAYER[toolId];
   if (!layerId) return null;
-  return { label: 'Zob. 4.1', value: localLink('4.1', `Warstwa ${String(layerNum(layerId)).padStart(2, '0')}: ${layerById(layerId).name}. Co blokuje, a czego nie.`, `layer-${layerId}`) };
+  return { label: 'Zob. 4.1', value: localLink(layerRef(layerId), `Warstwa ${String(layerNum(layerId)).padStart(2, '0')}: ${layerById(layerId).name}. Co blokuje, a czego nie.`) };
 }
 
 function prosCons(t) {
@@ -120,7 +115,7 @@ function renderLayers(meta) {
     intro: 'Żadna pojedyncza kontrola nie zatrzyma każdego ataku, ale kilka ułożonych jedna za drugą wyraźnie podnosi koszt i ryzyko dla atakującego. Warstwy poniżej idą od brzegu sieci do samych danych. Każda coś blokuje, a czegoś nie, więc głęboką obronę tworzą dopiero razem.',
   },
     layerStack(orderedLayers().map(l => ({
-      id: `layer-${l.id}`,
+      id: sectionDomId(layerRef(l.id)),
       title: l.name,
       category: l.category,
       text: l.description,

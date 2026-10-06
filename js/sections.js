@@ -9,12 +9,15 @@ import { el } from './dom.js';
 import { icon } from './icons.js';
 import { getModule, getNeighbours, LAYERS } from './course.js';
 import { MODULE_NOTES, SOURCES } from './editorial.js';
+import { enrichGlossaryDom } from './glossary.js';
+import { pluralPl, SECTION_FORMS } from './text.js';
 
 // ─── Helpers ──────────────────────────────────────────────
 
-function para(text, cls) {
-  if (!text) return null;
-  return typeof text === 'string' ? el('p', { class: cls }, text) : text;
+/** A string becomes a paragraph; nodes and arrays pass through to el(); empty → null. */
+function para(content, cls) {
+  if (!content) return null;
+  return typeof content === 'string' ? el('p', { class: cls }, content) : content;
 }
 
 let uid = 0;
@@ -45,7 +48,7 @@ export function callout({ title, text, tone = 'note', iconName = 'info' }) {
     el('span', { class: 'callout-icon' }, icon(iconName, 20)),
     el('div', {},
       title ? el('b', {}, title) : null,
-      asBlock(text),
+      para(text),
     ),
   );
 }
@@ -55,10 +58,6 @@ export function labelled(label, content, cls) {
   return el('p', { class: cls }, el('b', {}, label), content);
 }
 
-/** A string becomes a paragraph; nodes and arrays pass through to el(). */
-function asBlock(content) {
-  return typeof content === 'string' ? el('p', {}, content) : content;
-}
 
 /** Label: value pairs (definition list). */
 export function facts(pairs, cls = '') {
@@ -83,7 +82,7 @@ export function moduleHeader(moduleId) {
       el('p', { class: 'lead' }, mod.lead),
       el('div', { class: 'meta-row' },
         el('span', {}, icon('clock', 15), mod.time),
-        el('span', {}, icon('list', 15), `${mod.sections.length} sekcji`),
+        el('span', {}, icon('list', 15), pluralPl(mod.sections.length, SECTION_FORMS)),
       ),
       el('div', { class: 'mod-progress' },
         bar,
@@ -236,7 +235,7 @@ export function split({ left, right, root, variant = 'fork', midLabel = 'a' }) {
     s.eyebrow ? eyebrow(s.eyebrow) : null,
     el('h3', {}, s.title),
     s.sub ? el('div', { class: 'split-sub' }, s.sub) : null,
-    asBlock(s.body),
+    para(s.body),
   );
   if (variant === 'versus') {
     return el('div', { class: 'split split-versus' },
@@ -289,7 +288,7 @@ export function process(steps, { direction = 'horizontal' } = {}) {
       if (s.detail) {
         body.appendChild(el('details', { class: 'step-more' },
           el('summary', {}, 'Więcej'),
-          asBlock(s.detail)));
+          para(s.detail)));
       }
       return el('li', { class: 'step' },
         el('span', { class: 'step-num no-terms' }, String(s.num ?? i + 1)),
@@ -326,6 +325,8 @@ export function timeline(events, { today = new Date() } = {}) {
       el('div', {}, el('b', {}, ev.label), el('p', {}, ev.description)),
       ev.source ? sourceLink(ev.source) : null,
     );
+    // The router enriched only the first detail; mark terms in each new one
+    enrichGlossaryDom(detail);
   }
 
   const todayMarker = () => el('div', { class: 'tl-today', 'aria-hidden': 'true' },
@@ -403,7 +404,7 @@ export function numberedList(items) {
       );
       if (!it.detail) return el('div', { class: 'nl-item static' }, [...head.childNodes]);
       return el('details', { class: 'nl-item' }, head,
-        el('div', { class: 'nl-detail' }, asBlock(it.detail)));
+        el('div', { class: 'nl-detail' }, para(it.detail)));
     }),
   );
 }
@@ -473,7 +474,7 @@ export function hierarchy(levels) {
       el('div', { class: 'tier-items' },
         lv.items.map(it => el('details', { class: 'tier-item' },
           el('summary', {}, el('b', {}, it.title), it.text ? el('span', {}, it.text) : null, icon('plus', 16)),
-          el('div', { class: 'tier-detail' }, asBlock(it.detail)),
+          el('div', { class: 'tier-detail' }, para(it.detail)),
         )),
       ),
     )),
@@ -490,6 +491,7 @@ export function temple({ roof, roofSub, pillars, base }) {
   function select(i) {
     buttons.forEach((b, j) => b.setAttribute('aria-pressed', String(i === j)));
     detail.replaceChildren(el('b', {}, `Filar ${i + 1}: ${pillars[i].title}. `), pillars[i].detail);
+    enrichGlossaryDom(detail);
   }
   pillars.forEach((p, i) => {
     const b = el('button', { type: 'button', class: 'pillar', 'aria-pressed': 'false' },

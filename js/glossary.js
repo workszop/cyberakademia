@@ -112,7 +112,14 @@ export function initGlossary() {
   });
   window.addEventListener('hashchange', hideTip);
   window.addEventListener('resize', hideTip);
-  document.addEventListener('scroll', e => { if (!tip.contains(e.target)) hideTip(); }, { passive: true, capture: true });
+  // A focused term keeps its definition while scrolling (focus itself scrolls a term
+  // below the fold into view); a hovered one closes
+  document.addEventListener('scroll', e => {
+    if (tip.contains(e.target)) return;
+    const anchor = activeTarget === document.activeElement ? activeTarget.getBoundingClientRect() : null;
+    if (anchor && anchor.bottom > 0 && anchor.top < innerHeight) positionTip();
+    else hideTip();
+  }, { passive: true, capture: true });
   window.visualViewport?.addEventListener('resize', hideTip);
 }
 
@@ -145,7 +152,7 @@ export function enrichGlossaryDom(root) {
       const p = node.parentElement;
       if (!p) return NodeFilter.FILTER_REJECT;
       // Don't enrich inside already-wrapped terms, code, headings, or non-text containers
-      if (p.closest('.term, code, pre, script, style, svg, h1, h2, .no-terms, .eyebrow, .chip, a, button, summary, input, textarea, select, [contenteditable], [role="button"], [role="link"]')) {
+      if (p.closest('.term, code, pre, script, style, svg, h1, h2, h3, h4, h5, h6, .no-terms, .eyebrow, .chip, a, button, summary, input, textarea, select, [contenteditable], [role="button"], [role="link"]')) {
         return NodeFilter.FILTER_REJECT;
       }
       TERM_PATTERN.lastIndex = 0;

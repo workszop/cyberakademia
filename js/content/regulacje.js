@@ -117,7 +117,9 @@ export const TIMELINE_EVENTS = [
     date: '2016-07-06',
     label: 'Dyrektywa NIS (pierwsza)',
     description: 'Pierwsza europejska dyrektywa o bezpieczeństwie sieci i systemów informacyjnych. Obejmowała ograniczony zakres sektorów i podmiotów.',
-    regulation: 'nis2',
+    regulation: 'nis',
+    tag: 'Dyrektywa NIS',
+    source: 'nis1',
     important: false
   },
   {
@@ -125,6 +127,7 @@ export const TIMELINE_EVENTS = [
     label: 'RODO zaczyna obowiązywać',
     description: 'Rozporządzenie RODO (GDPR) zaczyna być w pełni stosowane w całej UE. Wszystkie organizacje przetwarzające dane osobowe mieszkańców UE muszą spełniać jego wymagania.',
     regulation: 'rodo',
+    source: 'rodoAct',
     important: true
   },
   {
@@ -132,6 +135,7 @@ export const TIMELINE_EVENTS = [
     label: 'DORA wchodzi w życie',
     description: 'Rozporządzenie DORA (Rozporządzenie UE 2022/2554) wchodzi w życie. Sektor finansowy ma 2 lata na przygotowanie się do pełnego stosowania.',
     regulation: 'dora',
+    source: 'dora',
     important: true
   },
   {
@@ -139,6 +143,7 @@ export const TIMELINE_EVENTS = [
     label: 'Termin implementacji NIS2',
     description: 'Do tego dnia kraje UE miały wdrożyć dyrektywę NIS2 do prawa krajowego. Polska (jak wiele innych krajów) nie dotrzymała terminu: nowelizacja KSC była wtedy jeszcze w toku.',
     regulation: 'nis2',
+    source: 'nis2',
     important: true
   },
   {
@@ -146,6 +151,7 @@ export const TIMELINE_EVENTS = [
     label: 'DORA – pełne stosowanie',
     description: 'DORA w pełni obowiązuje sektor finansowy UE. Instytucje finansowe i ich dostawcy ICT muszą spełniać wszystkie wymogi: zarządzanie ryzykiem ICT, incydenty, TLPT, dostawcy.',
     regulation: 'dora',
+    source: 'dora',
     important: true
   },
   {
@@ -153,6 +159,7 @@ export const TIMELINE_EVENTS = [
     label: 'KSC 2.0 wchodzi w życie',
     description: 'Polska ustawa o KSC 2.0 (implementacja NIS2) wchodzi w życie. Od tego dnia podmioty kluczowe i ważne podlegają nowym obowiązkom i rejestrują się w rejestrze operatorów.',
     regulation: 'nis2',
+    source: 'ksc',
     important: true
   },
   {
@@ -160,6 +167,7 @@ export const TIMELINE_EVENTS = [
     label: 'KSC – termin rejestracji',
     description: 'Podmioty kluczowe i ważne spełniające kryteria w dniu wejścia nowelizacji w życie składają wniosek o wpis do wykazu. Dla podmiotów kwalifikujących się później termin liczy się od spełnienia kryteriów.',
     regulation: 'nis2',
+    source: 'ksc',
     important: true
   },
   {
@@ -167,6 +175,7 @@ export const TIMELINE_EVENTS = [
     label: 'KSC – wdrożenie SZBI',
     description: 'Termin wdrożenia obowiązków, w tym SZBI, dla podmiotów kluczowych i ważnych spełniających kryteria w dniu wejścia nowelizacji w życie. Dla podmiotów kwalifikujących się później obowiązuje odrębny sposób liczenia terminu.',
     regulation: 'nis2',
+    source: 'ksc',
     important: true
   },
   {
@@ -174,6 +183,7 @@ export const TIMELINE_EVENTS = [
     label: 'KSC – pierwszy audyt',
     description: 'Termin pierwszego obowiązkowego audytu bezpieczeństwa podmiotów kluczowych: 24 miesiące od wejścia w życie ustawy. Kolejne audyty co najmniej raz na 3 lata. Podmiotowi ważnemu organ może nakazać audyt po poważnym incydencie lub naruszeniu przepisów.',
     regulation: 'nis2',
+    source: 'ksc',
     important: false
   },
 ];

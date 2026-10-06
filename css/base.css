@@ -8,40 +8,27 @@
   /* ─── Extra palette ─── */
   --ink-2:            #13303F;
   --ink-3:            #1C3E50;
-  --ink-tint:         #E7EEF2;
-  --indigo-tint:      #EEEDFD;
-  --violet-tint:      #F4EEFA;
   --fg-on-dark:       #FFFFFF;
   --fg-on-dark-2:     #B8C7D1;
   --fg-on-dark-3:     #7E97A6;
-  --bg-4:             #FAF8FC;
-  --border-dark:      rgba(255, 255, 255, 0.12);
+  --border-dark:      #1C3E50;
   --success:          #00A37A;
-  --success-tint:     #E2F5EF;
+  --success-strong:   #00785A;   /* solid fill under white text (AA) */
   --danger:           #B4233C;
-  --danger-tint:      #FDECEF;
-  --warning-tint:     #FFF6DB;
   --warning-ink:      #7A5A00;
+  --warning:          #FFC107;   /* solid fill under ink text */
   --scrim:            rgba(10, 31, 44, 0.55);
-  --term-underline:   rgba(196, 30, 84, 0.40);
+  --term-underline:   #C41E54;
   --tooltip-bg:       #0A1F2C;
   --shadow-deep:      0 20px 48px rgba(10, 31, 44, 0.22);
 
   /* ─── Layers: one colour per layer ─── */
   --layer-base:       var(--ink);
-  --layer-base-tint:  var(--ink-tint);
   --layer-reg:        var(--quantica-pink);
-  --layer-reg-tint:   var(--magenta-tint);
   --layer-org:        var(--violet-primary);
-  --layer-org-tint:   var(--violet-tint);
   --layer-tech:       var(--indigo);
-  --layer-tech-tint:  var(--indigo-tint);
   --layer-synth:      var(--violet-deep);
-  --layer-synth-tint: var(--soft-lilac);
   --layer-ref:        var(--ink-3);
-  --layer-ref-tint:   var(--ink-tint);
-  --grad-layers:      linear-gradient(90deg, var(--layer-reg) 0%, var(--layer-org) 50%, var(--layer-tech) 100%);
-  --grad-layers-v:    linear-gradient(180deg, var(--layer-reg) 0%, var(--layer-org) 50%, var(--layer-tech) 100%);
 
   /* ─── Regulations: tag colours in the comparison table ─── */
   --reg-nis2:         var(--indigo);
@@ -70,15 +57,14 @@
 
   /* Default accent = base layer; overridden per [data-layer] */
   --lc: var(--layer-base);
-  --lt: var(--layer-base-tint);
 }
 
-[data-layer="base"]  { --lc: var(--layer-base);  --lt: var(--layer-base-tint); }
-[data-layer="reg"]   { --lc: var(--layer-reg);   --lt: var(--layer-reg-tint); }
-[data-layer="org"]   { --lc: var(--layer-org);   --lt: var(--layer-org-tint); }
-[data-layer="tech"]  { --lc: var(--layer-tech);  --lt: var(--layer-tech-tint); }
-[data-layer="synth"] { --lc: var(--layer-synth); --lt: var(--layer-synth-tint); }
-[data-layer="ref"]   { --lc: var(--layer-ref);   --lt: var(--layer-ref-tint); }
+[data-layer="base"]  { --lc: var(--layer-base); }
+[data-layer="reg"]   { --lc: var(--layer-reg); }
+[data-layer="org"]   { --lc: var(--layer-org); }
+[data-layer="tech"]  { --lc: var(--layer-tech); }
+[data-layer="synth"] { --lc: var(--layer-synth); }
+[data-layer="ref"]   { --lc: var(--layer-ref); }
 
 /* ─── Base elements ─── */
 *, *::before, *::after { box-sizing: border-box; }
@@ -99,9 +85,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 a { color: inherit; }
 img { max-width: 100%; }
 :focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+/* Containers focused only to move the reading position after navigation */
+#app:focus, .sec:focus { outline: none; }
 kbd {
   font-family: var(--font-mono); font-size: var(--fs-micro);
-  padding: 1px 6px; border-radius: var(--radius-xs); border: 1px solid currentColor; opacity: 0.85;
+  padding: 1px 6px; border-radius: var(--radius-xs); border: 1px solid currentColor;
 }
 
 /* ─── Utilities ─── */
@@ -138,6 +126,8 @@ kbd {
   cursor: help;
   transition: border-color var(--dur-1) var(--ease);
 }
+/* On solid colour fills the underline follows the text colour */
+.callout-warn .term, .callout-key .term, .case-decision .term { border-bottom-color: currentColor; }
 .term:hover, .term:focus-visible { border-bottom-color: var(--quantica-pink); border-bottom-style: solid; }
 
 .tooltip-box {

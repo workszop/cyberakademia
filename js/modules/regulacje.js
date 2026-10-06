@@ -133,9 +133,9 @@ function secTimeline(s) {
       date: ev.date,
       label: ev.label,
       description: ev.description,
-      tag: regName(ev.regulation),
+      tag: ev.tag || regName(ev.regulation),
       important: ev.important,
-      source: ev.regulation === 'nis2' ? (ev.date >= '2026' ? 'ksc' : 'nis2') : ev.regulation === 'dora' ? 'dora' : 'rodoAct',
+      source: ev.source,
     }))),
   );
 }

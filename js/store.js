@@ -27,26 +27,44 @@ function sanitize(read) {
   return clean;
 }
 
-function load() {
-  const ls = storage();
-  if (!ls) return { read: {} };
+/** Read sections as saved in localStorage (possibly by another tab). */
+function loadRead(ls = storage()) {
+  if (!ls) return {};
   try {
-    OLD_KEYS.forEach(k => ls.removeItem(k));
-    const saved = JSON.parse(ls.getItem(KEY) || '{}');
-    return { read: sanitize(saved.read) };
+    return sanitize(JSON.parse(ls.getItem(KEY) || '{}').read);
   } catch {
-    return { read: {} };
+    return {};
   }
+}
+
+/** Union of two read maps; progress only grows, so nothing is ever dropped. */
+function mergeRead(a, b) {
+  return sanitize(Object.fromEntries(COURSE_MODULES.map(m => [m.id, [...(a[m.id] || []), ...(b[m.id] || [])]])));
 }
 
 function save() {
   const ls = storage();
   if (!ls) return;
+  // Merge first so this tab never overwrites sections another tab marked read
+  state.read = mergeRead(loadRead(ls), state.read);
   try { ls.setItem(KEY, JSON.stringify(state)); } catch { /* quota / private mode */ }
 }
 
-let state = load();
+function init() {
+  const ls = storage();
+  try { OLD_KEYS.forEach(k => ls?.removeItem(k)); } catch { /* blocked storage */ }
+  return { read: loadRead(ls) };
+}
+
+let state = init();
 const listeners = new Set();
+
+// Another tab saved progress: pick it up
+window.addEventListener?.('storage', e => {
+  if (e.key !== KEY) return;
+  state.read = mergeRead(state.read, loadRead());
+  notify();
+});
 
 function notify() {
   listeners.forEach(fn => { try { fn(); } catch (e) { console.error('[store]', e); } });

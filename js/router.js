@@ -26,7 +26,11 @@ export function register(hash, renderFn) {
  */
 export function init({ afterRender, onSectionParam }) {
   function handle() {
-    const { route: parsed, params } = parseHash(window.location.hash);
+    // In-page anchors such as '#app' are not routes: keep the current page
+    const hash = window.location.hash;
+    if (currentRoute && hash && !hash.startsWith('#/')) return;
+
+    const { route: parsed, params } = parseHash(hash);
     const route = routes[parsed] ? parsed : START_ROUTE;
 
     // Same page, only the section changed: scroll, don't re-render

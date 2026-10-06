@@ -52,7 +52,7 @@ function progressStrip() {
   const c = getCourseProgress();
   return el('div', { class: 'progress-strip', 'data-course-progress': String(c.pct) },
     el('span', { class: 'ps-summary' }, `Przeczytano ${c.read} z ${c.total} sekcji (${c.pct}%)`),
-    el('div', { class: 'ps-bar', role: 'progressbar', 'aria-label': 'Postęp lektury kursu',
+    el('div', { class: 'ps-bar', style: { '--cols': String(COURSE_MODULES.length) }, role: 'progressbar', 'aria-label': 'Postęp lektury kursu',
       'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(c.pct),
       'aria-valuetext': `${c.read} z ${c.total} sekcji` },
       COURSE_MODULES.map(m => el('span', { class: 'ps-seg', 'data-layer': m.layer, title: m.title },

@@ -12,6 +12,7 @@ import {
   subscribe, markRead, isRead, getModuleProgress, getCourseProgress, getNextSection,
 } from './store.js';
 import { sectionDomId } from './sections.js';
+import { pluralPl, SECTION_FORMS } from './text.js';
 
 const MOBILE_LAYOUT = window.matchMedia('(max-width: 768px)');
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -22,7 +23,11 @@ const shell = {
   page: null,          // current module object (any) or null on Start
   module: null,        // current module with sections (read-tracked) or null
   route: '#/',
+  hasRouted: false,
   observers: [],
+  reader: null,        // IntersectionObserver for the section-end sentinels
+  readingPaused: false,
+  resumeTimer: null,
   activeSection: null,
   menuOpen: false,
   helpOpen: false,
@@ -47,14 +52,28 @@ function sectionsInPage() {
   return [...document.querySelectorAll('#app section[data-section-id]')];
 }
 
-function scrollToSection(sectionId, { smooth = true } = {}) {
-  const target = document.getElementById(sectionDomId(sectionId));
-  if (!target) return false;
+/**
+ * Scrolls to a section or sub-heading (e.g. '4.2.1') and optionally focuses it.
+ * Returns the id of the enclosing numbered section, or null when there is no such target.
+ */
+function scrollToSection(targetId, { smooth = true, focus = false } = {}) {
+  const target = document.getElementById(sectionDomId(targetId));
+  if (!target) return null;
+  pauseReading();
   target.scrollIntoView({ behavior: smooth && !REDUCED_MOTION.matches ? 'smooth' : 'instant', block: 'start' });
-  if (shell.module) {
-    history.replaceState(null, '', `${shell.module.route}?s=${sectionId}`);
+  if (focus) {
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
   }
-  return true;
+  if (shell.module) {
+    history.replaceState(null, '', `${shell.module.route}?s=${targetId}`);
+  }
+  return target.closest('section[data-section-id]')?.dataset.sectionId || null;
+}
+
+function scrollToTop() {
+  pauseReading();
+  window.scrollTo({ top: 0, behavior: REDUCED_MOTION.matches ? 'instant' : 'smooth' });
 }
 
 function nextSectionHref() {
@@ -62,10 +81,16 @@ function nextSectionHref() {
   return next ? `${next.module.route}?s=${next.section.id}` : '#/slownik';
 }
 
-/** Follows an in-app link; an unchanged hash fires no hashchange, so act on the current page directly. */
+/**
+ * Follows an in-app link. Within the current page it scrolls right away (with a
+ * normal history entry) instead of waiting for hashchange, which an unchanged
+ * hash never fires.
+ */
 function navigate(href) {
-  if (href !== location.hash) location.hash = href;
-  else onSectionParam(parseHash(href).params);
+  const target = parseHash(href);
+  if (target.route !== shell.route) { location.hash = href; return; }
+  if (href !== location.hash) history.pushState(null, '', href);
+  onSectionParam(target.params);
 }
 
 function statusEl(mod) {
@@ -227,7 +252,7 @@ function refreshProgress() {
     const p = getModuleProgress(mod.id);
     document.querySelectorAll(`[data-progress-label="${mod.id}"]`).forEach(l => {
       l.textContent = p.read === p.total
-        ? `Przeczytane: wszystkie ${p.total} sekcji`
+        ? `Przeczytane: wszystkie ${pluralPl(p.total, SECTION_FORMS)}`
         : `Przeczytane: ${p.read} z ${p.total} sekcji`;
     });
     refs.toc.querySelectorAll('[data-toc]').forEach(a => {
@@ -244,6 +269,17 @@ function refreshProgress() {
 function disconnectObservers() {
   shell.observers.forEach(o => o.disconnect());
   shell.observers = [];
+  shell.reader = null;
+}
+
+/** Keeps the active chip visible in the horizontal (narrow) TOC without scrolling the page. */
+function revealTocChip(chip) {
+  const bar = refs.toc;
+  if (bar.scrollWidth <= bar.clientWidth) return;
+  const c = chip.getBoundingClientRect();
+  const b = bar.getBoundingClientRect();
+  if (c.left < b.left) bar.scrollLeft += c.left - b.left;
+  else if (c.right > b.right) bar.scrollLeft += c.right - b.right;
 }
 
 function setActive(sectionId) {
@@ -254,10 +290,36 @@ function setActive(sectionId) {
     const on = a.dataset.toc === sectionId;
     a.classList.toggle('active', on);
     if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
-    // Keep the active chip visible in the horizontal (narrow) TOC
-    if (on && refs.toc.scrollWidth > refs.toc.clientWidth) {
-      a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    }
+    if (on) revealTocChip(a);
+  });
+}
+
+// Programmatic scrolls (TOC, J/K, links) sweep past the ends of the sections in
+// between; those must not count as read. Reading resumes when the scroll ends.
+function pauseReading() {
+  shell.readingPaused = true;
+  clearTimeout(shell.resumeTimer);
+  document.removeEventListener('scrollend', resumeReading);
+  document.addEventListener('scrollend', resumeReading, { once: true });
+  // Fallback for browsers without 'scrollend' and for scrolls that do not move
+  shell.resumeTimer = setTimeout(resumeReading, 1500);
+}
+
+function resumeReading() {
+  if (!shell.readingPaused) return;
+  shell.readingPaused = false;
+  clearTimeout(shell.resumeTimer);
+  document.removeEventListener('scrollend', resumeReading);
+  observeSentinels();
+}
+
+/** (Re)observes unread sentinels; observing reports the ones already on screen. */
+function observeSentinels() {
+  const mod = shell.module;
+  if (!shell.reader || !mod) return;
+  document.querySelectorAll('#app [data-sentinel]').forEach(s => {
+    shell.reader.unobserve(s);
+    if (!isRead(mod.id, s.dataset.sentinel)) shell.reader.observe(s);
   });
 }
 
@@ -266,15 +328,19 @@ function observeSections() {
   const mod = shell.module;
   if (!mod || !mod.sections.length || !('IntersectionObserver' in window)) return;
 
+  const sections = sectionsInPage();
   const visible = new Map();
   const spy = new IntersectionObserver(entries => {
     entries.forEach(e => visible.set(e.target.dataset.sectionId, e.isIntersecting));
-    const firstVisible = sectionsInPage().find(s => visible.get(s.dataset.sectionId));
+    const firstVisible = sections.find(s => visible.get(s.dataset.sectionId));
     if (firstVisible) setActive(firstVisible.dataset.sectionId);
   }, { rootMargin: '-20% 0px -55% 0px' });
-  sectionsInPage().forEach(s => spy.observe(s));
+  sections.forEach(s => spy.observe(s));
 
+  // A section counts as read when its end passes the middle of the viewport. The top
+  // band is excluded: after a jump, the previous section's end sits just above the target.
   const reader = new IntersectionObserver(entries => {
+    if (shell.readingPaused) return;
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       const id = e.target.dataset.sentinel;
@@ -284,12 +350,11 @@ function observeSections() {
       }
       reader.unobserve(e.target);
     });
-  }, { rootMargin: '0px 0px -8% 0px' });
-  document.querySelectorAll('#app [data-sentinel]').forEach(s => {
-    if (!isRead(mod.id, s.dataset.sentinel)) reader.observe(s);
-  });
+  }, { rootMargin: '-15% 0px -8% 0px' });
 
+  shell.reader = reader;
   shell.observers.push(spy, reader);
+  observeSentinels();
 }
 
 // ─── Menu / help overlays ─────────────────────────────────
@@ -395,15 +460,18 @@ function bindListeners() {
 
     const tocLink = e.target.closest('[data-toc]');
     const link = e.target.closest('a[href^="#/"]');
-    if (tocLink) {
+    if (e.target.closest('.skip-link')) {
+      // Focus the content without putting '#app' in the URL
       e.preventDefault();
-      scrollToSection(tocLink.dataset.toc);
-      setActive(tocLink.dataset.toc);
-    } else if (link && link.getAttribute('href') === location.hash && !e.defaultPrevented
-      && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) {
-      // Link to the URL already shown: no hashchange would fire, so handle it here
+      refs.content.focus();
+    } else if (tocLink) {
       e.preventDefault();
-      navigate(location.hash);
+      const sec = scrollToSection(tocLink.dataset.toc);
+      if (sec) setActive(sec);
+    } else if (link && !e.defaultPrevented && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)
+      && parseHash(link.getAttribute('href')).route === shell.route) {
+      e.preventDefault();
+      navigate(link.getAttribute('href'));
     }
     // Close the mobile menu after choosing a module
     if (e.target.closest('.sidebar a')) setMenu(false);
@@ -466,6 +534,7 @@ export function initShell() {
   refs.scrim = document.getElementById('scrim');
   refs.help = document.getElementById('help');
   refs.live = document.getElementById('live');
+  refs.content = document.getElementById('app');
   refs.app = document.querySelector('.app');
   refs.main = document.querySelector('.main');
   refs.skip = document.querySelector('.skip-link');
@@ -478,6 +547,9 @@ export function initShell() {
 /** Called by the router after a page has been rendered into #app. */
 export function onRoute({ route, params, module }) {
   setHelp(false);
+  // The focused element (a link in the old page or the topbar) is gone after a page change
+  const focusLost = shell.hasRouted && (!document.activeElement || document.activeElement === document.body);
+  shell.hasRouted = true;
   shell.route = route;
   shell.page = module || null;
   shell.module = module && module.sections.length ? module : null;
@@ -490,18 +562,22 @@ export function onRoute({ route, params, module }) {
   setMenu(false);
   observeSections();
 
-  if (params.s && scrollToSection(params.s, { smooth: false })) setActive(params.s);
-  else window.scrollTo({ top: 0, behavior: 'instant' });
+  const sec = params.s ? scrollToSection(params.s, { smooth: false, focus: focusLost }) : null;
+  if (sec) setActive(sec);
+  else {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (focusLost) refs.content.focus({ preventScroll: true });
+  }
 
   announce(module ? module.fullTitle : 'Mapa kursu');
 }
 
 /** Same page, different or repeated ?s= parameter: go to that section, or to the top. */
 export function onSectionParam(params) {
-  if (params.s && scrollToSection(params.s)) {
-    setActive(params.s);
+  if (!params.s) { scrollToTop(); return; }
+  const sec = scrollToSection(params.s, { focus: true });
+  if (sec) {
+    setActive(sec);
     announce(`Sekcja ${params.s}`);
-  } else if (!params.s) {
-    window.scrollTo({ top: 0, behavior: REDUCED_MOTION.matches ? 'instant' : 'smooth' });
   }
 }

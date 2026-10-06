@@ -4,6 +4,7 @@ export const SOURCES = {
   original: { label: 'Przewodnik źródłowy (PDF, 9.06.2026)', url: './cyberbezpieczenstwo-w-organizacjach_2026_06_09.md.pdf' },
   ksc: { label: 'Ministerstwo Cyfryzacji: harmonogram KSC', url: 'https://www.gov.pl/web/cyfryzacja/nowelizacja-ustawy-o-krajowym-systemie-cyberbezpieczenstwa-zaczyna-obowiazywac' },
   kscAct: { label: 'KSC: nowelizacja, Dz.U. 2026 poz. 252', url: 'https://eli.gov.pl/eli/DU/2026/252/ogl/pol' },
+  nis1: { label: 'NIS: dyrektywa 2016/1148', url: 'https://eur-lex.europa.eu/eli/dir/2016/1148/oj/pol' },
   nis2: { label: 'NIS2: art. 23 i 34', url: 'https://eur-lex.europa.eu/eli/dir/2022/2555/oj/pol' },
   dora: { label: 'DORA: rozporządzenie 2022/2554', url: 'https://eur-lex.europa.eu/eli/reg/2022/2554/oj/pol' },
   doraReporting: { label: 'DORA: terminy, art. 5 rozporządzenia 2025/301', url: 'https://eur-lex.europa.eu/eli/reg_del/2025/301/oj/pol' },

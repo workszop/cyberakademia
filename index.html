@@ -8,10 +8,12 @@
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <style>
     /* Boot gate: keep the page hidden until the app has rendered its first view,
-       so the empty shell is never painted. Failsafe reveal after 4 s. */
-    @keyframes ca-reveal { to { visibility: visible; } }
-    html:not(.app-ready) body { visibility: hidden; animation: ca-reveal 0s 4s forwards; }
+       so the empty shell is never painted. */
+    html:not(.app-ready) body { visibility: hidden; }
   </style>
+  <!-- Failsafe reveal after 4 s if the app never starts (a timer, not a CSS
+       animation, so the reduced-motion reset cannot cancel it) -->
+  <script>setTimeout(function () { document.documentElement.classList.add('app-ready'); }, 4000);</script>
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,7 +28,7 @@
   <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 </head>
 <body data-route="start" data-layer="base">
-  <noscript><style>html:not(.app-ready) body { visibility: visible; animation: none; }</style>
+  <noscript><style>html:not(.app-ready) body { visibility: visible; }</style>
     <p>CyberAkademia wymaga włączonego JavaScriptu.</p></noscript>
   <a class="skip-link" href="#app">Przejdź do treści</a>
 

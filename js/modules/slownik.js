@@ -8,17 +8,9 @@ import { icon } from '../icons.js';
 import { getAllTerms } from '../glossary.js';
 import { getModule } from '../course.js';
 import { eyebrow } from '../sections.js';
+import { pluralPl, TERM_FORMS } from '../text.js';
 
 // ─── Helpers ──────────────────────────────────────────────
-
-// pluralPl(5, ['termin', 'terminy', 'terminów']) → '5 terminów'
-function pluralPl(n, [one, few, many]) {
-  const mod10 = n % 10, mod100 = n % 100;
-  const form = n === 1 ? one
-    : (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) ? few
-    : many;
-  return `${n} ${form}`;
-}
 
 function normalize(text) {
   return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l');
@@ -47,7 +39,7 @@ export function renderSlownik() {
   const searchText = new Map(terms.map(t => [t.term, normalize(`${t.term} ${t.full || ''} ${t.short} ${t.long || ''}`)]));
   const letters = [...new Set(terms.map(t => letterOf(t.term)))];
 
-  const count = el('span', { class: 'gl-count', 'aria-live': 'polite' }, pluralPl(terms.length, ['termin', 'terminy', 'terminów']));
+  const count = el('span', { class: 'gl-count', 'aria-live': 'polite' }, pluralPl(terms.length, TERM_FORMS));
   const empty = el('p', { class: 'gl-empty', hidden: true }, 'Brak pojęć pasujących do wpisanej frazy.');
 
   const groups = letters.map(letter => el('section', { class: 'gl-group', id: `l-${letter}`, 'data-letter': letter },
@@ -79,8 +71,8 @@ export function renderSlownik() {
       visible += inGroup;
     });
     count.textContent = q
-      ? `${pluralPl(visible, ['termin', 'terminy', 'terminów'])} z ${terms.length}`
-      : pluralPl(terms.length, ['termin', 'terminy', 'terminów']);
+      ? `${pluralPl(visible, TERM_FORMS)} z ${terms.length}`
+      : pluralPl(terms.length, TERM_FORMS);
     empty.hidden = visible > 0;
   }
 
