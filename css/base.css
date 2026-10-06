@@ -8,6 +8,7 @@
   /* ─── Extra palette ─── */
   --ink-2:            #13303F;
   --ink-3:            #1C3E50;
+  --cyan-deep:        #0E7490;   /* Synthesis layer: distinct from the org violet */
   --fg-on-dark:       #FFFFFF;
   --fg-on-dark-2:     #B8C7D1;
   --fg-on-dark-3:     #7E97A6;
@@ -27,7 +28,7 @@
   --layer-reg:        var(--quantica-pink);
   --layer-org:        var(--violet-primary);
   --layer-tech:       var(--indigo);
-  --layer-synth:      var(--violet-deep);
+  --layer-synth:      var(--cyan-deep);
   --layer-ref:        var(--ink-3);
 
   /* ─── Regulations: tag colours in the comparison table ─── */
