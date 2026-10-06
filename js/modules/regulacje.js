@@ -8,7 +8,7 @@ import { getModule } from '../course.js';
 import {
   moduleHeader, moduleFooter, section,
   split, flow, callout, bullets, eyebrow,
-  compareTable, numberedList, timeline, temple,
+  compareTable, numberedList, timeline, temple, sourceLink,
 } from '../sections.js';
 import {
   REGULATIONS,
@@ -91,18 +91,24 @@ function secDirective(s) {
 
 function secCompare(s) {
   const row = (th, fn) => ({ th, cells: REGULATIONS.map(fn) });
+  const sourced = (r, field, content) => [...(Array.isArray(content) ? content : [content]), el('span', { class: 'cell-source' },
+    sourceLink(r.id === 'nis2' ? (field === 'since' ? 'ksc' : 'kscAct')
+      : r.id === 'dora' ? (field === 'since' ? 'dora' : field === 'incident' ? 'doraReporting' : 'doraFines')
+        : r.id === 'rodo' ? (field === 'fines' ? 'rodoAct' : 'rodo') : 'iso'),
+    r.id === 'dora' && field === 'fines' ? [' · ', sourceLink('dora', 'Dostawcy ICT: art. 35 DORA')] : null)];
   return section({ ...s, block: 'compareTable', tone: 'tint' },
     compareTable({
       caption: 'Porównanie regulacji',
       minWidth: 760,
+      mobileMode: 'columns',
       head: ['Cecha', ...REGULATIONS.map(regHead)],
       rows: [
         row('Zakres', r => r.scope),
         row('Czego dotyczy', r => r.topic),
         row('Forma prawna', r => r.legalForm),
-        row('Od kiedy', r => sinceCell(r.compare)),
-        row('Zgłaszanie incydentów', r => incidentCell(r.compare)),
-        row('Kary', r => r.compare.fines || el('span', { class: 'muted' }, 'brak – norma dobrowolna')),
+        row('Od kiedy', r => sourced(r, 'since', sinceCell(r.compare))),
+        row('Zgłaszanie incydentów', r => sourced(r, 'incident', incidentCell(r.compare))),
+        row('Kary', r => sourced(r, 'fines', r.compare.fines || el('span', { class: 'muted' }, 'brak – norma dobrowolna'))),
       ],
     }),
     eyebrow('Kluczowe fakty'),
@@ -110,7 +116,7 @@ function secCompare(s) {
       title: r.name,
       summary: r.description,
       meta: r.type,
-      detail: bullets(r.keyFacts),
+      detail: [bullets(r.keyFacts), sourceLink(r.id === 'nis2' ? 'kscAct' : r.id === 'dora' ? 'dora' : r.id === 'rodo' ? 'rodoAct' : 'iso')],
     })), { cols: 2 }),
   );
 }
@@ -123,6 +129,7 @@ function secTimeline(s) {
       description: ev.description,
       tag: regName(ev.regulation),
       important: ev.important,
+      source: ev.regulation === 'nis2' ? (ev.date >= '2026' ? 'ksc' : 'nis2') : ev.regulation === 'dora' ? 'dora' : 'rodoAct',
     }))),
   );
 }

@@ -1,6 +1,6 @@
 // ============================================================
 // CyberAkademia - glossary.js
-// Global hover tooltips for data-term elements + text enrichment
+// Accessible glossary definitions + text enrichment
 // ============================================================
 
 import { GLOSSARY } from './content/glossary.js';
@@ -15,66 +15,105 @@ export function initGlossary() {
   if (!tip) return;
 
   let activeTarget = null;
+  let pinned = false;
+  let hideTimer;
+  tip.hidden = true;
 
-  function showTip(e) {
-    const target = e.target.closest('[data-term]');
-    if (!target) return;
-
+  function showTip(target) {
+    if (!target || target.closest('[inert]')) return;
     const term = target.dataset.term;
     const entry = GLOSSARY[term];
     if (!entry) return;
-
+    clearTimeout(hideTimer);
+    if (activeTarget !== target) {
+      hideTip();
+      pinned = false;
+    }
     activeTarget = target;
-    tip.innerHTML = `<strong>${term}</strong> – ${entry.short}`;
+    const title = document.createElement('strong');
+    title.textContent = term;
+    tip.replaceChildren(title, document.createTextNode(`: ${entry.short}`));
+    tip.hidden = false;
     tip.setAttribute('aria-hidden', 'false');
     tip.classList.add('visible');
-    positionTip(e);
+    target.setAttribute('aria-describedby', tip.id);
+    target.setAttribute('aria-expanded', 'true');
+    positionTip();
   }
 
   function hideTip() {
+    clearTimeout(hideTimer);
+    activeTarget?.removeAttribute('aria-describedby');
+    activeTarget?.setAttribute('aria-expanded', 'false');
     tip.classList.remove('visible');
     tip.setAttribute('aria-hidden', 'true');
+    tip.hidden = true;
     activeTarget = null;
+    pinned = false;
   }
 
-  function positionTip(e) {
-    const margin = 14;
-    const tipWidth = 280;
-    let left = e.clientX + margin;
-    let top = e.clientY + margin;
-
-    // Keep tooltip inside viewport
-    if (left + tipWidth > window.innerWidth) {
-      left = e.clientX - tipWidth - margin;
-    }
-    if (top + 80 > window.innerHeight) {
-      top = e.clientY - 80;
-    }
-
-    tip.style.left = Math.max(8, left) + 'px';
-    tip.style.top  = Math.max(8, top)  + 'px';
+  function positionTip() {
+    if (!activeTarget) return;
+    const viewport = window.visualViewport;
+    const minX = (viewport?.offsetLeft || 0) + 8;
+    const minY = (viewport?.offsetTop || 0) + 8;
+    const maxX = minX + (viewport?.width || innerWidth) - 16;
+    const maxY = minY + (viewport?.height || innerHeight) - 16;
+    tip.style.maxWidth = `${Math.min(320, maxX - minX)}px`;
+    tip.style.maxHeight = `${maxY - minY}px`;
+    const anchor = activeTarget.getBoundingClientRect();
+    const box = tip.getBoundingClientRect();
+    const top = anchor.bottom + 8 + box.height <= maxY ? anchor.bottom + 8 : anchor.top - box.height - 8;
+    tip.style.left = `${Math.max(minX, Math.min(anchor.left, maxX - box.width))}px`;
+    tip.style.top = `${Math.max(minY, Math.min(top, maxY - box.height))}px`;
   }
 
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('[data-term]')) {
-      showTip(e);
-    } else {
+  function deferHide() {
+    if (pinned || activeTarget === document.activeElement) return;
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideTip, 180);
+  }
+
+  document.addEventListener('mouseover', e => {
+    const target = e.target.closest('[data-term]');
+    if (target) showTip(target);
+    else if (tip.contains(e.target)) clearTimeout(hideTimer);
+  });
+  document.addEventListener('mouseout', e => {
+    if (activeTarget?.contains(e.relatedTarget) || (e.relatedTarget && tip.contains(e.relatedTarget))) return;
+    if (activeTarget?.contains(e.target) || tip.contains(e.target)) deferHide();
+  });
+  document.addEventListener('focusin', e => {
+    const target = e.target.closest('[data-term]');
+    if (target) showTip(target);
+    else hideTip();
+  });
+  document.addEventListener('focusout', e => {
+    if (e.target === activeTarget && !tip.contains(e.relatedTarget)) hideTip();
+  });
+  function toggleTip(target) {
+    if (target === activeTarget && pinned) hideTip();
+    else { showTip(target); pinned = true; }
+  }
+  document.addEventListener('click', e => {
+    const target = e.target.closest('[data-term]');
+    if (target) toggleTip(target);
+    else if (!tip.contains(e.target)) hideTip();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && activeTarget) {
       hideTip();
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    } else if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-term]')) {
+      e.preventDefault();
+      toggleTip(e.target);
     }
   });
-
-  document.addEventListener('mousemove', (e) => {
-    if (activeTarget) positionTip(e);
-  });
-
-  document.addEventListener('mouseout', (e) => {
-    if (!e.relatedTarget?.closest('[data-term]')) {
-      hideTip();
-    }
-  });
-
-  // Hide on scroll
-  document.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('hashchange', hideTip);
+  window.addEventListener('resize', hideTip);
+  document.addEventListener('scroll', e => { if (!tip.contains(e.target)) hideTip(); }, { passive: true, capture: true });
+  window.visualViewport?.addEventListener('resize', hideTip);
 }
 
 // Combined word-boundary regex for all glossary terms (longest-first so
@@ -89,7 +128,7 @@ const TERM_PATTERN = (() => {
 
 /**
  * Walks the DOM under `root` and wraps every glossary term found in a text
- * node with a <span class="term" data-term="…"> so the hover tooltip works.
+ * node with a keyboard-accessible definition trigger.
  * Skips text already inside .term, headings, scripts, styles, SVG.
  *
  * Called by the router after each route mounts (content is rebuilt fresh
@@ -106,7 +145,7 @@ export function enrichGlossaryDom(root) {
       const p = node.parentElement;
       if (!p) return NodeFilter.FILTER_REJECT;
       // Don't enrich inside already-wrapped terms, code, headings, or non-text containers
-      if (p.closest('.term, code, pre, script, style, svg, h1, h2, .no-terms, .eyebrow, .chip, button, summary .nl-num')) {
+      if (p.closest('.term, code, pre, script, style, svg, h1, h2, .no-terms, .eyebrow, .chip, a, button, summary, input, textarea, select, [contenteditable], [role="button"], [role="link"]')) {
         return NodeFilter.FILTER_REJECT;
       }
       TERM_PATTERN.lastIndex = 0;
@@ -135,6 +174,10 @@ export function enrichGlossaryDom(root) {
       span.className = 'term';
       span.dataset.term = m[1];
       span.textContent = m[1];
+      span.tabIndex = 0;
+      span.setAttribute('role', 'button');
+      span.setAttribute('aria-label', `Wyjaśnienie pojęcia: ${m[1]}`);
+      span.setAttribute('aria-expanded', 'false');
       frag.appendChild(span);
       last = m.index + m[1].length;
     }

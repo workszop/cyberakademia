@@ -53,7 +53,7 @@
 
 /* ─── Small pieces ─── */
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { font-size: var(--fs-caption); padding: 3px 9px; border-radius: var(--radius-pill); background: var(--bg-1); color: var(--lc); border: 1px solid var(--lc); font-weight: var(--fw-medium); }
+.chip { font-size: var(--fs-caption); padding: 2px 6px; border-radius: var(--radius-xs); background: var(--bg-1); color: var(--lc); border: 1px solid var(--border-1); font-weight: var(--fw-medium); }
 .bullets { margin: 0; padding-left: 1.1em; display: grid; gap: var(--space-1); font-size: var(--fs-sm); color: var(--fg-2); }
 .bullets li::marker { color: var(--lc); }
 .facts-dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-4); font-size: var(--fs-sm); }
@@ -110,7 +110,7 @@ table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size
 .split-fork { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5) var(--space-6); }
 .fork-root {
   grid-column: 1 / -1; justify-self: center; font-family: var(--font-mono); font-size: var(--fs-caption);
-  padding: 6px 14px; border-radius: var(--radius-pill); background: var(--ink); color: var(--fg-on-dark);
+  padding: 6px 14px; border-radius: var(--radius-xs); background: var(--ink); color: var(--fg-on-dark);
 }
 .split-side { display: grid; gap: var(--space-3); align-content: start; }
 .split-fork .split-side { border-top: 3px solid var(--lc); padding-top: var(--space-4); }
@@ -319,7 +319,57 @@ table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size
 .mf-link:hover b { text-decoration: underline; }
 
 /* ─── Mobile ─── */
+.cmp-mobile { display: none; }
+.cell-source { display: block; margin-top: var(--space-2); font-size: var(--fs-caption); }
+.source-link { color: var(--lc); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.source-note { font-size: var(--fs-caption); color: var(--fg-2); }
+.tool-nav { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); border-block: 1px solid var(--border-1); padding: var(--space-3) 0; }
+.tool-nav a, .local-reference { color: var(--lc); text-underline-offset: 3px; }
+.sub-h[id], .ls-row[id] { scroll-margin-top: calc(var(--topbar-h) + var(--space-4)); }
+@media (max-width: 1200px) {
+  :root { --compact-toc-clearance: var(--space-8); }
+  .sec, .sub-h[id], .ls-row[id] { scroll-margin-top: calc(var(--topbar-h) + var(--compact-toc-clearance) + var(--space-2)); }
+}
+.module-takeaways, .module-sources { padding: var(--space-5) var(--gutter); border-bottom: 1px solid var(--border-1); }
+.module-takeaways h2 { font-size: var(--fs-app-h3); margin-bottom: var(--space-3); }
+.module-sources { color: var(--fg-2); font-size: var(--fs-sm); }
+.module-sources summary { cursor: pointer; color: var(--fg-1); font-weight: var(--fw-bold); }
+.module-sources > * + * { margin-top: var(--space-3); }
+.module-sources p { max-width: var(--measure); }
+.worksheet-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-3); justify-content: space-between; }
+.implementation-worksheet { border-top: 2px solid var(--lc); padding-top: var(--space-5); }
+.implementation-worksheet > * + * { margin-top: var(--space-3); }
+.worksheet-status, .worksheet-outcome { color: var(--fg-2); font-size: var(--fs-caption); }
+.worksheet-steps { margin: 0; padding: 0; list-style: none; }
+.worksheet-steps > li { padding: var(--space-4) 0; border-top: 1px solid var(--border-1); }
+.worksheet-steps h4 { font-size: var(--fs-read); margin-bottom: var(--space-2); }
+.worksheet-fields { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-3); margin-top: var(--space-3); }
+.worksheet-field { min-width: 0; }
+.worksheet-field label { display: block; margin-bottom: var(--space-1); font-size: var(--fs-caption); color: var(--fg-2); }
+.worksheet-field textarea { display: block; width: 100%; min-height: 44px; resize: vertical; padding: var(--space-2); border: 1px solid var(--border-2); background: var(--bg-1); color: var(--fg-1); border-radius: var(--radius-xs); font: inherit; font-size: var(--fs-sm); overflow: hidden; }
+.worksheet-print-value { display: none; }
 @media (max-width: 768px) {
+  .facts-dl { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .facts-dl dd + dt { margin-top: var(--space-3); }
+  .worksheet-fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .worksheet-action, .worksheet-evidence { grid-column: 1 / -1; }
+  .table-mobile-columns > .table-wrap, .table-mobile-columns > .scroll-hint, .table-mobile-rows > .scroll-hint { display: none; }
+  .cmp-mobile { display: grid; gap: var(--space-5); }
+  .cmp-mobile article { padding: var(--space-4); border: 1px solid var(--border-1); background: var(--bg-1); border-radius: var(--radius-xs); min-width: 0; }
+  .cmp-mobile h3 { font-size: var(--fs-app-h3); margin-bottom: var(--space-3); }
+  .cmp-mobile .cell-tag { white-space: normal; }
+  .cmp-mobile dl { font-size: var(--fs-sm); }
+  .cmp-mobile dt { font-weight: var(--fw-bold); padding-top: var(--space-3); margin-bottom: var(--space-1); border-top: 1px solid var(--border-1); }
+  .cmp-mobile dd { color: var(--fg-2); margin-bottom: var(--space-3); }
+  .table-mobile-rows .table-wrap { overflow: visible; }
+  .table-mobile-rows .cmp { display: block; min-width: 0 !important; }
+  .table-mobile-rows .cmp thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .table-mobile-rows .cmp tbody { display: block; }
+  .table-mobile-rows .cmp tbody tr:not([hidden]) { display: block; border-bottom: 2px solid var(--border-1); }
+  .table-mobile-rows .cmp tbody th, .table-mobile-rows .cmp tbody td { display: block; width: auto; min-width: 0; position: static; overflow-wrap: anywhere; border-bottom: 0; }
+  .table-mobile-rows .cmp td[data-label]::before { content: attr(data-label); display: block; font-weight: var(--fw-bold); color: var(--fg-1); font-size: var(--fs-caption); margin-bottom: var(--space-1); }
+  .table-mobile-rows .row-toggle { width: 32px; height: 32px; }
+  .table-mobile-rows .row-detail td { padding-top: 0; }
   .mod-head { grid-template-columns: minmax(0, 1fr); padding: var(--space-6) var(--gutter) var(--space-5); gap: var(--space-5); }
   .where { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); padding: var(--space-3); }
   .where .eyebrow { width: 100%; margin-bottom: var(--space-1); }
@@ -356,4 +406,36 @@ table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size
   .mf-link { border-right: 0; padding: var(--space-5) var(--gutter); }
   .cmp tbody th { min-width: 110px; font-size: var(--fs-caption); }
   .cmp th, .cmp td { padding: var(--space-3); }
+}
+
+/* ─── Worksheet print ─── */
+@page { size: A4; margin: 14mm; }
+@media print {
+  body:has([data-worksheet]) { --worksheet-print-size: 10.5pt; font-size: var(--worksheet-print-size); background: var(--bg-1); }
+  body:has([data-worksheet]) > :not(.app),
+  body:has([data-worksheet]) .sidebar,
+  body:has([data-worksheet]) .topbar,
+  body:has([data-worksheet]) .toc,
+  body:has([data-worksheet]) .module-page > :not(#s-6-1),
+  body:has([data-worksheet]) #s-6-1 > :not(.sec-body),
+  body:has([data-worksheet]) #s-6-1 .sec-body > :not([data-worksheet]),
+  .worksheet-print, .worksheet-status, .worksheet-field textarea { display: none !important; }
+  body:has([data-worksheet]) .app,
+  body:has([data-worksheet]) .main,
+  body:has([data-worksheet]) .page,
+  body:has([data-worksheet]) #app,
+  body:has([data-worksheet]) .module-page,
+  body:has([data-worksheet]) #s-6-1,
+  body:has([data-worksheet]) .sec-body {
+    display: block !important; position: static !important; width: auto !important; min-width: 0 !important; max-width: none !important; height: auto !important; overflow: visible !important; padding: 0 !important; margin: 0 !important; border: 0 !important;
+  }
+  body:has([data-worksheet]) .app { background: var(--bg-1) !important; }
+  .implementation-worksheet { border: 0; padding: 0; margin: 0; }
+  .implementation-worksheet, .implementation-worksheet * { color: var(--ink); animation: none !important; }
+  .worksheet-steps > li { break-inside: avoid; page-break-inside: avoid; padding: 4mm 0; }
+  .worksheet-fields { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr); gap: 3mm; margin-top: 2mm; }
+  .worksheet-action, .worksheet-evidence { grid-column: auto; }
+  .worksheet-print-value { display: block; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 14mm; border-bottom: 1px solid var(--border-2); padding: 1mm 0; font-size: var(--worksheet-print-size); }
+  .worksheet-print-value:empty { min-height: 18mm; }
+  .worksheet-steps h4 { font-size: var(--worksheet-print-size); }
 }

@@ -19,8 +19,8 @@ export const DEFENSE_LAYERS = [
     id: 'backup',
     name: 'Backup 3-2-1',
     category: 'ciągłość',
-    description: '3 kopie danych, 2 różne nośniki, 1 kopia offline/poza siedzibą. Najlepsza obrona przed skutkami ransomware.',
-    detail: 'Zasada 3-2-1: 3 kopie danych (produkcja + 2 backupy) na 2 różnych typach nośników (np. dysk + taśma lub chmura), w tym 1 kopia offline lub immutable (niezmienialna, ransomware nie może jej zaszyfrować). Najważniejsze jest regularne testowanie odtwarzania: backup, którego nie testowano, to backup, który nie działa. RPO (Recovery Point Objective) określa, jak stara kopia jest akceptowalna.',
+    description: '3 kopie danych, 2 różne nośniki, 1 kopia poza siedzibą. Offline lub niezmienialność kopii to osobne zabezpieczenie przed ransomware.',
+    detail: 'Zasada 3-2-1: 3 kopie danych (produkcja + 2 backupy), 2 różne typy nośników i 1 kopia poza siedzibą. Odległa kopia online nadal może być zagrożona. Rozszerzenie 3-2-1-1-0 dodaje kopię offline, odizolowaną lub immutable (niezmienialną) oraz weryfikację odtwarzania bez błędów. Skuteczność zależy od konfiguracji, odrębnych uprawnień i testów. RPO określa dopuszczalną utratę danych.',
     blocks: ['ransomware', 'przypadkowe usunięcie', 'awaria sprzętu', 'zagrożenie wewnętrzne'],
     doesNotBlock: ['Wycieku danych (backup chroni dostępność, nie poufność)']
   },
@@ -123,7 +123,7 @@ export const ATTACK_SCENARIOS = [
     ],
     blockedBy: ['mfa', 'backup', 'edr', 'segmentation', 'ngfw'],
     bestLayer: 'backup',
-    explanation: 'MFA nie zatrzyma kliknięcia w link, ale utrudni przejęcie konta. EDR może wykryć i zatrzymać szyfrowanie. Segmentacja ograniczy zasięg. Backup 3-2-1 (offline) to ostatnia linia obrony: nawet jeśli ransomware zaszyfruje dane, zostaje nietknięta kopia.'
+    explanation: 'MFA nie zatrzyma kliknięcia w link, ale utrudni przejęcie konta. EDR może wykryć i zatrzymać szyfrowanie. Segmentacja ograniczy zasięg. Backup 3-2-1 z osobno zabezpieczoną kopią offline lub niezmienialną pomaga odtworzyć dane, jeśli kopia nie została naruszona i testy potwierdziły możliwość odtworzenia.'
   },
   {
     id: 'phishing-bec',
@@ -367,15 +367,15 @@ export const DATA_PROTECTION = [
   {
     id: 'backup321',
     name: 'Backup 3-2-1 (i rozszerzenia)',
-    description: 'Zasada tworzenia kopii zapasowych, która pozwala odtworzyć dane po każdym scenariuszu awarii.',
+    description: 'Zalecana zasada rozdzielenia kopii zapasowych, która ogranicza ryzyko ich jednoczesnej utraty.',
     rules: [
       { rule: '3 kopie', explanation: 'Produkcja + co najmniej 2 backupy. Jedna kopia to za mało, bo może zostać skompromitowana razem z produkcją.' },
       { rule: '2 różne nośniki', explanation: 'Np. dysk lokalny + taśma lub chmura. Różne nośniki chronią przed awarią jednego ich typu.' },
-      { rule: '1 kopia offline / poza siedzibą', explanation: 'Kopia odizolowana od sieci (air-gapped) lub geograficznie odległa. Ransomware nie dosięgnie kopii offline.' },
+      { rule: '1 kopia poza siedzibą', explanation: 'Kopia w innej lokalizacji ogranicza skutki np. pożaru lub zalania siedziby. Poza siedzibą nie znaczy offline ani niezmienialna.' },
     ],
     extensions: [
-      { name: '3-2-1-1-0', description: '1 dodatkowa kopia immutable (niezmienialna) + 0 błędów po weryfikacji odtwarzania. Kopii immutable ransomware nie może zaszyfrować ani usunąć.' },
-      { name: 'Testowanie odtwarzania', description: 'Backup, którego nie testowano, to backup, który nie działa. Systemy krytyczne wymagają regularnych testów odtwarzania (co kwartał).' },
+      { name: '3-2-1-1-0', description: 'Oprócz kopii poza siedzibą: 1 kopia offline, odizolowana lub niezmienialna oraz 0 błędów w zweryfikowanym odtwarzaniu. Ochrona wymaga właściwej konfiguracji i rozdzielenia uprawnień.' },
+      { name: 'Testowanie odtwarzania', description: 'Bez testu nie wiadomo, czy kopia pozwala przywrócić usługę. Ustal częstotliwość według ryzyka i zmian systemu; test co kwartał to przykład harmonogramu, nie uniwersalny wymóg prawny.' },
     ],
     rtoRpo: {
       rto: 'RTO (Recovery Time Objective) – jak długo system może być niedostępny? Wyznacza wymagania dla architektury i procedur odtwarzania.',

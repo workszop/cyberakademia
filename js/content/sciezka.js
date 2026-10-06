@@ -65,7 +65,7 @@ export const STEPS = [
       'Ile czasu zajmuje nam wdrożenie krytycznego patcha?'
     ],
     output: 'Wdrożone podstawowe kontrole (MFA, EDR, backup), udokumentowany SZBI (polityki, procedury), rejestr aktywów i ryzyk.',
-    regulatoryLink: 'KSC 2.0: termin wdrożenia SZBI: 12 miesięcy od wejścia w życie ustawy (3.04.2027). Certyfikacja ISO 27001 może potwierdzać spełnienie wymagań.'
+    regulatoryLink: 'KSC 2.0: wdrożenie obowiązków, w tym SZBI, do 3.04.2027 dla podmiotów spełniających kryteria w dniu wejścia nowelizacji w życie. Dla późniejszej kwalifikacji terminy liczy się odrębnie. Certyfikacja ISO 27001 może dostarczyć dowodów, ale nie zastępuje oceny wszystkich wymagań KSC.'
   },
   {
     n: 5,

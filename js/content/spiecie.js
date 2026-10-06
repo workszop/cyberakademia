@@ -44,7 +44,7 @@ export const CONNECTIONS = [
     label: 'Ciągłość działania',
     regulatory: 'Zapewnij ciągłość działania i odtwarzanie po incydencie (NIS2 Art. 21, DORA Art. 11-13)',
     organizational: 'Plany BCP i DRP, regularne ćwiczenia odtwarzania, zdefiniowane RTO/RPO, komunikacja kryzysowa',
-    technology: 'Backup 3-2-1 (offline/immutable), infrastruktura redundantna (HA/DR), system backupu chmurowego',
+    technology: 'Backup 3-2-1 (1 kopia poza siedzibą) z osobnym zabezpieczeniem offline lub immutable, infrastruktura redundantna (HA/DR), system backupu chmurowego',
     example: 'Szpital bez działającego DRP po ataku ransomware: systemy niedostępne przez tydzień, bo backup był, ale nikt go nigdy nie przetestował. Odtworzenie trwało 4x dłużej, niż planowano.',
     regulatoryDetail: 'NIS2/KSC: BCP/DRP jako obowiązkowy element SZBI. DORA: plany ciągłości działania ICT w ramach zarządzania ryzykiem ICT, testowanie planów odtwarzania.',
     wrongApproach: 'Backup bez DRP i testów odtwarzania to fałszywe poczucie bezpieczeństwa. „Backup mamy” ≠ „możemy odtworzyć w 4h”.'

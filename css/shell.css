@@ -17,6 +17,8 @@
   display: flex; flex-direction: column;
   padding: var(--space-5) var(--space-4) var(--space-4);
 }
+.sidebar .sidebar-close { display: none; }
+body.modal-open { overflow: hidden; }
 .brand { display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-2) var(--space-5); text-decoration: none; }
 .brand-mark { width: 28px; height: 28px; object-fit: contain; }
 .brand-name { font-weight: var(--fw-bold); font-size: var(--fs-app-h3); letter-spacing: -0.01em; }
@@ -137,6 +139,7 @@ body[data-route="start"] .topbar::before { background: var(--grad-layers); }
   transition: opacity var(--dur-3) var(--ease), transform var(--dur-3) var(--ease);
 }
 .help.show { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+.help[hidden] { display: none; }
 .help h2 { font-size: var(--fs-app-h3); }
 .help dl { display: grid; grid-template-columns: 90px 1fr; gap: var(--space-2) var(--space-3); font-size: var(--fs-sm); }
 .help dt { display: flex; gap: 4px; }
@@ -169,7 +172,14 @@ body[data-route="start"] .topbar::before { background: var(--grad-layers); }
     transform: translateX(-100%); transition: transform var(--dur-3) var(--ease);
   }
   .sidebar.open { transform: none; box-shadow: var(--shadow-deep); }
+  .sidebar .sidebar-close { display: inline-flex; align-self: flex-end; margin-bottom: var(--space-3); }
   .menu-btn { display: inline-flex; }
-  .topbar { gap: var(--space-3); }
+  .topbar { gap: var(--space-2); }
   .topbar .icon-btn .lbl, .crumbs .hide-m, .topbar .layer-badge { display: none; }
+  .crumbs > a, .crumbs .crumb-separator { display: none; }
+  .crumbs b { overflow: hidden; text-overflow: ellipsis; }
+  .topbar-right { flex-shrink: 0; }
+  .mod-head .where { padding: var(--space-2) var(--space-3); gap: var(--space-1); background: none; border: 0; }
+  .mod-head .where .eyebrow, .mod-head .where .where-rel, .mod-head .where .where-note { display: none; }
+  .mod-head .where .where-row { padding: var(--space-1); font-size: var(--fs-caption); gap: var(--space-1); }
 }

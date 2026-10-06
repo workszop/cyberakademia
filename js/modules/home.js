@@ -6,7 +6,7 @@
 import { el } from '../dom.js';
 import { icon } from '../icons.js';
 import { getModule, COURSE_MODULES, LAYERS } from '../course.js';
-import { getModuleProgress, getCourseProgress, getNextSection, isRead } from '../store.js';
+import { getModuleProgress, getCourseProgress, getNextSection } from '../store.js';
 import { eyebrow, chips } from '../sections.js';
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -50,16 +50,13 @@ function connector(rel, note) {
 
 function progressStrip() {
   const c = getCourseProgress();
-  return el('div', { class: 'progress-strip' },
-    el('div', { class: 'ps-nums' },
-      el('div', { class: 'ps-num' }, el('strong', {}, `${c.pct}%`), el('span', {}, 'kursu przeczytane')),
-      el('div', { class: 'ps-num' }, el('strong', {}, `${c.read}/${c.total}`), el('span', {}, 'sekcji')),
-      el('div', { class: 'ps-num' }, el('strong', {}, `${c.modulesDone}/${c.modulesTotal}`), el('span', {}, 'modułów w całości')),
-    ),
-    el('div', { class: 'ps-bar', 'aria-hidden': 'true' },
+  return el('div', { class: 'progress-strip', 'data-course-progress': String(c.pct) },
+    el('span', { class: 'ps-summary' }, `Przeczytano ${c.read} z ${c.total} sekcji (${c.pct}%)`),
+    el('div', { class: 'ps-bar', role: 'progressbar', 'aria-label': 'Postęp lektury kursu',
+      'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(c.pct),
+      'aria-valuetext': `${c.read} z ${c.total} sekcji` },
       COURSE_MODULES.map(m => el('span', { class: 'ps-seg', 'data-layer': m.layer, title: m.title },
         el('i', { style: { '--p': String(getModuleProgress(m.id).pct) } })))),
-    el('div', { class: 'ps-labels', 'aria-hidden': 'true' }, COURSE_MODULES.map(m => el('span', {}, m.title))),
   );
 }
 
@@ -67,24 +64,19 @@ function nextPanel() {
   const next = getNextSection();
   if (!next) {
     return el('div', { class: 'next-panel', 'data-next-section': 'done' },
-      eyebrow('Lektura ukończona'),
-      el('h3', {}, 'Przeczytano wszystkie sekcje'),
-      el('p', {}, 'Wracaj do modułów, kiedy chcesz, a skróty i pojęcia znajdziesz w Słowniku.'),
+      el('div', {}, el('h2', {}, 'Przeczytano wszystkie sekcje'),
+        el('p', {}, 'Wróć do wybranego modułu na mapie lub sprawdź pojęcie w Słowniku.')),
       el('a', { class: 'btn', href: '#/slownik' }, 'Otwórz Słownik', icon('arrow-right', 16)),
     );
   }
   const { module: mod, section: sec } = next;
+  const started = getCourseProgress().read > 0;
   return el('div', { class: 'next-panel', 'data-layer': mod.layer, 'data-next-section': `${mod.id}:${sec.id}` },
-    eyebrow('Następny krok'),
-    el('h3', {}, `${mod.title} · ${sec.id}`, el('br'), sec.title),
-    el('p', {}, `Moduł ${mod.num} z ${COURSE_MODULES.length} · ${mod.time}`),
-    el('ol', { class: 'next-list' },
-      mod.sections.map(s => el('li', { class: s.id === sec.id ? 'is-next' : '' },
-        el('span', { class: 'mono' }, s.id),
-        el('span', {}, s.title),
-        isRead(mod.id, s.id) ? icon('check', 14) : el('span'),
-      ))),
-    el('a', { class: 'btn', href: `${mod.route}?s=${sec.id}` }, sec.id === mod.sections[0].id ? 'Zacznij' : 'Czytaj dalej', icon('arrow-right', 16)),
+    el('div', {},
+      eyebrow(started ? 'Kontynuuj lekturę' : 'Zacznij od podstaw'),
+      el('h2', {}, `${mod.title}: ${sec.title}`),
+      el('p', {}, `Moduł ${mod.num} z ${COURSE_MODULES.length} · ${mod.time}`)),
+    el('a', { class: 'btn', href: `${mod.route}?s=${sec.id}` }, started ? 'Czytaj dalej' : 'Zacznij kurs', icon('arrow-right', 16)),
   );
 }
 
@@ -95,18 +87,30 @@ export function renderHome() {
   const integracja = getModule('integracja');
   const plan = getModule('plan');
   const slownik = getModule('slownik');
+  const totalMinutes = COURSE_MODULES.reduce((sum, mod) => sum + Number(mod.time.match(/\d+/)?.[0] || 0), 0);
 
   const head = el('header', { class: 'start-head' },
     el('div', {},
       eyebrow('Kurs · cyberbezpieczeństwo w organizacji'),
       el('h1', {}, 'Cyberbezpieczeństwo ', el('em', {}, 'w trzech warstwach')),
       el('p', { class: 'lead' },
-        'Najłatwiej je zrozumieć, gdy rozłożymy je na trzy warstwy: ',
+        'Trzy warstwy pomagają uporządkować decyzje o bezpieczeństwie: ',
         el('b', { class: 't-reg' }, 'regulacje'), ' określają, co trzeba zrobić i kto za to odpowiada; ',
         el('b', { class: 't-org' }, 'organizacja'), ' pokazuje, kto i jak realizuje te obowiązki; ',
         el('b', { class: 't-tech' }, 'technologia'), ' wskazuje, jakimi narzędziami można to osiągnąć.'),
     ),
+    nextPanel(),
     progressStrip(),
+    el('div', { class: 'start-details' },
+      el('div', {},
+        el('p', {}, 'Kurs dla menedżerów, właścicieli procesów i osób koordynujących bezpieczeństwo w organizacji.'),
+        el('p', { class: 'course-time' }, `Nie potrzebujesz wiedzy technicznej. Cała lektura zajmuje około ${totalMinutes} min.`)),
+      el('div', {},
+        el('h2', {}, 'Po lekturze potrafisz'),
+        el('ul', { class: 'start-outcomes' },
+          el('li', {}, 'Powiązać obowiązek z osobą odpowiedzialną, procesem i narzędziem.'),
+          el('li', {}, 'Rozróżnić role i narzędzia podczas rozmowy o incydencie.'),
+          el('li', {}, 'Ułożyć pierwsze kroki i priorytety wdrożenia.')))),
   );
 
   const map = el('section', { class: 'map', 'aria-labelledby': 'map-h' },
@@ -136,7 +140,6 @@ export function renderHome() {
   );
 
   const side = el('aside', { class: 'side' },
-    nextPanel(),
     el('div', { class: 'howto' },
       el('h3', {}, 'Jak korzystać'),
       el('ol', {},
@@ -145,7 +148,7 @@ export function renderHome() {
             el('span', {}, 'Regulacja wymusza powstanie organizacji, a organizacja sięga po technologię. Sekcja zalicza się sama, gdy dojdziesz do jej końca.'))),
         el('li', {}, el('span', { class: 'mono' }, '02'),
           el('div', {}, el('b', {}, 'Skróty z podpowiedziami'),
-            el('span', {}, 'Podkreślone skróty (CIA, SIEM, MFA, DORA…) pokazują definicję po najechaniu kursorem.'))),
+            el('span', {}, 'Podkreślone pojęcia pokazują definicję po najechaniu, kliknięciu lub dotknięciu. Z klawiatury wybierz pojęcie klawiszem Tab. Escape zamyka definicję.'))),
         el('li', {}, el('span', { class: 'mono' }, '03'),
           el('div', {}, el('b', {}, 'Klawiatura'),
             el('span', {}, 'J i K przechodzą między sekcjami, N otwiera następny krok, ? pokazuje wszystkie skróty.'))),

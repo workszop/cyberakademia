@@ -13,6 +13,8 @@ import {
 } from './store.js';
 import { sectionDomId } from './sections.js';
 
+const MOBILE_LAYOUT = window.matchMedia('(max-width: 768px)');
+
 // ─── State ────────────────────────────────────────────────
 
 const shell = {
@@ -21,6 +23,10 @@ const shell = {
   route: '#/',
   observers: [],
   activeSection: null,
+  menuOpen: false,
+  helpOpen: false,
+  menuTrigger: null,
+  helpTrigger: null,
 };
 
 // ─── DOM refs ─────────────────────────────────────────────
@@ -43,7 +49,8 @@ function sectionsInPage() {
 export function scrollToSection(sectionId, { smooth = true } = {}) {
   const target = document.getElementById(sectionDomId(sectionId));
   if (!target) return false;
-  target.scrollIntoView({ behavior: smooth ? 'smooth' : 'instant', block: 'start' });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  target.scrollIntoView({ behavior: smooth && !reduceMotion ? 'smooth' : 'instant', block: 'start' });
   if (shell.module) {
     history.replaceState(null, '', `${shell.module.route}?s=${sectionId}`);
   }
@@ -111,6 +118,7 @@ function renderSidebar() {
   });
 
   refs.sidebar.replaceChildren(
+    el('button', { class: 'sidebar-close icon-btn', type: 'button', 'data-action': 'close-menu' }, 'Zamknij menu', icon('x', 16)),
     el('a', { class: 'brand', href: '#/', 'aria-label': 'CyberAkademia – mapa kursu' },
       el('img', { src: 'assets/quantica-q-mark-pink.png', alt: '', class: 'brand-mark' }),
       el('span', { class: 'brand-name' }, 'CyberAkademia')),
@@ -137,7 +145,7 @@ function renderTopbar() {
   const group = mod ? getGroupOf(mod.id) : null;
   const crumbs = el('nav', { class: 'crumbs', 'aria-label': 'Okruszki' },
     el('a', { href: '#/' }, 'CyberAkademia'),
-    icon('chevron-right', 14),
+    el('span', { class: 'crumb-separator' }, icon('chevron-right', 14)),
     mod
       ? [el('span', { class: 'hide-m' }, group.title), el('span', { class: 'hide-m' }, icon('chevron-right', 14)), el('b', {}, mod.title)]
       : el('b', {}, 'Mapa kursu'),
@@ -148,7 +156,7 @@ function renderTopbar() {
     crumbs,
     layer ? el('span', { class: 'layer-badge', 'data-layer': layer.id }, el('i', {}), layer.name) : null,
     el('div', { class: 'topbar-right' },
-      el('a', { class: 'icon-btn', href: nextSectionHref(), 'data-action': 'next' }, icon('arrow-right', 16), el('span', { class: 'lbl' }, 'Następny krok')),
+      el('a', { class: 'icon-btn', href: nextSectionHref(), 'data-action': 'next', 'aria-label': 'Następny krok w kursie' }, icon('arrow-right', 16), el('span', { class: 'lbl' }, 'Następny krok')),
       el('button', { class: 'icon-btn', type: 'button', 'data-action': 'help', 'aria-label': 'Skróty klawiszowe' }, icon('keyboard', 16)),
     ),
   ].filter(Boolean));
@@ -266,21 +274,65 @@ function observeSections() {
 
 // ─── Menu / help overlays ─────────────────────────────────
 
-function setMenu(open) {
-  refs.sidebar.classList.toggle('open', open);
-  refs.scrim.classList.toggle('show', open || refs.help.classList.contains('show'));
+function focusableIn(root) {
+  return [...root.querySelectorAll('a[href], button, input, select, textarea, [tabindex="0"]')]
+    .filter(n => !n.disabled && !n.closest('[inert], [hidden]') && n.getClientRects().length);
+}
+
+function restoreFocus(trigger, fallback) {
+  const target = trigger?.isConnected && !trigger.closest('[inert], [hidden]') ? trigger : fallback;
+  target?.focus();
+}
+
+function syncOverlays() {
+  const menuOpen = shell.menuOpen && MOBILE_LAYOUT.matches;
+  refs.sidebar.classList.toggle('open', menuOpen);
+  refs.help.classList.toggle('show', shell.helpOpen);
+  refs.help.hidden = !shell.helpOpen;
+  refs.help.inert = !shell.helpOpen;
+  refs.help.setAttribute('aria-hidden', String(!shell.helpOpen));
+  refs.app.inert = shell.helpOpen;
+  refs.main.inert = menuOpen;
+  refs.skip.inert = menuOpen || shell.helpOpen;
+  refs.sidebar.inert = MOBILE_LAYOUT.matches && !menuOpen;
+  if (MOBILE_LAYOUT.matches) refs.sidebar.setAttribute('aria-hidden', String(!menuOpen));
+  else refs.sidebar.removeAttribute('aria-hidden');
+  if (menuOpen) {
+    refs.sidebar.setAttribute('role', 'dialog');
+    refs.sidebar.setAttribute('aria-modal', 'true');
+  } else {
+    refs.sidebar.removeAttribute('role');
+    refs.sidebar.removeAttribute('aria-modal');
+  }
+  refs.scrim.classList.toggle('show', menuOpen || shell.helpOpen);
+  document.body.classList.toggle('modal-open', menuOpen || shell.helpOpen);
   const btn = refs.topbar.querySelector('[data-action="menu"]');
   if (btn) {
-    btn.setAttribute('aria-expanded', String(open));
-    btn.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
+    btn.setAttribute('aria-expanded', String(menuOpen));
+    btn.setAttribute('aria-label', menuOpen ? 'Zamknij menu' : 'Otwórz menu');
   }
 }
 
+function setMenu(open) {
+  open = open && MOBILE_LAYOUT.matches && !shell.helpOpen;
+  const wasOpen = shell.menuOpen;
+  if (open && !wasOpen) shell.menuTrigger = document.activeElement;
+  shell.menuOpen = open;
+  syncOverlays();
+  if (open && !wasOpen) focusableIn(refs.sidebar)[0]?.focus();
+  if (!open && wasOpen) restoreFocus(shell.menuTrigger, refs.topbar.querySelector('[data-action="menu"]'));
+}
+
 function setHelp(open) {
-  refs.help.classList.toggle('show', open);
-  refs.help.setAttribute('aria-hidden', String(!open));
-  refs.scrim.classList.toggle('show', open || refs.sidebar.classList.contains('open'));
-  if (open) refs.help.querySelector('button')?.focus();
+  const wasOpen = shell.helpOpen;
+  if (open && !wasOpen) {
+    shell.helpTrigger = document.activeElement;
+    setMenu(false);
+  }
+  shell.helpOpen = open;
+  syncOverlays();
+  if (open && !wasOpen) focusableIn(refs.help)[0]?.focus();
+  if (!open && wasOpen) restoreFocus(shell.helpTrigger, refs.topbar.querySelector('[data-action="help"]'));
 }
 
 function renderHelp() {
@@ -317,6 +369,7 @@ function bindListeners() {
   document.addEventListener('click', e => {
     const action = e.target.closest('[data-action]')?.dataset.action;
     if (action === 'menu') setMenu(!refs.sidebar.classList.contains('open'));
+    if (action === 'close-menu') setMenu(false);
     if (action === 'help') { e.preventDefault(); setHelp(true); }
     if (action === 'close-help') setHelp(false);
 
@@ -333,6 +386,25 @@ function bindListeners() {
   refs.scrim.addEventListener('click', () => { setMenu(false); setHelp(false); });
 
   document.addEventListener('keydown', e => {
+    const modal = shell.helpOpen ? refs.help : shell.menuOpen ? refs.sidebar : null;
+    if (modal) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (shell.helpOpen) setHelp(false); else setMenu(false);
+      } else if (e.key === 'Tab') {
+        const targets = focusableIn(modal);
+        const first = targets[0];
+        const last = targets[targets.length - 1];
+        if (!first) { e.preventDefault(); return; }
+        if (!modal.contains(document.activeElement) || (e.shiftKey && document.activeElement === first)) {
+          e.preventDefault(); (e.shiftKey ? last : first).focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+      return;
+    }
+    if (e.defaultPrevented) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.target.closest('input, textarea, select, [contenteditable="true"]')) {
       if (e.key === 'Escape') e.target.blur();
@@ -356,6 +428,14 @@ function bindListeners() {
   });
 
   subscribe(refreshProgress);
+  MOBILE_LAYOUT.addEventListener('change', () => {
+    if (!MOBILE_LAYOUT.matches) setMenu(false);
+    else {
+      const sidebarFocused = refs.sidebar.contains(document.activeElement);
+      syncOverlays();
+      if (sidebarFocused) refs.topbar.querySelector('[data-action="menu"]')?.focus();
+    }
+  });
 }
 
 // ─── Init / route hooks ───────────────────────────────────
@@ -367,12 +447,17 @@ export function initShell() {
   refs.scrim = document.getElementById('scrim');
   refs.help = document.getElementById('help');
   refs.live = document.getElementById('live');
+  refs.app = document.querySelector('.app');
+  refs.main = document.querySelector('.main');
+  refs.skip = document.querySelector('.skip-link');
   renderHelp();
+  syncOverlays();
   bindListeners();
 }
 
 /** Called by the router after a page has been rendered into #app. */
 export function onRoute({ route, params, module }) {
+  setHelp(false);
   shell.route = route;
   shell.page = module || null;
   shell.module = module && module.sections.length ? module : null;

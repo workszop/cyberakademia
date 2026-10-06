@@ -20,16 +20,16 @@ export const REGULATIONS = [
       'Obowiązki: wdrożenie SZBI, systematyczne szacowanie ryzyka, zarządzanie incydentami, BCP, bezpieczeństwo łańcucha dostaw, coroczne szkolenie kierownika podmiotu',
       'Zgłaszanie poważnych incydentów do CSIRT: wczesne ostrzeżenie w 24 h, zgłoszenie incydentu w 72 h, sprawozdanie końcowe w ciągu miesiąca od zgłoszenia',
       'Odpowiedzialność zarządu: zarząd zatwierdza środki zarządzania ryzykiem i odpowiada osobiście',
-      'Kary: podmioty kluczowe do 10 mln EUR lub 2% światowego obrotu; ważne do 7 mln EUR lub 1,4% obrotu',
-      'Polska oś czasu: KSC 2.0 wchodzi w życie 3.04.2026, rejestracja podmiotów do 3.10.2026, wdrożenie obowiązków (m.in. SZBI) do 3.04.2027, pierwszy audyt podmiotów kluczowych do 3.04.2028'
+      'NIS2 (art. 34) określa progi maksymalnych kar: co najmniej 10 mln EUR lub 2% światowego obrotu dla podmiotów kluczowych i 7 mln EUR lub 1,4% dla ważnych. Polskie kary KSC opisuje art. 73 ustawy; podstawą procentową są przychody z działalności gospodarczej',
+      'Polska oś czasu dla podmiotów spełniających kryteria w dniu wejścia nowelizacji w życie: 3.04.2026 wejście ustawy, rejestracja do 3.10.2026, wdrożenie obowiązków (m.in. SZBI) do 3.04.2027, pierwszy audyt podmiotów kluczowych do 3.04.2028'
     ],
     color: '#4F46E5',
     compare: {
       since: '3.04.2026',
-      sinceNote: 'KSC 2.0 w Polsce; rejestracja do 3.10.2026',
+      sinceNote: 'KSC 2.0 w Polsce; rejestracja do 3.10.2026 dla podmiotów spełniających kryteria w dniu wejścia ustawy w życie',
       incident: 'do CSIRT (NASK, GOV, MON), poważne incydenty',
       times: ['24 h ostrzeżenie', '72 h zgłoszenie', '1 mies. sprawozdanie końcowe'],
-      fines: 'Podmioty kluczowe: do 10 mln EUR lub 2% przychodów. Ważne: do 7 mln EUR lub 1,4% przychodów (wyższa kwota). Kierownik podmiotu: do 300% wynagrodzenia.'
+      fines: 'Polska KSC, art. 73: podmioty kluczowe do 10 mln EUR lub 2% przychodów z działalności gospodarczej (wyższa kwota), ważne do 7 mln EUR lub 1,4% tych przychodów. W szczególnych przypadkach do 100 mln zł. Kierownik: do 300% wynagrodzenia; dla podmiotów publicznych odrębne zasady w art. 73a. To skrót, nie pełny katalog sankcji.'
     }
   },
   {
@@ -73,16 +73,16 @@ export const REGULATIONS = [
       'Prawa osób: dostęp, sprostowanie, usunięcie („prawo do bycia zapomnianym”), przenoszalność, sprzeciw',
       'Privacy by design i privacy by default – ochrona prywatności wbudowana w projekt od początku',
       'DPO (IOD) obowiązkowy dla organów publicznych oraz podmiotów, które przetwarzają dane masowo lub przetwarzają szczególne kategorie danych',
-      'Naruszenia: zgłoszenie do UODO w 72h, powiadomienie osób, gdy ryzyko jest wysokie',
+      'Naruszenia: zgłoszenie do UODO bez zbędnej zwłoki, w miarę możliwości do 72 h od stwierdzenia, chyba że jest mało prawdopodobne ryzyko naruszenia praw lub wolności osób. Osoby powiadamia się przy wysokim ryzyku, z wyjątkami z art. 34 RODO',
       'Kary: do 20 mln EUR lub 4% globalnego obrotu (wyższa kwota)',
       'Organ nadzorczy w Polsce: UODO (Urząd Ochrony Danych Osobowych)'
     ],
     color: '#059669',
     compare: {
       since: '25.05.2018',
-      incident: 'do UODO',
-      times: ['72 h'],
-      incidentNote: 'Liczone od stwierdzenia naruszenia. Osoby powiadamia się, gdy ryzyko jest wysokie.',
+      incident: 'do UODO, chyba że jest mało prawdopodobne ryzyko naruszenia praw lub wolności osób',
+      times: ['bez zbędnej zwłoki', 'w miarę możliwości do 72 h'],
+      incidentNote: 'Od stwierdzenia naruszenia, nie od jego wystąpienia. Opóźnienie wymaga uzasadnienia. Wysokie ryzyko oznacza odrębny obowiązek powiadomienia osób, z wyjątkami z art. 34.',
       fines: 'Do 20 mln EUR lub 4% globalnego obrotu (wyższa kwota).'
     }
   },
@@ -162,14 +162,14 @@ export const TIMELINE_EVENTS = [
   {
     date: '2026-10-03',
     label: 'KSC – termin rejestracji',
-    description: 'Podmioty kluczowe i ważne składają wniosek o wpis do wykazu podmiotów kluczowych i podmiotów ważnych. Termin wynika z harmonogramu ogłoszonego przez ministra cyfryzacji na podstawie ustawy nowelizującej.',
+    description: 'Podmioty kluczowe i ważne spełniające kryteria w dniu wejścia nowelizacji w życie składają wniosek o wpis do wykazu. Dla podmiotów kwalifikujących się później termin liczy się od spełnienia kryteriów.',
     regulation: 'nis2',
     important: true
   },
   {
     date: '2027-04-03',
     label: 'KSC – wdrożenie SZBI',
-    description: 'Termin wdrożenia pełnego Systemu Zarządzania Bezpieczeństwem Informacji (SZBI) przez podmioty objęte KSC. 12 miesięcy od wejścia w życie ustawy.',
+    description: 'Termin wdrożenia obowiązków, w tym SZBI, dla podmiotów kluczowych i ważnych spełniających kryteria w dniu wejścia nowelizacji w życie. Dla podmiotów kwalifikujących się później obowiązuje odrębny sposób liczenia terminu.',
     regulation: 'nis2',
     important: true
   },

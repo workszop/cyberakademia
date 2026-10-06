@@ -11,7 +11,7 @@ export const THREATS = [
     entryPoint: 'E-mail phishingowy z załącznikiem lub linkiem, podatność w oprogramowaniu (np. nieaktualne VPN/RDP), słabe hasło do RDP, złośliwy plik pobrany z internetu.',
     effect: 'Zaszyfrowanie wszystkich danych na urządzeniu i w udziałach sieciowych, przez co systemy przestają działać. Nowoczesny ransomware stosuje podwójne wymuszenie: najpierw wykrada dane (eksfiltracja), potem je szyfruje i grozi ich opublikowaniem, jeśli ofiara nie zapłaci okupu.',
     cia: 'Dostępność (A) – systemy niedostępne; Poufność (C) – dane wykradzione przed szyfrowaniem.',
-    defense: 'Backup 3-2-1 (offline/immutable), EDR z wykrywaniem behawioralnym, MFA na wszystkich kontach, segmentacja sieci, aktualizacje oprogramowania, szkolenia antyphishingowe.',
+    defense: 'Backup 3-2-1 (1 kopia poza siedzibą) z osobnym zabezpieczeniem offline lub immutable, EDR z wykrywaniem behawioralnym, MFA na wszystkich kontach, segmentacja sieci, aktualizacje oprogramowania, szkolenia antyphishingowe.',
     example: 'Atak ransomware na szpital: systemy medyczne niedostępne przez tydzień, brak dostępu do historii chorób pacjentów, groźba ujawnienia danych 50 000 pacjentów. Koszt odtworzenia: kilka milionów złotych.'
   },
   {

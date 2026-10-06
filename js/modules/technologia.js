@@ -9,7 +9,7 @@ import { getModule } from '../course.js';
 import {
   moduleHeader, moduleFooter, section,
   layerStack, numberedList, compareTable, split, propertyColumns, statStrip,
-  flow, chips, callout, facts,
+  flow, chips, callout, facts, sectionDomId, sourceLink,
 } from '../sections.js';
 import {
   DEFENSE_LAYERS,
@@ -60,7 +60,19 @@ const layerNum = id => LAYER_ORDER.indexOf(id) + 1;
 const shortName = layer => layer.name.split(' – ')[0];
 
 function subHeading(num, text) {
-  return el('h3', { class: 'sub-h no-terms' }, el('span', { class: 'mono' }, num), ' ', text);
+  return el('h3', { class: 'sub-h no-terms', id: sectionDomId(num), tabindex: '-1' }, el('span', { class: 'mono' }, num), ' ', text);
+}
+
+function localLink(id, label, targetId = sectionDomId(id)) {
+  return el('a', { href: `#/technologia?s=${id}`, class: 'local-reference', onclick: event => {
+    const target = document.getElementById(targetId);
+    if (!target || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
+    event.preventDefault();
+    history.pushState(null, '', `#/technologia?s=${id}`);
+    target.scrollIntoView({ block: 'start' });
+    target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  } }, label);
 }
 
 function toolHead(name, full) {
@@ -75,7 +87,7 @@ function listText(arr, sep = ', ') {
 function seeLayer(toolId) {
   const layerId = SEE_LAYER[toolId];
   if (!layerId) return null;
-  return { label: 'Zob. 4.1', value: `Warstwa ${String(layerNum(layerId)).padStart(2, '0')}: ${layerById(layerId).name}. Tam opis warstwy: co blokuje, a czego nie.` };
+  return { label: 'Zob. 4.1', value: localLink('4.1', `Warstwa ${String(layerNum(layerId)).padStart(2, '0')}: ${layerById(layerId).name}. Co blokuje, a czego nie.`, `layer-${layerId}`) };
 }
 
 function prosCons(t) {
@@ -108,6 +120,7 @@ function renderLayers(meta) {
     intro: 'Żadna pojedyncza kontrola nie zatrzyma każdego ataku, ale kilka ułożonych jedna za drugą wyraźnie podnosi koszt i ryzyko dla atakującego. Warstwy poniżej idą od brzegu sieci do samych danych. Każda coś blokuje, a czegoś nie, więc głęboką obronę tworzą dopiero razem.',
   },
     layerStack(orderedLayers().map(l => ({
+      id: `layer-${l.id}`,
       title: l.name,
       category: l.category,
       text: l.description,
@@ -169,7 +182,7 @@ function identityTable() {
       if (t.id === 'zero-trust') {
         pairs = [
           { label: 'Filary', value: listText(zeroTrust.pillars, '; ') },
-          { label: 'Zob. 4.3', value: 'Stary model a Zero Trust i trzy zasady podejścia.' },
+          { label: 'Zob. 4.3', value: localLink('4.3', 'Stary model a Zero Trust i trzy zasady podejścia.') },
         ];
       } else if (t.id === 'pam-tool') {
         // Vault, JIT and session recording are in 4.1 – keep only what 4.1 lacks.
@@ -214,9 +227,9 @@ function dataTable() {
       },
       {
         th: toolHead(backup.name),
-        cells: [backup.description, '3 kopie, 2 nośniki, 1 kopia offline lub poza siedzibą; testy odtwarzania.'],
+        cells: [backup.description, '3 kopie, 2 nośniki, 1 kopia poza siedzibą; offline lub niezmienialność jako osobne zabezpieczenie; testy odtwarzania.'],
         detail: facts([
-          { label: 'Zob. 4.4', value: 'Zasada 3-2-1, rozszerzenie 3-2-1-1-0 oraz RPO i RTO.' },
+          { label: 'Zob. 4.4', value: localLink('4.4', 'Zasada 3-2-1, rozszerzenie 3-2-1-1-0 oraz RPO i RTO.') },
           seeLayer(backup.id),
         ]),
       },
@@ -291,6 +304,8 @@ function renderTools(meta) {
     tone: 'tint',
     intro: 'Pięć grup narzędzi: centrum operacji, sieć, tożsamość, ochrona danych i testy ofensywne. Rozwiń wiersz, żeby zobaczyć, jak narzędzie działa, jego zalety i ograniczenia. Narzędzia opisane już jako warstwy w 4.1 mają w szczegółach odsyłacz zamiast powtórzenia.',
   },
+    el('nav', { class: 'tool-nav', 'data-tool-nav': '', 'aria-label': 'Kategorie narzędzi' },
+      ['SOC', 'Sieć', 'Tożsamość i dostęp', 'Ochrona danych', 'Testowanie ofensywne'].map((name, i) => localLink(`4.2.${i + 1}`, name))),
     subHeading('4.2.1', 'Centrum operacji bezpieczeństwa (SOC)'),
     intro('Narzędzia SOC wykrywają i obsługują incydenty. Sercem jest SIEM: centrala monitoringu, do której spływają logi i zdarzenia z całej infrastruktury, jak obraz ze wszystkich kamer i czujników w budynku. SOAR automatyzuje reagowanie. Warstwy detekcji różnią się zasięgiem: EDR widzi endpoint, NDR ruch w sieci, XDR łączy oba obrazy, a MDR oddaje całość w ręce zewnętrznego zespołu.'),
     socTable(),
@@ -370,18 +385,20 @@ function renderBackup(meta) {
     id: meta.id,
     title: meta.title,
     block: 'statStrip',
-    intro: 'Kopie zapasowe z regularnie testowanym odtwarzaniem to najlepsza obrona przed ransomware. Z kopią zapasową firma podnosi się po ataku, bez niej płaci okup.',
+    intro: 'Sprawdzone kopie zapasowe pomagają odtworzyć dane i ograniczyć przestój po ataku ransomware. Nie zapobiegają wyciekowi danych i nie gwarantują szybkiego wznowienia pracy. Brak kopii nie oznacza, że należy zapłacić okup.',
   },
     statStrip([
       { value: '3', label: 'kopie danych', sub: r3.explanation },
       { value: '2', label: 'różne nośniki', sub: r2.explanation },
-      { value: '1', label: 'kopia offline lub poza siedzibą', sub: r1.explanation },
+      { value: '1', label: 'kopia poza siedzibą', sub: r1.explanation },
     ]),
+    el('p', { class: 'source-note' }, 'Zalecana praktyka, nie samodzielny przepis prawa. ', sourceLink('backup')),
     callout({ title: 'Kopia bez testu odtwarzania nie chroni', text: testing.description, tone: 'warn', iconName: 'alert-triangle' }),
     callout({
       title: 'Rozszerzenie 3-2-1-1-0',
       text: `3 kopie, 2 nośniki, 1 poza siedzibą, 1 offline lub immutable (niezmienialna), 0 błędów przy testach odtwarzania. ${ext.description.split('. ').slice(1).join('. ')}`,
     }),
+    el('p', { class: 'source-note' }, sourceLink('backupExtension')),
     el('h3', { class: 'sub-h' }, 'RPO i RTO'),
     facts([
       objective('RPO', backup.rtoRpo.rpo),

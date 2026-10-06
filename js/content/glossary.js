@@ -132,7 +132,7 @@ export const GLOSSARY = {
   RODO: {
     full: 'Rozporządzenie o Ochronie Danych Osobowych',
     short: 'Polska nazwa GDPR, unijnego rozporządzenia o ochronie danych osobowych.',
-    long: 'RODO to polska nazwa GDPR (General Data Protection Regulation), czyli rozporządzenia UE 2016/679 o ochronie danych osobowych. Obowiązuje od maja 2018 roku i nakłada obowiązki na wszystkie organizacje przetwarzające dane osób z UE: podstawa prawna przetwarzania, prawa osób, obowiązek zgłaszania naruszeń do UODO w 72h, wdrożenie odpowiednich środków technicznych i organizacyjnych. Kary do 20 mln EUR lub 4% obrotu.'
+    long: 'RODO to polska nazwa GDPR (General Data Protection Regulation), czyli rozporządzenia UE 2016/679 o ochronie danych osobowych. Obowiązuje od maja 2018 roku i nakłada obowiązki na organizacje przetwarzające dane osób z UE: podstawa prawna przetwarzania, prawa osób i odpowiednie środki techniczne i organizacyjne. Administrator zgłasza naruszenie do UODO bez zbędnej zwłoki, w miarę możliwości do 72 h od stwierdzenia, chyba że jest mało prawdopodobne ryzyko naruszenia praw lub wolności osób. Powiadomienie osób dotyczy wysokiego ryzyka, z wyjątkami z art. 34. Kary do 20 mln EUR lub 4% obrotu.'
   },
   GDPR: {
     full: 'General Data Protection Regulation',

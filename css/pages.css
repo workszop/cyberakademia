@@ -5,7 +5,7 @@
 
 /* ─── Start: header ─── */
 .start-head {
-  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: var(--space-8); align-items: end;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4);
   padding: var(--space-8) var(--gutter) var(--space-6); border-bottom: 1px solid var(--border-1);
 }
 .start-head h1 { font-size: var(--fs-app-h1); line-height: 1.08; letter-spacing: -0.02em; margin: var(--space-2) 0 var(--space-4); }
@@ -14,17 +14,16 @@
 .lead .t-org { color: var(--layer-org); }
 .lead .t-tech { color: var(--layer-tech); }
 
-.progress-strip { display: grid; gap: var(--space-3); }
-.ps-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
-.ps-num { border-left: 2px solid var(--border-1); padding-left: var(--space-3); }
-.ps-num strong { display: block; font-size: var(--fs-num); line-height: 1; letter-spacing: -0.02em; }
-.ps-num span { font-size: var(--fs-caption); color: var(--fg-3); }
-.ps-bar, .ps-labels { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; }
-.ps-seg { height: 10px; border-radius: 3px; background: var(--bg-2); position: relative; overflow: hidden; }
+.progress-strip { display: grid; gap: var(--space-2); max-width: 520px; }
+.ps-summary { font-size: var(--fs-caption); color: var(--fg-3); }
+.ps-bar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; }
+.ps-seg { height: 6px; border-radius: 3px; background: var(--bg-2); position: relative; overflow: hidden; }
 .ps-seg i { position: absolute; inset: 0; width: calc(var(--p) * 1%); background: var(--lc); }
 .ps-seg[data-layer="synth"] i { background: var(--grad-layers); }
-.ps-labels { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); }
-.ps-labels span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.start-details { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); font-size: var(--fs-sm); color: var(--fg-2); }
+.start-details h2 { font-size: var(--fs-sm); color: var(--fg-1); }
+.course-time { margin-top: var(--space-2); }
+.start-outcomes { margin: var(--space-2) 0 0; padding-left: var(--space-4); }
 
 /* ─── Start: map ─── */
 .start-body { display: grid; grid-template-columns: minmax(0, 1fr) 340px; flex: 1; }
@@ -71,17 +70,14 @@
 
 /* ─── Start: side ─── */
 .side { padding: var(--space-6) var(--space-5); display: flex; flex-direction: column; gap: var(--space-6); }
-.next-panel { background: var(--ink); color: var(--fg-on-dark); border-radius: var(--radius-lg); padding: var(--space-5); position: relative; overflow: hidden; display: grid; gap: var(--space-2); justify-items: start; }
+.next-panel { background: var(--ink); color: var(--fg-on-dark); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.next-panel > div { display: grid; gap: var(--space-1); }
+.next-panel .btn { flex-shrink: 0; }
 .next-panel::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--lc); }
 .next-panel[data-layer="synth"]::before { background: var(--grad-layers-v); }
 .next-panel .eyebrow { color: var(--rose-pink); }
-.next-panel h3 { font-size: 22px; line-height: 1.2; }
+.next-panel h2 { font-size: var(--fs-app-h3); line-height: 1.2; }
 .next-panel p { color: var(--fg-on-dark-2); font-size: var(--fs-sm); }
-.next-list { list-style: none; padding: 0; margin: var(--space-2) 0; display: grid; gap: 2px; font-size: var(--fs-sm); justify-self: stretch; }
-.next-list li { display: grid; grid-template-columns: 34px minmax(0, 1fr) 14px; gap: var(--space-2); padding: 6px 0; border-bottom: 1px solid var(--border-dark); color: var(--fg-on-dark-2); }
-.next-list li.is-next { color: var(--fg-on-dark); font-weight: var(--fw-bold); }
-.next-list li .mono { color: var(--fg-on-dark-3); font-size: var(--fs-caption); }
-.next-list li svg { color: var(--success); }
 .howto h3 { font-size: var(--fs-app-h3); margin-bottom: var(--space-3); }
 .howto ol { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-4); }
 .howto li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: var(--space-3); }
@@ -109,6 +105,7 @@
 .gl-letter { font-size: 32px; line-height: 1; color: var(--lc); }
 .gl-terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-4) var(--space-6); }
 .term-entry { display: grid; gap: var(--space-2); align-content: start; padding-top: var(--space-3); border-top: 2px solid var(--ink); }
+.glossary-page .term-entry[hidden], .glossary-page .gl-group[hidden] { display: none; }
 .te-head { display: grid; gap: 2px; }
 .te-term { font-size: var(--fs-app-h3); font-weight: var(--fw-bold); }
 .te-full { font-size: var(--fs-caption); color: var(--fg-3); }
@@ -120,16 +117,18 @@
 @media (max-width: 1200px) {
   .start-body { grid-template-columns: minmax(0, 1fr); }
   .map { border-right: 0; }
-  .side { display: grid; grid-template-columns: 1fr 1fr; }
+  .side { display: block; }
+  .stratum { grid-template-columns: 160px minmax(0, 1fr) 140px; }
   .gl-tools { grid-template-columns: minmax(0, 1fr) auto; }
   .gl-letters { grid-column: 1 / -1; justify-content: flex-start; }
 }
 
 @media (max-width: 768px) {
   .start-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding: var(--space-6) var(--gutter) var(--space-5); }
+  .start-details { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .next-panel { flex-direction: column; align-items: flex-start; }
   .start-body { display: flex; flex-direction: column; }
-  .side { order: -1; grid-template-columns: minmax(0, 1fr); padding: var(--space-5) var(--gutter) 0; }
-  .next-list, .howto { display: none; }
+  .side { display: none; }
   .map { padding: var(--space-5) var(--gutter); }
   .map-head { flex-direction: column; gap: var(--space-1); }
   .stratum { grid-template-columns: minmax(0, 1fr); }
@@ -141,7 +140,6 @@
   .connector { grid-template-columns: minmax(0, 1fr); padding: var(--space-2) 0; }
   .connector .rel { justify-self: start; padding-left: var(--space-4); }
   .connector .note { display: none; }
-  .ps-labels { font-size: 9px; }
   .gl-tools { grid-template-columns: minmax(0, 1fr); }
   .gl-letters { display: none; }
   .gl-group { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }

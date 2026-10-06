@@ -8,6 +8,7 @@
 import { el } from './dom.js';
 import { icon } from './icons.js';
 import { getModule, getNeighbours, LAYERS } from './course.js';
+import { MODULE_NOTES, SOURCES } from './editorial.js';
 
 // ─── Helpers ──────────────────────────────────────────────
 
@@ -144,7 +145,25 @@ export function moduleFooter(moduleId) {
         eyebrow(dir === 'prev' ? '← Start' : 'Materiały →'),
         el('b', {}, dir === 'prev' ? 'Mapa kursu' : 'Słownik'),
         el('span', {}, dir === 'prev' ? 'Wróć do przeglądu warstw.' : 'Wszystkie skróty i pojęcia w jednym miejscu.'));
-  return el('nav', { class: 'mod-foot', 'aria-label': 'Sąsiednie moduły' }, link(prev, 'prev'), link(next, 'next'));
+  const notes = MODULE_NOTES[moduleId];
+  return el('div', { class: 'module-close' },
+    notes ? el('aside', { class: 'module-takeaways', 'data-module-takeaways': moduleId, 'aria-labelledby': `${moduleId}-takeaways` },
+      el('h2', { id: `${moduleId}-takeaways` }, 'Co to oznacza dla organizacji'),
+      bullets(notes.takeaways),
+    ) : null,
+    notes ? el('details', { class: 'module-sources', 'data-module-sources': moduleId },
+      el('summary', {}, 'Źródła i zakres opracowania'),
+      el('p', {}, 'Materiał edukacyjny na podstawie przewodnika z 9.06.2026. Wymagania prawne zależą od zakresu przepisów; zalecenia wdrożeniowe i scenariusze są praktyką lub przykładami, nie dodatkowymi obowiązkami.'),
+      notes.checked ? el('p', {}, notes.checked) : el('p', {}, 'Ten moduł nie ma odrębnej, pełnej weryfikacji aktualności.'),
+      bullets(notes.sources.map(key => sourceLink(key))),
+    ) : null,
+    el('nav', { class: 'mod-foot', 'aria-label': 'Sąsiednie moduły' }, link(prev, 'prev'), link(next, 'next')),
+  );
+}
+
+export function sourceLink(key, label) {
+  const source = SOURCES[key];
+  return el('a', { href: source.url, class: 'source-link', target: '_blank', rel: 'noopener noreferrer' }, label || source.label);
 }
 
 // ─── Blocks ───────────────────────────────────────────────
@@ -154,7 +173,7 @@ export function moduleFooter(moduleId) {
  * head: array of header cells (string | Node); first is the corner cell.
  * rows: [{ th, cells: [...], detail?: Node }] - detail makes the row expandable.
  */
-export function compareTable({ head, rows, caption, minWidth = 720, cls = '' }) {
+export function compareTable({ head, rows, caption, minWidth = 720, cls = '', mobileMode = 'rows' }) {
   const table = el('table', { class: `cmp ${cls}`.trim(), style: { minWidth: minWidth + 'px' } },
     caption ? el('caption', { class: 'sr-only' }, caption) : null,
     el('thead', {}, el('tr', {}, head.map((h, i) => el('th', { scope: 'col', class: i === 0 ? 'corner' : '' }, h)))),
@@ -181,12 +200,24 @@ export function compareTable({ head, rows, caption, minWidth = 720, cls = '' }) 
       tbody.appendChild(tr);
     }
     tr.appendChild(el('th', { scope: 'row' }, el('div', { class: 'row-head' }, toggle, el('div', {}, r.th))));
-    r.cells.forEach(c => tr.appendChild(el('td', {}, c)));
+    r.cells.forEach((c, i) => tr.appendChild(el('td', { 'data-label': typeof head[i + 1] === 'string' ? head[i + 1] : head[i + 1].textContent }, c)));
   });
   table.appendChild(tbody);
-  return el('div', { class: 'table-block' },
+  const mobile = mobileMode === 'columns' && !rows.some(r => r.detail)
+    ? el('div', { class: 'cmp-mobile', 'data-comparison-mobile': 'columns' }, head.slice(1).map((h, i) =>
+      el('article', { 'data-comparison-column': i },
+        el('h3', {}, typeof h === 'string' ? h : h.cloneNode(true)),
+        el('dl', {}, rows.flatMap((r, j) => [
+          el('dt', {}, typeof r.th === 'string' ? r.th : tbody.children[j].querySelector('th').textContent),
+          el('dd', {}, [...tbody.children[j].querySelectorAll('td')[i].childNodes].map(n => n.cloneNode(true))),
+        ])),
+      ),
+    )) : null;
+  const resolvedMode = mobile ? 'columns' : mobileMode === 'columns' ? 'rows' : mobileMode;
+  return el('div', { class: `table-block table-mobile-${resolvedMode}`, 'data-comparison-mode': resolvedMode },
     el('div', { class: 'scroll-hint', 'aria-hidden': 'true' }, 'Przesuń tabelę w bok →'),
     el('div', { class: 'table-wrap' }, table),
+    mobile,
   );
 }
 
@@ -286,6 +317,7 @@ export function timeline(events, { today = new Date() } = {}) {
     detail.replaceChildren(
       el('div', { class: 'tl-detail-date mono' }, formatDate(ev.date), ev.tag ? el('small', {}, ev.tag) : null),
       el('div', {}, el('b', {}, ev.label), el('p', {}, ev.description)),
+      ev.source ? sourceLink(ev.source) : null,
     );
   }
 
@@ -408,7 +440,7 @@ export function caseStudy({ title, intro, stages }) {
  */
 export function layerStack(layers) {
   return el('ol', { class: 'layer-stack' },
-    layers.map((l, i) => el('li', { class: 'ls-row', style: { '--depth': String(i) } },
+    layers.map((l, i) => el('li', { class: 'ls-row', id: l.id, style: { '--depth': String(i) } },
       el('span', { class: 'ls-num mono no-terms' }, String(i + 1).padStart(2, '0')),
       el('div', { class: 'ls-main' },
         el('div', { class: 'ls-title' }, el('b', {}, l.title), l.category ? el('span', { class: 'ls-cat' }, l.category) : null),
