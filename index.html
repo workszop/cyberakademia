@@ -6,6 +6,18 @@
   <title>CyberAkademia</title>
   <meta name="description" content="Cyberbezpieczeństwo w organizacji w trzech warstwach: regulacje, organizacja, technologia. Materiał do nauki w języku polskim." />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <style>
+    /* Boot gate: keep the page hidden until the app has rendered its first view,
+       so the empty shell is never painted. Failsafe reveal after 4 s. */
+    @keyframes ca-reveal { to { visibility: visible; } }
+    html:not(.app-ready) body { visibility: hidden; animation: ca-reveal 0s 4s forwards; }
+  </style>
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="css/quantica.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/shell.css" />
@@ -14,6 +26,8 @@
   <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 </head>
 <body data-route="start" data-layer="base">
+  <noscript><style>html:not(.app-ready) body { visibility: visible; animation: none; }</style>
+    <p>CyberAkademia wymaga włączonego JavaScriptu.</p></noscript>
   <a class="skip-link" href="#app">Przejdź do treści</a>
 
   <div class="app">

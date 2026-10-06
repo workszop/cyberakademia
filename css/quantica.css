@@ -4,13 +4,9 @@
    ========================================================================== */
 
 /* ---- WEB FONTS ----------------------------------------------------------- */
-/* Satoshi: paid font from Indian Type Foundry / Fontshare. We load via
-   Fontshare CDN (free for personal & commercial). Substitute locally if
-   building offline by dropping .woff2 files in fonts/ and updating @font-face. */
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
-
-/* Geist Mono: Vercel's mono. Available via Google Fonts. */
-@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap");
+/* Satoshi (Fontshare) and Geist Mono (Google Fonts) are loaded with <link>
+   tags in index.html, in parallel with this file. An @import here would chain
+   the requests and block rendering until both font stylesheets arrive. */
 
 
 :root {

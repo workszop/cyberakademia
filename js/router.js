@@ -9,6 +9,7 @@ import { parseHash, getModuleByRoute, START_ROUTE } from './course.js';
 
 const routes = {};
 let currentRoute = null;
+let hasRendered = false;
 
 /**
  * Register a route.
@@ -53,9 +54,13 @@ export function init({ afterRender, onSectionParam }) {
     }
 
     afterRender({ route, params, module: getModuleByRoute(route) });
-    // Restart the fade-in on every page change
-    void app.offsetWidth;
-    app.classList.add('view-in');
+    // Fade in on page changes only; the first view appears at once together
+    // with the shell (see the boot gate in index.html)
+    if (hasRendered) {
+      void app.offsetWidth;
+      app.classList.add('view-in');
+    }
+    hasRendered = true;
   }
 
   window.addEventListener('hashchange', handle);
